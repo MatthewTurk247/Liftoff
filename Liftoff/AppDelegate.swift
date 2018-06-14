@@ -7,15 +7,54 @@
 //
 
 import UIKit
+import Firebase
+import FirebaseInstanceID
+import FirebaseMessaging
+import UserNotifications
 
 @UIApplicationMain
-class AppDelegate: UIResponder, UIApplicationDelegate {
+class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterDelegate, MessagingDelegate {
 
     var window: UIWindow?
 
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
+        UIApplication.shared.statusBarStyle = .lightContent
+        
+        if #available(iOS 10.0, *) {
+            // For iOS 10 display notification (sent via APNS)
+            UNUserNotificationCenter.current().delegate = self
+            let authOptions: UNAuthorizationOptions = [.alert, .badge, .sound]
+            let defaults = UserDefaults.standard
+            UNUserNotificationCenter.current().requestAuthorization(
+                options: authOptions,
+                completionHandler: {didSucceed, error in
+                    if error == nil {
+                        print("Successfully got the notifications")
+                        if didSucceed {
+                            defaults.setValue(true, forKey: "allowNotifications")
+                            NotificationManager().repeatNotification()
+                        } else {
+                            defaults.setValue(false, forKey: "allowNotifications")
+                            NotificationManager().stopNotification()
+                        }
+                    } else {
+                        defaults.setValue(false, forKey: "allowNotifications")
+                        NotificationManager().stopNotification()
+                    }
+            })
+            // For iOS 10 data message (sent via FCM)
+            Messaging.messaging().delegate = self
+        } else {
+            let settings: UIUserNotificationSettings =
+                UIUserNotificationSettings(types: [.alert, .badge, .sound], categories: nil)
+            application.registerUserNotificationSettings(settings)
+        }
+        
+        application.registerForRemoteNotifications()
+        
+        FirebaseApp.configure()
         return true
     }
 
@@ -40,7 +79,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func applicationWillTerminate(_ application: UIApplication) {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
     }
-
-
+    
+    func application(received remoteMessage: MessagingRemoteMessage) {
+        print(remoteMessage.appData)
+        let shouldWithhold = UserDefaults.standard.value(forKey: "allowNotifications")
+        // There must be a way to withhold notifications depending on the user default above.
+    }
+    
 }
 
