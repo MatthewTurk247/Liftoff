@@ -11,18 +11,18 @@ import UIKit
 
 class RocketLaunch : NSObject, NSCoding {
     
-    var id : Int?
-    var name : String?
-    var date : String? // (net) - sorted ascending (default), should convert to Date
-    var status : Bool?
-    var launchWindow : Array<Any>?
-    var launchFrom : String? // Location
-    var whereToWatch : String? // URL
-    var rocket : Rocket? // Details about rocket (inc image...)
+    var id: Int?
+    var name: String?
+    var date: String? // (net) - sorted ascending (default), should convert to Date
+    var status: Bool?
+    var launchWindow: Array<Any>?
+    var launchFrom: String? // Location
+    var whereToWatch: String? // URL
+    var rocket: Rocket? // Details about rocket (inc image...)
     var missionDesc: String?
     
     // Not designated
-    convenience init (id : Int, name : String, status : Bool, date : String, launchWindow : Array<Any>, launchFrom : String, whereToWatch : String, rocket : Rocket, missionDesc: String) {
+    convenience init (id: Int, name: String, status: Bool, date: String, launchWindow: Array<Any>, launchFrom: String, whereToWatch: String, rocket: Rocket, missionDesc: String) {
         self.init()
         self.id = id
         self.name = name
