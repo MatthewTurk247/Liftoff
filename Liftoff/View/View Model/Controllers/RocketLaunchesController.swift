@@ -115,7 +115,7 @@ extension RocketLaunchesController: RocketLaunchesControllerDelegate {
             activityIndicator.center = tableView.center
             
             // Acivity Indicator is hidden when stopAnimating() is called
-            activityIndicator.hidesWhenStopped = false // yikes
+            activityIndicator.hidesWhenStopped = false // Yikes
             
             // Add AI to tableview
             tableView.addSubview(activityIndicator)
@@ -127,6 +127,7 @@ extension RocketLaunchesController: RocketLaunchesControllerDelegate {
     
     func stopSpinner() {
         // Stop activity indicator
-        activityIndicator.stopAnimating()
+        activityIndicator.startAnimating() // Again, yikes. However, it works, so let's keep it that way for the inital release and fix it later. The app has bigger problems...
+        activityIndicator.layer.zPosition = -1
     }
 }

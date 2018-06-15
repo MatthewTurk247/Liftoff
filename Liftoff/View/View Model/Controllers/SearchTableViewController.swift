@@ -95,7 +95,8 @@ class SearchTableViewController: UITableViewController, UISearchBarDelegate {
         makeGetCallWithAlamofire(term: searchBar.text!)
         self.tableView.reloadData()
         UIApplication.shared.sendAction("resignFirstResponder", to: nil, from: nil, for: nil)
-        //There's still an issue: the arrays need to be cleared before each search, and the first time the user presses the search button, nothing happens...
+        // There's still an issue: the arrays need to be cleared before each search, and the first time the user presses the search button, nothing happens...
+        // Remember do catch...that's key
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -103,6 +104,7 @@ class SearchTableViewController: UITableViewController, UISearchBarDelegate {
 
         cell.textLabel?.text = resultTitles[indexPath.row]
         cell.detailTextLabel?.text = resultDatesText[indexPath.row]
+        cell.isUserInteractionEnabled = false
 
         return cell
     }

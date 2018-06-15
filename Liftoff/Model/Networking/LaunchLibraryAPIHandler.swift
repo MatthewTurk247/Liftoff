@@ -42,27 +42,26 @@ class LaunchLibraryAPIHandler: NSObject {
                     continue
             }
             
-            // January 25, 2018 05:51:00 UTC
-            
-            //            // Guard date formatter
-            //            let dateFormatterGet = DateFormatter()
-            //            dateFormatterGet.dateFormat = "MMMM dd, yy hh:mm:ss"
-            //
-            //            guard let date = dateFormatterGet.date(from: net) else {
-            //                // Problem formatting date
-            //                break
-            //            }
-            //
-            //            guard let startDate = dateFormatterGet.date(from: windSrt) else {
-            //                // Problem formatting start date
-            //                break
-            //            }
-            //
-            //            guard let endDate = dateFormatterGet.date(from: windEnd) else {
-            //                // Problem formatting end date
-            //                break
-            //            }
-            
+            // Guard date formatter
+            /*
+            let dateFormatterGet = DateFormatter()
+            dateFormatterGet.dateFormat = "MMMM dd, yy hh:mm:ss"
+
+            guard let date = dateFormatterGet.date(from: net) else {
+                // Problem formatting date
+                break
+            }
+
+            guard let startDate = dateFormatterGet.date(from: windSrt) else {
+                // Problem formatting start date
+                break
+            }
+
+            guard let endDate = dateFormatterGet.date(from: windEnd) else {
+                // Problem formatting end date
+                break
+            }
+            */
             
             // Guard location name string
             guard let location = launchFrom["name"] as? String else {
@@ -103,10 +102,6 @@ class LaunchLibraryAPIHandler: NSObject {
             
             // Create Rocket object
             let rocket = Rocket(id: rocketID, name: rocketName, agencies: agenices, imageString: imageStr)
-            //
-            //
-            //
-            //
             
             // Create Rocket Launch object
             let rocketLaunch = RocketLaunch(id: id, name: name, status: status, date: net, launchWindow: [windSrt,windEnd], launchFrom: location, whereToWatch: watchStr, rocket: rocket, missionDesc: missionDescription)

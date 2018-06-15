@@ -12,7 +12,7 @@ class LaunchLibraryAPI {
     
     let processingQueue = OperationQueue()
     
-    func searchLibraryForLaunch(amount : Int, completion : @escaping (_ results: [[String: AnyObject]]?, _ error : NSError?) -> Void){
+    func searchLibraryForLaunch(amount: Int, completion: @escaping (_ results: [[String: AnyObject]]?, _ error: NSError?) -> Void){
         
         // mode=verbose & next=50
         

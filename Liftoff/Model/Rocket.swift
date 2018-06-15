@@ -9,16 +9,16 @@
 import Foundation
 import UIKit
 
-class Rocket : NSObject, NSCoding {
+class Rocket: NSObject, NSCoding {
     
-    var id : Int?
-    var name : String?
-    var agencies : Array<[String:AnyObject]>?
-    var imageString : String? // URL
-    var image : UIImage = #imageLiteral(resourceName: "default")
+    var id: Int?
+    var name: String?
+    var agencies: Array<[String:AnyObject]>?
+    var imageString: String? // URL
+    var image: UIImage = #imageLiteral(resourceName: "default")
         
     
-    convenience init (id : Int, name : String, agencies : Array<[String:AnyObject]>, imageString : String) {
+    convenience init (id: Int, name: String, agencies: Array<[String:AnyObject]>, imageString: String) {
         self.init()
         self.id = id
         self.name = name
@@ -30,7 +30,7 @@ class Rocket : NSObject, NSCoding {
         }
     }
     
-    convenience init (id : Int, name : String, agencies : Array<[String:AnyObject]>, imageString : String, image : UIImage) {
+    convenience init (id: Int, name: String, agencies: Array<[String:AnyObject]>, imageString: String, image: UIImage) {
         self.init()
         self.id = id
         self.name = name

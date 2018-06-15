@@ -132,11 +132,7 @@
                             <outlet property="delegate" destination="PPK-wg-Oqe" id="Cpn-OF-MwG"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="Launches" id="zTj-jC-DWu">
-                        <barButtonItem key="rightBarButtonItem" systemItem="action" id="hTv-Vu-DaO">
-                            <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                        </barButtonItem>
-                    </navigationItem>
+                    <navigationItem key="navigationItem" title="Launches" id="zTj-jC-DWu"/>
                     <connections>
                         <segue destination="sPa-2T-paX" kind="show" identifier="segueToLaunch" id="qKr-CL-cXM"/>
                     </connections>
@@ -470,7 +466,7 @@
                                             <rect key="frame" x="16" y="22.5" width="43" height="19.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <fontDescription key="fontDescription" name="Lato-Regular" family="Lato" pointSize="16"/>
-                                            <nil key="textColor"/>
+                                            <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                     </subviews>

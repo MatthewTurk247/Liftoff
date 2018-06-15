@@ -82,3 +82,21 @@ extension UIViewController {
         view.endEditing(true)
     }
 }
+
+extension UINavigationController {
+    
+    public func presentTransparentNavigationBar() {
+        navigationBar.setBackgroundImage(UIImage(), for:UIBarMetrics.default)
+        navigationBar.isTranslucent = true
+        navigationBar.shadowImage = UIImage()
+        setNavigationBarHidden(false, animated:true)
+    }
+    
+    public func presentNormalNavigationBar() {
+        setNavigationBarHidden(false, animated:true)
+        navigationBar.setBackgroundImage(UINavigationBar.appearance().backgroundImage(for: UIBarMetrics.default), for:UIBarMetrics.default)
+        //navigationBar.isTranslucent = UINavigationBar.appearance().isTranslucent
+        navigationBar.isTranslucent = false
+        navigationBar.shadowImage = UINavigationBar.appearance().shadowImage
+    }
+}

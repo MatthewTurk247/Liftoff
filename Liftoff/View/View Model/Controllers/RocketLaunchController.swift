@@ -73,19 +73,21 @@ class RocketLaunchController: UITableViewController, MKMapViewDelegate {
                 }
             }
         }
+        
         // TODO: Add countdown timer label
     }
     
+    @objc func shareApp() {
+        print("Horray")
+    }
+    
     override func viewWillAppear(_ animated: Bool) {
-        self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
-        self.navigationController?.navigationBar.shadowImage = UIImage()
-        self.navigationController?.navigationBar.isTranslucent = true
+        self.navigationController?.presentTransparentNavigationBar()
+        self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .action, target: self, action: #selector(shareApp))
     }
     
     override func viewWillDisappear(_ animated: Bool) {
-        self.navigationController?.navigationBar.setBackgroundImage(nil, for: .default)
-        self.navigationController?.navigationBar.shadowImage = nil
-        self.navigationController?.navigationBar.isTranslucent = false
+        self.navigationController?.presentNormalNavigationBar()
     }
     
     override func scrollViewDidScroll(_ scrollView: UIScrollView) {
