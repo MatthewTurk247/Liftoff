@@ -84,16 +84,40 @@ class RocketLaunchController: UITableViewController, MKMapViewDelegate {
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        self.navigationController?.presentTransparentNavigationBar()
+        self.navigationController?.navigationBar.tintColor = .white
+        self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
+        self.navigationController?.navigationBar.shadowImage = UIImage()
+        self.navigationController?.navigationBar.isTranslucent = true
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .action, target: self, action: #selector(shareApp))
     }
     
     override func viewWillDisappear(_ animated: Bool) {
-        self.navigationController?.presentNormalNavigationBar()
+        self.navigationController?.navigationBar.isTranslucent = false
+        self.navigationController?.navigationBar.shadowImage = UINavigationBar.appearance().shadowImage
+        self.navigationController?.navigationBar.setBackgroundImage(UINavigationBar.appearance().backgroundImage(for: UIBarMetrics.default), for:UIBarMetrics.default)
+        self.navigationController?.navigationBar.tintColor = .white
     }
     
     override func scrollViewDidScroll(_ scrollView: UIScrollView) {
-
+        var offset = scrollView.contentOffset.y / 150
+        
+        let updateNavColor = UIColor(red: 108/255, green: 92/255, blue: 231/255, alpha: offset)
+        
+        if offset > 1 {
+            offset = 1
+            //Update Navigation Item Color
+            self.navigationController?.navigationBar.tintColor = .white
+            
+        } else {
+            
+            self.navigationController?.navigationBar.tintColor = .white
+            
+        }
+        
+        //Update NavigationBar Background Color
+        self.navigationController?.navigationBar.backgroundColor = updateNavColor
+        
+        self.navigationController?.navigationBar.setBackgroundImage(UIImage(color: updateNavColor), for:UIBarMetrics.default)
     }
     
     func loadUIElements(rocket: Rocket) {

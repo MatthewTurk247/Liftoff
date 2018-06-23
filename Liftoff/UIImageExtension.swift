@@ -86,17 +86,32 @@ extension UIViewController {
 extension UINavigationController {
     
     public func presentTransparentNavigationBar() {
-        navigationBar.setBackgroundImage(UIImage(), for:UIBarMetrics.default)
-        navigationBar.isTranslucent = true
-        navigationBar.shadowImage = UIImage()
-        setNavigationBarHidden(false, animated:true)
+        navigationController?.navigationBar.tintColor = .white
+        navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
+        navigationController?.navigationBar.shadowImage = UIImage()
+        navigationController?.navigationBar.isTranslucent = true
     }
     
     public func presentNormalNavigationBar() {
-        setNavigationBarHidden(false, animated:true)
-        navigationBar.setBackgroundImage(UINavigationBar.appearance().backgroundImage(for: UIBarMetrics.default), for:UIBarMetrics.default)
-        //navigationBar.isTranslucent = UINavigationBar.appearance().isTranslucent
-        navigationBar.isTranslucent = false
-        navigationBar.shadowImage = UINavigationBar.appearance().shadowImage
+        
+        navigationController?.navigationBar.isTranslucent = false
+        navigationController?.navigationBar.shadowImage = UINavigationBar.appearance().shadowImage
+        navigationController?.navigationBar.setBackgroundImage(UINavigationBar.appearance().backgroundImage(for: UIBarMetrics.default), for:UIBarMetrics.default)
+        navigationController?.navigationBar.tintColor = .white
+        
+    }
+}
+
+public extension UIImage {
+    public convenience init?(color: UIColor, size: CGSize = CGSize(width: 1, height: 1)) {
+        let rect = CGRect(origin: .zero, size: size)
+        UIGraphicsBeginImageContextWithOptions(rect.size, false, 0.0)
+        color.setFill()
+        UIRectFill(rect)
+        let image = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        
+        guard let cgImage = image?.cgImage else { return nil }
+        self.init(cgImage: cgImage)
     }
 }
