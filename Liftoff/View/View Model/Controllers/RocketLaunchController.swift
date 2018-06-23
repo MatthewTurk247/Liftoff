@@ -27,6 +27,7 @@ class RocketLaunchController: UITableViewController, MKMapViewDelegate {
     
     var launch: RocketLaunch!
     var launchSaved: Bool!
+    var isMapable = true
     
     weak var delegate: RocketLaunchControllerDelegate?
     
@@ -70,6 +71,7 @@ class RocketLaunchController: UITableViewController, MKMapViewDelegate {
                     print(placemarks![0].location?.coordinate.latitude, placemarks![0].location?.coordinate.longitude)
                 } else {
                     print(err)
+                    self.isMapable = false
                 }
             }
         }
@@ -78,7 +80,7 @@ class RocketLaunchController: UITableViewController, MKMapViewDelegate {
     }
     
     @objc func shareApp() {
-        print("Horray")
+        print("share")
     }
     
     override func viewWillAppear(_ animated: Bool) {

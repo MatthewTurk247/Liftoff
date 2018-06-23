@@ -1,6 +1,7 @@
 PODS:
   - Alamofire (4.7.1)
   - CountdownLabel (3.0.0)
+  - DLLocalNotifications (0.06)
   - Firebase/Core (4.13.0):
     - FirebaseAnalytics (= 4.2.0)
     - FirebaseCore (= 4.0.20)
@@ -37,6 +38,7 @@ PODS:
 DEPENDENCIES:
   - Alamofire (~> 4.7)
   - CountdownLabel
+  - DLLocalNotifications
   - Firebase/Core
   - Firebase/Messaging
 
@@ -44,6 +46,7 @@ SPEC REPOS:
   https://github.com/CocoaPods/Specs.git:
     - Alamofire
     - CountdownLabel
+    - DLLocalNotifications
     - Firebase
     - FirebaseAnalytics
     - FirebaseCore
@@ -56,6 +59,7 @@ SPEC REPOS:
 SPEC CHECKSUMS:
   Alamofire: 68d7d521118d49c615a8d2214d87cdf525599d30
   CountdownLabel: 4534a68892b1deb73fda18702dfdc2c8444cec08
+  DLLocalNotifications: 751d53da896bc396bb23d4d3570b7fd3c7654e4e
   Firebase: 5ec5e863d269d82d66b4bf56856726f8fb8f0fb3
   FirebaseAnalytics: 7ef69e76a5142f643aeb47c780e1cdce4e23632e
   FirebaseCore: 90cb1c53d69b556f112a1bf72b5fcfaad7650790
@@ -65,6 +69,6 @@ SPEC CHECKSUMS:
   nanopb: 5601e6bca2dbf1ed831b519092ec110f66982ca3
   Protobuf: 8a9838fba8dae3389230e1b7f8c104aa32389c03
 
-PODFILE CHECKSUM: 7bb22420be72667b4821399ff46680f5502b8706
+PODFILE CHECKSUM: 7b4c6029594fc6ee85a45469bb24c78c91d33b9c
 
 COCOAPODS: 1.5.0

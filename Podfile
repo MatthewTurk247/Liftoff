@@ -10,6 +10,7 @@ target 'Liftoff' do
   pod 'Firebase/Core'
   pod 'Firebase/Messaging'
   pod 'CountdownLabel'
+  pod 'DLLocalNotifications'
 
   target 'LiftoffTests' do
     inherit! :search_paths
