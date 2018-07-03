@@ -69,9 +69,12 @@ class RocketLaunchController: UITableViewController, MKMapViewDelegate {
                     annotation.subtitle = launchLocation
                     self.launchMap.addAnnotation(annotation)
                     print(placemarks![0].location?.coordinate.latitude, placemarks![0].location?.coordinate.longitude)
+                    self.isMapable = true
+                    self.tableView.reloadData()
                 } else {
                     print(err)
                     self.isMapable = false
+                    self.tableView.reloadData()
                 }
             }
         }
@@ -99,7 +102,7 @@ class RocketLaunchController: UITableViewController, MKMapViewDelegate {
     }
     
     override func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        var offset = scrollView.contentOffset.y / 150
+        var offset = scrollView.contentOffset.y / 150 - 0.2 // fixes it from being slightly colored at the beginning
         
         let updateNavColor = UIColor(red: 108/255, green: 92/255, blue: 231/255, alpha: offset)
         
@@ -118,6 +121,14 @@ class RocketLaunchController: UITableViewController, MKMapViewDelegate {
         self.navigationController?.navigationBar.backgroundColor = updateNavColor
         
         self.navigationController?.navigationBar.setBackgroundImage(UIImage(color: updateNavColor), for:UIBarMetrics.default)
+    }
+    
+    override func numberOfSections(in tableView: UITableView) -> Int {
+        if isMapable {
+            return 3
+        } else {
+            return 2
+        }
     }
     
     func loadUIElements(rocket: Rocket) {

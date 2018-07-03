@@ -55,6 +55,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         application.registerForRemoteNotifications()
         
         FirebaseApp.configure()
+        
+        if UserDefaults.standard.bool(forKey: "allowNotifications") == false {
+            application.unregisterForRemoteNotifications()
+        }
+        
         return true
     }
 

@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14111" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="VeD-4J-kl9">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="VeD-4J-kl9">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -198,29 +198,6 @@
                                     </tableViewCell>
                                 </cells>
                             </tableViewSection>
-                            <tableViewSection headerTitle="Map" id="RIv-6H-ViO">
-                                <cells>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" rowHeight="281" id="MW2-ux-cMd">
-                                        <rect key="frame" x="0.0" y="611.5" width="375" height="281"/>
-                                        <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="MW2-ux-cMd" id="5So-ot-M9a">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="280.5"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                            <subviews>
-                                                <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" zoomEnabled="NO" scrollEnabled="NO" rotateEnabled="NO" translatesAutoresizingMaskIntoConstraints="NO" id="PM1-iL-RCB">
-                                                    <rect key="frame" x="0.0" y="-3" width="375" height="286.5"/>
-                                                </mapView>
-                                            </subviews>
-                                            <constraints>
-                                                <constraint firstItem="PM1-iL-RCB" firstAttribute="leading" secondItem="5So-ot-M9a" secondAttribute="leading" id="C4b-Sp-TBM"/>
-                                                <constraint firstItem="PM1-iL-RCB" firstAttribute="centerY" secondItem="5So-ot-M9a" secondAttribute="centerY" id="GV4-tw-JuI"/>
-                                                <constraint firstAttribute="trailing" secondItem="PM1-iL-RCB" secondAttribute="trailing" id="eKY-xd-i7v"/>
-                                                <constraint firstItem="PM1-iL-RCB" firstAttribute="top" secondItem="5So-ot-M9a" secondAttribute="topMargin" constant="-11" id="p4R-0l-5r2"/>
-                                            </constraints>
-                                        </tableViewCellContentView>
-                                    </tableViewCell>
-                                </cells>
-                            </tableViewSection>
                             <tableViewSection headerTitle="Rocket" footerTitle="" id="32d-Vj-Ykd">
                                 <cells>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" rowHeight="132" id="Ygb-Zu-deJ">
@@ -242,6 +219,29 @@
                                                 <constraint firstItem="Kdb-28-d71" firstAttribute="top" secondItem="zZs-ha-WQd" secondAttribute="topMargin" id="Dfq-gx-QoC"/>
                                                 <constraint firstItem="Kdb-28-d71" firstAttribute="bottom" secondItem="zZs-ha-WQd" secondAttribute="bottomMargin" id="GrL-rv-xgs"/>
                                                 <constraint firstItem="Kdb-28-d71" firstAttribute="leading" secondItem="zZs-ha-WQd" secondAttribute="leadingMargin" id="JDl-YR-2dD"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                </cells>
+                            </tableViewSection>
+                            <tableViewSection headerTitle="Map" id="RIv-6H-ViO">
+                                <cells>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" rowHeight="281" id="MW2-ux-cMd">
+                                        <rect key="frame" x="0.0" y="611.5" width="375" height="281"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="MW2-ux-cMd" id="5So-ot-M9a">
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="280.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" zoomEnabled="NO" scrollEnabled="NO" rotateEnabled="NO" translatesAutoresizingMaskIntoConstraints="NO" id="PM1-iL-RCB">
+                                                    <rect key="frame" x="0.0" y="0.0" width="375" height="280.5"/>
+                                                </mapView>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstItem="PM1-iL-RCB" firstAttribute="leading" secondItem="5So-ot-M9a" secondAttribute="leading" id="C4b-Sp-TBM"/>
+                                                <constraint firstItem="PM1-iL-RCB" firstAttribute="centerY" secondItem="5So-ot-M9a" secondAttribute="centerY" id="GV4-tw-JuI"/>
+                                                <constraint firstAttribute="trailing" secondItem="PM1-iL-RCB" secondAttribute="trailing" id="eKY-xd-i7v"/>
+                                                <constraint firstItem="PM1-iL-RCB" firstAttribute="top" secondItem="5So-ot-M9a" secondAttribute="topMargin" constant="-11" id="p4R-0l-5r2"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                     </tableViewCell>
@@ -390,7 +390,6 @@
                     <connections>
                         <segue destination="Bhq-HK-Bb1" kind="relationship" relationship="viewControllers" id="3lT-6j-6GD"/>
                         <segue destination="aaP-1m-sPr" kind="relationship" relationship="viewControllers" id="eq2-UT-bfq"/>
-                        <segue destination="bMM-Io-Jgn" kind="relationship" relationship="viewControllers" id="cLH-Nf-G2w"/>
                         <segue destination="Hd4-zu-rrV" kind="relationship" relationship="viewControllers" id="su8-kL-ey3"/>
                         <segue destination="CeK-MQ-hoq" kind="relationship" relationship="viewControllers" id="0Sk-o4-3fz"/>
                     </connections>

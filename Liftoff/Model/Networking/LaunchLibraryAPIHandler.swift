@@ -94,11 +94,29 @@ class LaunchLibraryAPIHandler: NSObject {
                     continue
             }
             
-            guard let missionDescription = missionsObj[0]["description"] as? String else {
-                let APIHandlerError = NSError(domain: Config.domain, code: 1, userInfo: [NSLocalizedFailureReasonErrorKey: "Un-able to process rocket information for lauch: \(id)"])
-                print(APIHandlerError)
-                continue
+//            guard let missionDescription = missionsObj[0]["description"] as? String else {
+//                let APIHandlerError = NSError(domain: Config.domain, code: 1, userInfo: [NSLocalizedFailureReasonErrorKey: "Un-able to process rocket information for lauch: \(id)"])
+//                print(APIHandlerError)
+//                continue
+//            }
+            
+            // Guard video URL string for NULL
+            var missionDescription : String
+            
+            print("empty", missionsObj.isEmpty)
+            
+            if !missionsObj.isEmpty {
+                if let str = missionsObj[0]["description"] as? String {
+                    // Pass URL
+                    missionDescription = str
+                } else {
+                    // URL not available
+                    missionDescription = "Unable to attain description"
+                }
+            } else {
+                missionDescription = "Unable to attain description"
             }
+            
             
             // Create Rocket object
             let rocket = Rocket(id: rocketID, name: rocketName, agencies: agenices, imageString: imageStr)

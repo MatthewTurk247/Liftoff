@@ -39,12 +39,16 @@ class SearchTableViewController: UITableViewController, UISearchBarDelegate {
                 
                 let launches = json["launches"] as! [NSDictionary]
                 
+                self.resultTitles.removeAll()
+                self.resultDatesText.removeAll()
+                
                 for launch in launches {
                     print(String(describing: launch["net"]!).dropLast(13))
                     self.resultDatesText.append(String(describing: String(describing: launch["net"]!).dropLast(13)))
                     print(launch["name"]!)
                     self.resultTitles.append(String(describing: launch["name"]!))
                 }
+                self.tableView.reloadData()
         }
     }
     
@@ -93,8 +97,8 @@ class SearchTableViewController: UITableViewController, UISearchBarDelegate {
     
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         makeGetCallWithAlamofire(term: searchBar.text!)
-        self.tableView.reloadData()
         UIApplication.shared.sendAction("resignFirstResponder", to: nil, from: nil, for: nil)
+        self.tableView.reloadData()
         // There's still an issue: the arrays need to be cleared before each search, and the first time the user presses the search button, nothing happens...
         // Remember do catch...that's key
     }
@@ -108,7 +112,7 @@ class SearchTableViewController: UITableViewController, UISearchBarDelegate {
 
         return cell
     }
-
+    
     /*
     // Override to support conditional editing of the table view.
     override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {

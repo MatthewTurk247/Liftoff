@@ -22,7 +22,12 @@ class MoreTableViewController: UITableViewController {
     @IBOutlet var copyrightNoticeLabel: UILabel!
     
     @IBAction func launchValueChanged(_ sender: Any) {
-        defaults.setValue(showFactNotifications.isOn, forKey: "allowNotifications")
+        defaults.setValue(showLaunchNotifications.isOn, forKey: "allowNotifications")
+        if showLaunchNotifications.isOn {
+            UIApplication.shared.registerForRemoteNotifications()
+        } else {
+            UIApplication.shared.unregisterForRemoteNotifications()
+        }
     }
     @IBAction func factValueChanged(_ sender: Any) {
         if showFactNotifications.isOn {
