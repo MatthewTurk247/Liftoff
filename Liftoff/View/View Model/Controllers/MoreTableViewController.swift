@@ -16,6 +16,10 @@ class MoreTableViewController: UITableViewController {
         UIApplication.shared.open(URL(string: UIApplicationOpenSettingsURLString)!)
     }
     
+    @IBAction func openAppStore(_ sender: Any) {
+        UIApplication.shared.open(URL(string: "https://itunes.apple.com/us/developer/monitormojo-inc/id1370996012")!)
+    }
+    
     @IBOutlet var enableNotificationsButton: UIButton!
     @IBOutlet var showLaunchNotifications: UISwitch!
     @IBOutlet var showFactNotifications: UISwitch!

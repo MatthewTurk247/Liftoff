@@ -84,6 +84,30 @@ class RocketLaunchController: UITableViewController, MKMapViewDelegate {
     
     @objc func shareApp() {
         print("share")
+        let firstActivityItem = "Download Liftoff by MonitorMOJO on the App Store today to learn about \(self.title!)!\n"
+        let secondActivityItem : NSURL = NSURL(string: "https://itunes.apple.com/us/developer/monitormojo-inc/id1370996012")! // update this when there's actually a link
+        // If you want to put an image
+//        let image : UIImage = UIImage(named: "image.jpg")!
+        
+        let activityViewController : UIActivityViewController = UIActivityViewController(
+            activityItems: [firstActivityItem, secondActivityItem], applicationActivities: nil)
+        
+        // This lines is for the popover you need to show in iPad
+        activityViewController.popoverPresentationController?.sourceView = self.navigationItem.rightBarButtonItem?.customView
+        
+        // This line remove the arrow of the popover to show in iPad
+        activityViewController.popoverPresentationController?.permittedArrowDirections = .down
+        activityViewController.popoverPresentationController?.sourceRect = CGRect(x: 150, y: 150, width: 0, height: 0)
+        
+        // Anything you want to exclude
+        activityViewController.excludedActivityTypes = [
+            .postToVimeo,
+            UIActivityType.postToWeibo,
+            .print,
+            .saveToCameraRoll,
+        ]
+        
+        self.present(activityViewController, animated: true, completion: nil)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -102,7 +126,7 @@ class RocketLaunchController: UITableViewController, MKMapViewDelegate {
     }
     
     override func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        var offset = scrollView.contentOffset.y / 150 - 0.2 // fixes it from being slightly colored at the beginning
+        var offset = scrollView.contentOffset.y / 150 // fixes it from being slightly colored at the beginning
         
         let updateNavColor = UIColor(red: 108/255, green: 92/255, blue: 231/255, alpha: offset)
         
@@ -110,17 +134,18 @@ class RocketLaunchController: UITableViewController, MKMapViewDelegate {
             offset = 1
             //Update Navigation Item Color
             self.navigationController?.navigationBar.tintColor = .white
+            self.navigationController?.navigationBar.isTranslucent = false
             
         } else {
             
+            self.navigationController?.navigationBar.isTranslucent = true
             self.navigationController?.navigationBar.tintColor = .white
             
         }
         
         //Update NavigationBar Background Color
-        self.navigationController?.navigationBar.backgroundColor = updateNavColor
-        
-        self.navigationController?.navigationBar.setBackgroundImage(UIImage(color: updateNavColor), for:UIBarMetrics.default)
+        //self.navigationController?.navigationBar.backgroundColor = updateNavColor
+        self.navigationController?.navigationBar.setBackgroundImage(UIImage(color: UIColor(red: 108/255, green: 92/255, blue: 231/255, alpha: offset)), for:UIBarMetrics.default)
     }
     
     override func numberOfSections(in tableView: UITableView) -> Int {

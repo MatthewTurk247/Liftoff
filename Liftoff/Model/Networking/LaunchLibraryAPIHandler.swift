@@ -111,10 +111,10 @@ class LaunchLibraryAPIHandler: NSObject {
                     missionDescription = str
                 } else {
                     // URL not available
-                    missionDescription = "Unable to attain description"
+                    missionDescription = "Unable to obtain description"
                 }
             } else {
-                missionDescription = "Unable to attain description"
+                missionDescription = "Unable to obtain description"
             }
             
             

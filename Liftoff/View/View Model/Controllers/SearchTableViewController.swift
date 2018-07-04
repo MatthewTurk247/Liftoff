@@ -15,6 +15,7 @@ class SearchTableViewController: UITableViewController, UISearchBarDelegate {
     var resultTitles:Array<String> = []
     var resultDatesText:Array<String> = []
     let searchBar = UISearchBar()
+    let reachability = Reachability()
     
     func makeGetCallWithAlamofire(term: String) {
         let todoEndpoint: String = "https://launchlibrary.net/1.2/launch?name=\(term)"
@@ -64,6 +65,12 @@ class SearchTableViewController: UITableViewController, UISearchBarDelegate {
         searchBar.placeholder = "Search for past or current rockets"
         searchBar.delegate = self
         
+        let singleTapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(self.singleTap(sender:)))
+        singleTapGestureRecognizer.numberOfTapsRequired = 1
+        singleTapGestureRecognizer.isEnabled = true
+        singleTapGestureRecognizer.cancelsTouchesInView = false
+        self.view.addGestureRecognizer(singleTapGestureRecognizer)
+        
         self.tableView.delegate = self
         self.tableView.dataSource = self
         
@@ -72,10 +79,12 @@ class SearchTableViewController: UITableViewController, UISearchBarDelegate {
         // view controller is added to a navigation controller's stack
         // you just need to set the titleView to be the search bar
         navigationItem.titleView = searchBar
-        self.hideKeyboardWhenTappedAround()
-
         //let searchTerm = "falcon"
         //var url : String = "https://launchlibrary.net/1.2/launch?name=\(searchTerm)"
+    }
+    
+    @objc func singleTap(sender: UITapGestureRecognizer) {
+        self.searchBar.resignFirstResponder()
     }
 
     override func didReceiveMemoryWarning() {
@@ -96,7 +105,13 @@ class SearchTableViewController: UITableViewController, UISearchBarDelegate {
     }
     
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-        makeGetCallWithAlamofire(term: searchBar.text!)
+        if reachability!.connection == .none {
+            let alert = UIAlertController(title: "Network Error", message: "The data may be unable to load from servers at this time. Please check your Internet connection and try again.", preferredStyle: UIAlertControllerStyle.alert)
+            alert.addAction(UIAlertAction(title: "Close", style: UIAlertActionStyle.default, handler: nil))
+            self.present(alert, animated: true, completion: nil)
+        } else {
+            makeGetCallWithAlamofire(term: searchBar.text!)
+        }
         UIApplication.shared.sendAction("resignFirstResponder", to: nil, from: nil, for: nil)
         self.tableView.reloadData()
         // There's still an issue: the arrays need to be cleared before each search, and the first time the user presses the search button, nothing happens...
@@ -111,6 +126,18 @@ class SearchTableViewController: UITableViewController, UISearchBarDelegate {
         cell.isUserInteractionEnabled = false
 
         return cell
+    }
+    
+    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+        self.searchBar.resignFirstResponder()
+    }
+    
+    func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
+        searchBar.showsCancelButton = true
+    }
+    
+    func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
+        self.searchBar.showsCancelButton = false
     }
     
     /*

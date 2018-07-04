@@ -33,6 +33,7 @@ class NewsTableViewController: UITableViewController {
     private let apiKey = "127f06e85b3a49bf91ac8e3ce8ace028"
     let url = URL(string: "https://newsapi.org/v2/top-headlines?country=us&category=science&apiKey=127f06e85b3a49bf91ac8e3ce8ace028")
     var newsItems = [Article]()
+    var reachability = Reachability()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -44,11 +45,27 @@ class NewsTableViewController: UITableViewController {
         navigationController?.navigationBar.titleTextAttributes = [NSAttributedStringKey.foregroundColor: UIColor.white]
         self.title = "News"
         
+        // Networking
+        
+        if reachability!.connection == .none {
+            let alert = UIAlertController(title: "Network Error", message: "The data may be unable to load from servers at this time. Please check your Internet connection and try again.", preferredStyle: UIAlertControllerStyle.alert)
+            alert.addAction(UIAlertAction(title: "Close", style: UIAlertActionStyle.default, handler: nil))
+            self.present(alert, animated: true, completion: nil)
+        }
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(internetChanged(note: )), name: Notification.Name.reachabilityChanged, object: reachability)
+        
+        do {
+            try reachability?.startNotifier()
+        } catch {
+            print("could not start reachability notifier")
+        }
+        
     }
     
     func fetchAppCategories(completed: @escaping RequestCompleted)  {
         
-        Alamofire.request(self.url!).responseJSON{
+        Alamofire.request(self.url!).responseJSON {
             response in
             
             if let result  = response.result.value as? Dictionary<String, Any>{
@@ -115,11 +132,7 @@ class NewsTableViewController: UITableViewController {
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
-        var i = 0
-        fetchAppCategories {
-            i = self.newsItems.count
-        }
-        return 10
+        return 10 // temporary...eventually, you must return the number of stories from the API
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -140,6 +153,18 @@ class NewsTableViewController: UITableViewController {
         }
         
         return cell
+    }
+    
+    @objc func internetChanged(note: Notification) {
+        print("internet changed at \(Date())")
+        let reachability = note.object as! Reachability
+        if reachability.connection != .none {
+            print("load the data now")
+            self.tableView.reloadData()
+            self.tableView.scrollToRow(at: IndexPath.init(row: 0, section: 0), at: UITableViewScrollPosition.top, animated: true)
+        } else {
+            // create overlay?
+        }
     }
 
     /*
@@ -181,14 +206,21 @@ class NewsTableViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         //performSegue(withIdentifier: "newsSegue", sender: indexPath)
-        fetchAppCategories {
-           
-            if let url = URL(string: self.newsItems[indexPath.row].url!) {
-                let config = SFSafariViewController.Configuration()
-                config.entersReaderIfAvailable = true
+        
+        if reachability!.connection == .none {
+            let alert = UIAlertController(title: "Network Error", message: "Please check your Internet connection and try again.", preferredStyle: UIAlertControllerStyle.alert)
+            alert.addAction(UIAlertAction(title: "Close", style: UIAlertActionStyle.default, handler: nil))
+            self.present(alert, animated: true, completion: nil)
+        } else {
+            fetchAppCategories {
                 
-                let vc = SFSafariViewController(url: url, configuration: config)
-                self.present(vc, animated: true)
+                if let url = URL(string: self.newsItems[indexPath.row].url!) {
+                    let config = SFSafariViewController.Configuration()
+                    config.entersReaderIfAvailable = true
+                    
+                    let vc = SFSafariViewController(url: url, configuration: config)
+                    self.present(vc, animated: true)
+                }
             }
         }
     }

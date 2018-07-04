@@ -18,6 +18,9 @@ class RocketLaunchesController: UITableViewController {
     // Connect to Model: Must Have
     var viewModel: RocketLaunchesModel!
     
+    //To check Internet connection
+    var reachability = Reachability()
+    
     // Identifiers
     let reuseIdentifier = "rocketLaunchCell"
     
@@ -30,16 +33,33 @@ class RocketLaunchesController: UITableViewController {
         navigationController?.navigationBar.titleTextAttributes = [NSAttributedStringKey.foregroundColor: UIColor.white]
         // Create view model instance with dependancy injection
         viewModel = RocketLaunchesModel(view: self)
-        //        viewModel.isLoading.bind { [unowned self]
-        //            self.isWaitingForData($0)
-        //        }
-        viewModel.fetchLaunches {
-            DispatchQueue.main.async { [weak self] in
-                print(self?.viewModel ?? 0)
-                print(self?.viewModel.launches.collection![0].missionDesc)
-                self?.tableView.reloadData()
+        
+        //Networking pillows
+        if reachability!.connection != .none {
+            print("connected to the Internet")
+            viewModel.fetchLaunches {
+                DispatchQueue.main.async { [weak self] in
+                    print(self?.viewModel ?? 0)
+                    print(self?.viewModel.launches.collection![0].missionDesc)
+                    self?.tableView.reloadData()
+                }
             }
+        } else {
+            print("unconnected")
+            // create "Connect to Internet" overlay here
+            let alert = UIAlertController(title: "Network Error", message: "The data may be unable to load from servers at this time. Please check your Internet connection and try again.", preferredStyle: UIAlertControllerStyle.alert)
+            alert.addAction(UIAlertAction(title: "Close", style: UIAlertActionStyle.default, handler: nil))
+            self.present(alert, animated: true, completion: nil)
         }
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(internetChanged(note: )), name: Notification.Name.reachabilityChanged, object: reachability)
+        
+        do {
+            try reachability?.startNotifier()
+        } catch {
+            print("could not start reachability notifier")
+        }
+        
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -59,6 +79,27 @@ class RocketLaunchesController: UITableViewController {
                 vc.launch = launch
                 if let launchId = launch.id {
                     vc.launchSaved = viewModel.isLaunchSavedFor(launchId: launchId)
+                }
+            }
+        }
+    }
+    
+    @objc func internetChanged(note: Notification) {
+        print("internet changed at \(Date())")
+        let reachability = note.object as! Reachability
+        if reachability.connection == .none {
+            // create overlay or alert?
+            let alert = UIAlertController(title: "Network Error", message: "The data may be unable to load from servers at this time. Please check your Internet connection and try again.", preferredStyle: UIAlertControllerStyle.alert)
+            alert.addAction(UIAlertAction(title: "Close", style: UIAlertActionStyle.default, handler: nil))
+            self.present(alert, animated: true, completion: nil)
+            // also, you need to stop making stuff load, so the user can navigate to other tabs
+        } else {
+            print("load the data now")
+            viewModel.fetchLaunches {
+                DispatchQueue.main.async { [weak self] in
+                    print(self?.viewModel ?? 0)
+                    print(self?.viewModel.launches.collection![0].missionDesc)
+                    self?.tableView.reloadData()
                 }
             }
         }

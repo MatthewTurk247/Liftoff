@@ -21,6 +21,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
         UIApplication.shared.statusBarStyle = .lightContent
+        Fact().factbook.shuffle()
         
         if #available(iOS 10.0, *) {
             // For iOS 10 display notification (sent via APNS)
@@ -71,6 +72,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     func applicationDidEnterBackground(_ application: UIApplication) {
         // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
         // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
+        Fact().factbook.shuffle()
     }
 
     func applicationWillEnterForeground(_ application: UIApplication) {
@@ -87,8 +89,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     
     func application(received remoteMessage: MessagingRemoteMessage) {
         print(remoteMessage.appData)
-        let shouldWithhold = UserDefaults.standard.value(forKey: "allowNotifications")
-        // There must be a way to withhold notifications depending on the user default above.
+        Fact().factbook.shuffle()
     }
     
 }
