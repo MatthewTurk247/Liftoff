@@ -7,27 +7,18 @@
 //
 
 import Foundation
-import UIKit
 
-class Mission : NSObject, NSCoding {
-    
-    var desc: String?
-    
-    
-    convenience init (desc: String) {
-        self.init()
-        self.desc = desc
+struct Mission: Codable {
+    enum CodingKeys: String, CodingKey {
+        case id
+        case name
+        case description
+        case type = "typeName"
     }
     
-    // MARK: NSCoding - Used to archive custom class (object) to NSData for storage
-    required convenience init?(coder aDecoder: NSCoder) {
-        guard let desc = aDecoder.decodeObject(forKey: "description") as? String else { return nil }
-        
-        // Create object
-        self.init (desc: desc)
-    }
-    
-    func encode(with aCoder: NSCoder) {
-        aCoder.encode(desc, forKey: "description")
-    }
+    let id: Int
+    let name: String
+    let description: String
+    let type: String
 }
+

@@ -21,45 +21,33 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
         UIApplication.shared.statusBarStyle = .lightContent
-        Fact().factbook.shuffle()
-        
-        if #available(iOS 10.0, *) {
-            // For iOS 10 display notification (sent via APNS)
-            UNUserNotificationCenter.current().delegate = self
-            let authOptions: UNAuthorizationOptions = [.alert, .badge, .sound]
-            let defaults = UserDefaults.standard
-            UNUserNotificationCenter.current().requestAuthorization(
-                options: authOptions,
-                completionHandler: {didSucceed, error in
-                    if error == nil {
-                        print("Successfully got the notifications")
-                        if didSucceed {
-                            defaults.setValue(true, forKey: "allowNotifications")
-                            NotificationManager().repeatNotification()
-                        } else {
-                            defaults.setValue(false, forKey: "allowNotifications")
-                            NotificationManager().stopNotification()
-                        }
-                    } else {
-                        defaults.setValue(false, forKey: "allowNotifications")
-                        NotificationManager().stopNotification()
-                    }
-            })
-            // For iOS 10 data message (sent via FCM)
-            Messaging.messaging().delegate = self
-        } else {
-            let settings: UIUserNotificationSettings =
-                UIUserNotificationSettings(types: [.alert, .badge, .sound], categories: nil)
-            application.registerUserNotificationSettings(settings)
-        }
-        
-        application.registerForRemoteNotifications()
-        
-        FirebaseApp.configure()
-        
-        if UserDefaults.standard.bool(forKey: "allowNotifications") == false {
-            application.unregisterForRemoteNotifications()
-        }
+//        Fact().factbook.shuffle()
+//
+//        if #available(iOS 10.0, *) {
+//            // For iOS 10 display notification (sent via APNS)
+//            UNUserNotificationCenter.current().delegate = self
+//            let authOptions: UNAuthorizationOptions = [.alert, .badge, .sound]
+//            let defaults = UserDefaults.standard
+//            UNUserNotificationCenter.current().requestAuthorization(
+//                options: authOptions,
+//                completionHandler: {didSucceed, error in
+//
+//            })
+//            // For iOS 10 data message (sent via FCM)
+//            Messaging.messaging().delegate = self
+//        } else {
+//            let settings: UIUserNotificationSettings =
+//                UIUserNotificationSettings(types: [.alert, .badge, .sound], categories: nil)
+//            application.registerUserNotificationSettings(settings)
+//        }
+//
+//        application.registerForRemoteNotifications()
+//
+//        FirebaseApp.configure()
+//
+//        if UserDefaults.standard.bool(forKey: "allowNotifications") == false {
+//            application.unregisterForRemoteNotifications()
+//        }
         
         return true
     }

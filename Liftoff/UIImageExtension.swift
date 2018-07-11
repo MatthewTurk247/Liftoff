@@ -11,23 +11,6 @@ import UIKit
 
 let imageCache = NSCache <AnyObject,AnyObject>()
 
-extension UIImage {
-    
-    func imageFromServer(urlString: String, completion: @escaping (UIImage) -> Void) {
-        let blank = #imageLiteral(resourceName: "default")
-        guard let url = URL(string: urlString) else { completion(blank); return }
-        
-        NetworkService.sharedInstance.fetchRocketImage(imageURL: url) { (imageData) in
-            if let imageData = imageData,
-                let image = UIImage(data: imageData) {
-                completion(image)
-            } else {
-                completion(blank)
-            }
-        }
-    }
-}
-
 extension UIImageView {
     
     func loadUsingCache(_ theUrl: String) {
@@ -124,7 +107,7 @@ extension MutableCollection {
         
         for (firstUnshuffled, unshuffledCount) in zip(indices, stride(from: c, to: 1, by: -1)) {
             // Change `Int` in the next line to `IndexDistance` in < Swift 4.1
-            let d: Int = numericCast(arc4random_uniform(numericCast(unshuffledCount)))
+            let d: IndexDistance = numericCast(arc4random_uniform(numericCast(unshuffledCount)))
             let i = index(firstUnshuffled, offsetBy: d)
             swapAt(firstUnshuffled, i)
         }

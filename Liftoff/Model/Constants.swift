@@ -29,3 +29,9 @@ enum Color {
     //    static let tertiaryColor = #colorLiteral(r: g: b: a: )
     static let tertiaryColor = #colorLiteral(red: 0.22, green: 0.58, blue: 0.29, alpha: 1.0)
 }
+
+struct SegueID {
+    static let settings = "settings"
+    static let launchDetail = "launchDetail"
+}
+

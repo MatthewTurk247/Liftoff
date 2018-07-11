@@ -11,6 +11,10 @@ target 'Liftoff' do
   pod 'Firebase/Messaging'
   pod 'CountdownLabel'
   pod 'DLLocalNotifications'
+  pod 'Moya'
+  pod 'RxSwift'
+  pod 'RxCocoa'
+  pod 'Moya/RxSwift'
 
   target 'LiftoffTests' do
     inherit! :search_paths

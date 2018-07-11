@@ -34,11 +34,11 @@ class MoreTableViewController: UITableViewController {
         }
     }
     @IBAction func factValueChanged(_ sender: Any) {
-        if showFactNotifications.isOn {
-            NotificationManager().repeatNotification()
-        } else {
-            NotificationManager().stopNotification()
-        }
+//        if showFactNotifications.isOn {
+//            NotificationManager().repeatNotification()
+//        } else {
+//            NotificationManager().stopNotification()
+//        }
     }
     
     let defaults = UserDefaults.standard

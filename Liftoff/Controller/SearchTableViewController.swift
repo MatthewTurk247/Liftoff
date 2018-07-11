@@ -11,7 +11,6 @@ import Alamofire
 
 class SearchTableViewController: UITableViewController, UISearchBarDelegate {
 
-    var viewModel: RocketLaunchesModel!
     var resultTitles:Array<String> = []
     var resultDatesText:Array<String> = []
     let searchBar = UISearchBar()
