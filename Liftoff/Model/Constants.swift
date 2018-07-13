@@ -35,3 +35,6 @@ struct SegueID {
     static let launchDetail = "launchDetail"
 }
 
+struct UserDefaultsKey {
+    static let backgroundFetchCount = "UserDefaultsKey.backgroundFetchCount"
+}

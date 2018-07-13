@@ -10,30 +10,21 @@ import UIKit
 import Foundation
 import Alamofire
 import SafariServices
-
-typealias RequestCompleted = () -> ()
-
-class Article {
-    var author: String!
-    var title: String!
-    var descriptionTitle: String!
-    var publishedAt: String!
-    var urlToImage: String!
-    var url: String!
-    var content: String!
-    
-    init() {
-        
-    }
-}
+import Moya
+import RxCocoa
+import RxSwift
 
 class NewsTableViewController: UITableViewController {
     
-    let countryCode = "us"
-    private let apiKey = "127f06e85b3a49bf91ac8e3ce8ace028"
-    let url = URL(string: "https://newsapi.org/v2/top-headlines?country=us&category=science&apiKey=127f06e85b3a49bf91ac8e3ce8ace028")
-    var newsItems = [Article]()
     var reachability = Reachability()
+    private let provider = MoyaProvider<API>().rx
+    private let notificationManager = NotificationManager<Launch>()
+    private let disposeBag = DisposeBag()
+    
+    fileprivate var launchResults = LaunchPageResults()
+    private var isFetching = false
+    private var loadingView = LoadingView()
+    var liveLaunches = Array<Launch>()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -43,7 +34,8 @@ class NewsTableViewController: UITableViewController {
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         // self.navigationItem.rightBarButtonItem = self.editButtonItem
         navigationController?.navigationBar.titleTextAttributes = [NSAttributedStringKey.foregroundColor: UIColor.white]
-        self.title = "News"
+        self.title = "Live"
+        fetchNextPage()
         
         // Networking
         
@@ -62,61 +54,6 @@ class NewsTableViewController: UITableViewController {
         }
         
     }
-    
-    func fetchAppCategories(completed: @escaping RequestCompleted)  {
-        
-        Alamofire.request(self.url!).responseJSON {
-            response in
-            
-            if let result  = response.result.value as? Dictionary<String, Any>{
-                
-                if let mainDict = result["articles"] as? [Dictionary<String, Any>]{
-                    if !mainDict.isEmpty{
-                        for article in mainDict {
-                            
-                            let newsItem = Article()
-                            if let author = article["author"] as? String {
-                                newsItem.author = author
-                            } else {
-                                newsItem.author = ""
-                            }
-                            if let title = article["title"] as? String {
-                                newsItem.title = title
-                            } else {
-                                newsItem.title = ""
-                            }
-                            if let descriptionTitle = article["description"] as? String {
-                                newsItem.descriptionTitle = descriptionTitle
-                            } else {
-                                newsItem.descriptionTitle = ""
-                            }
-                            if let url = article["url"] as? String {
-                                newsItem.url = url
-                            } else {
-                                newsItem.url = ""
-                            }
-                            if let urlToImage = article["urlToImage"] as? String {
-                                newsItem.urlToImage = urlToImage
-                            } else {
-                                newsItem.urlToImage = ""
-                            }
-                            if let publishedAt = article["publishedAt"] as? String {
-                                newsItem.publishedAt = publishedAt
-                            } else {
-                                newsItem.publishedAt = ""
-                            }
-                            
-                            self.newsItems.append(newsItem)
-                        }
-                    }
-                }
-                completed()
-            }
-            
-            
-        }
-        
-    }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -132,24 +69,20 @@ class NewsTableViewController: UITableViewController {
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
-        return 10 // temporary...eventually, you must return the number of stories from the API
+        return 10
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "newsIdentifier", for: indexPath) as! NewsTableViewCell
 
         // Configure the cell...
-        fetchAppCategories {
-            cell.titleLabel.text = self.newsItems[indexPath.row].title
-            cell.articleImage.loadUsingCache(self.newsItems[indexPath.row].urlToImage)
-            print("INFO", self.newsItems[indexPath.row].author, self.newsItems[indexPath.row].publishedAt)
-            // make the cells like Summit and put publication date with the author
-            /*if self.newsItems[indexPath.row].descriptionTitle == "" {
-                cell.titleLabel.clearConstraints()
-                cell.titleLabel.numberOfLines = 0
+        if !launchResults.launches.isEmpty {
+            if launchResults.launches[indexPath.row].videoURLs.first != nil {
+                cell.configure(with: launchResults.launches[indexPath.row])
+                //print(launchResults.launches[indexPath.row].videoURLs.first!)
             } else {
-                cell.descriptionTitleLabel.text = self.newsItems[indexPath.row].descriptionTitle
-            }*/
+                cell.contentView.frame.size.height = CGFloat(0)
+            }
         }
         
         return cell
@@ -166,7 +99,70 @@ class NewsTableViewController: UITableViewController {
             // create overlay?
         }
     }
+    
+    fileprivate func fetchNextPage() {
+        guard !isFetching else { return }
+        
+        isFetching = true
+        provider
+            .request(.showLaunches(page: launchResults.pagesFetched))
+            .asObservable()
+            .mapModel(model: LaunchResponse.self)
+            .subscribe { [weak self] (event) in
+                self?.loadingView.hide()
+                switch event {
+                case .next(let response):
+                    self?.handleFetchComplete(with: response.launches, total: response.total)
+                case .error(let error):
+                    self?.handleError(error)
+                case .completed:
+                    self?.isFetching = false
+                }
+            }
+            .disposed(by: disposeBag)
+    }
+    
+    private func registerNotifications(with launches: [Launch]) {
+        notificationManager.removePendingNotifications()
+        notificationManager.registerNotifications(for: launches)
+    }
+    
+    private func authorizeAndRegisterNotifications(with launches: [Launch]) {
+        notificationManager.authorize()
+            .subscribe { [weak self] (event) in
+                switch event {
+                case .next(let status):
+                    if status == .granted {
+                        self?.registerNotifications(with: launches)
+                    }
+                default:
+                    break
+                }
+            }
+            .disposed(by: disposeBag)
+    }
+    
+    private func handleFetchComplete(with launches: [Launch], total: Int) {
+        launchResults.appendPage(with: launches, total: total)
+        authorizeAndRegisterNotifications(with: launchResults.launches)
+        tableView.reloadData()
+    }
+    
+    private func handleError(_ error: Swift.Error) {
+        let alert = UIAlertController(title: "Oops", message: "Something went wrong. Try again.", preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "OK", style: .cancel, handler: nil))
+        present(alert, animated: true, completion: nil)
+    }
 
+    override func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        guard launchResults.canFetchMoreLaunches else { return }
+        let bottomOffset = scrollView.contentSize.height - scrollView.bounds.height
+        if scrollView.contentOffset.y > bottomOffset - 60.0 {
+            // 60 points from the bottom of the list
+            fetchNextPage()
+        }
+    }
+    
     /*
     // Override to support conditional editing of the table view.
     override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
@@ -212,16 +208,7 @@ class NewsTableViewController: UITableViewController {
             alert.addAction(UIAlertAction(title: "Close", style: UIAlertActionStyle.default, handler: nil))
             self.present(alert, animated: true, completion: nil)
         } else {
-            fetchAppCategories {
-                
-                if let url = URL(string: self.newsItems[indexPath.row].url!) {
-                    let config = SFSafariViewController.Configuration()
-                    config.entersReaderIfAvailable = true
-                    
-                    let vc = SFSafariViewController(url: url, configuration: config)
-                    self.present(vc, animated: true)
-                }
-            }
+            // present
         }
     }
 

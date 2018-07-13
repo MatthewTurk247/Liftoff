@@ -15,24 +15,33 @@ class LaunchCell: UITableViewCell {
     }
     
     @IBOutlet private var rocketLabel: UILabel!
-    @IBOutlet private var missionIconView: UIImageView!
     @IBOutlet private var missionLabel: UILabel!
+    @IBOutlet var rocketNameLabel: UILabel!
     @IBOutlet private var timeLabel: UILabel!
+    @IBOutlet var launchSiteLabel: UILabel!
+    @IBOutlet var previewImageView: UIImageView!
     
     private var timer: Timer?
     private let textProvider = LaunchTextProvider()
     
     func configure(with launch: Launch) {
         rocketLabel.text = launch.rocket.name
-        missionLabel.text = launch.missions.first?.description
+        missionLabel.text = "\(launch.rocket.agencies.first?.name ?? "deafult value") \(launch.rocket.agencies.first?.countryCode.flag() ?? "")"
         // probabilityLabel.text = textProvider.probabilityString(from: launch.probability)
+        launchSiteLabel.text = launch.location.name
+        rocketNameLabel.text = launch.rocket.name
         
-        let isHidden = (launch.missions.first?.name ?? "").isEmpty
-        missionLabel.isHidden = isHidden
-        missionIconView.isHidden = isHidden
+//        let isHidden = (launch.rocket.agencies.first?.name ?? "").isEmpty
+//        missionLabel.isHidden = isHidden
+//        missionIconView.isHidden = isHidden
         
         configureTimeLabel(with: launch)
         scheduleTimerIfNecessary(for: launch)
+        
+        if !launch.rocket.imageURL.absoluteString.contains("placeholder") {
+            previewImageView.loadUsingCache(launch.rocket.imageURL.absoluteString)
+        }
+        
     }
     
     // MARK: Private

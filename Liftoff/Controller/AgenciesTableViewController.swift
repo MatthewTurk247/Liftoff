@@ -1,8 +1,8 @@
 //
-//  RocketLaunchesController.swift
+//  AgenciesTableViewController.swift
 //  Liftoff
 //
-//  Created by Matthew Turk on 4/8/18.
+//  Created by Matthew Turk on 7/12/18.
 //  Copyright © 2018 MonitorMOJO, Inc. All rights reserved.
 //
 
@@ -12,34 +12,11 @@ import RxSwift
 import UIKit
 import Foundation
 
-struct LaunchPageResults {
-    var launches = [Launch]()
-    var currentLaunches = [Launch]()
-    private(set) var launchTotal = 0
-    private(set) var pagesFetched = 0
-    
-    var canFetchMoreLaunches: Bool {
-        return launchTotal > launches.count
-    }
-    
-    mutating func appendPage(with launches: [Launch], total: Int) {
-        let now = Date()
-        let toAppend = launches.filter { $0.windowOpenDate > now }
-        let missing = launches.count - toAppend.count
-        launchTotal = total - missing
-        self.launches.append(contentsOf: toAppend)
-        pagesFetched += 1
-    }
-}
-
-struct LaunchResponseError: Swift.Error {}
-
-class RocketLaunchesController: UITableViewController, UISearchBarDelegate {
+class AgenciesTableViewController: UITableViewController, UISearchBarDelegate {
     
     private let provider = MoyaProvider<API>().rx
     private let notificationManager = NotificationManager<Launch>()
     private let disposeBag = DisposeBag()
-    @IBOutlet var searchBar: UISearchBar!
     
     fileprivate var launchResults = LaunchPageResults()
     private var isFetching = false
@@ -50,7 +27,7 @@ class RocketLaunchesController: UITableViewController, UISearchBarDelegate {
     var reachability = Reachability()
     
     // Identifiers
-    let reuseIdentifier = "rocketLaunchCell"
+    let reuseIdentifier = "agencyCell"
     
     // Create Activity Indicator
     var activityIndicator:UIActivityIndicatorView!
@@ -61,7 +38,7 @@ class RocketLaunchesController: UITableViewController, UISearchBarDelegate {
         navigationController?.navigationBar.titleTextAttributes = [NSAttributedStringKey.foregroundColor: UIColor.white]
         // Create view model instance with dependancy injection
         loadingView.showInView(view)
-        fetchNextPage()
+        //fetchNextPage()
         
     }
     
@@ -71,7 +48,7 @@ class RocketLaunchesController: UITableViewController, UISearchBarDelegate {
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if section == 0 {
-            return launchResults.currentLaunches.count
+            return 10
         } else if launchResults.launches.count < launchResults.launchTotal {
             // show the page cell
             return 1
@@ -86,7 +63,7 @@ class RocketLaunchesController: UITableViewController, UISearchBarDelegate {
         let bottomOffset = scrollView.contentSize.height - scrollView.bounds.height
         if scrollView.contentOffset.y > bottomOffset - 60.0 {
             // 60 points from the bottom of the list
-            fetchNextPage()
+            //fetchNextPage()
             launchResults.currentLaunches = launchResults.launches
         }
     }
@@ -94,9 +71,9 @@ class RocketLaunchesController: UITableViewController, UISearchBarDelegate {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if indexPath.section == 0 {
             //swiftlint:disable force_cast
-            let cell = tableView.dequeueReusableCell(withIdentifier: LaunchCell.reuseID, for: indexPath) as! LaunchCell
+            let cell = tableView.dequeueReusableCell(withIdentifier: reuseIdentifier, for: indexPath)
             //swiftlint:enable force_cast
-            cell.configure(with: launchResults.currentLaunches[indexPath.row])
+            cell.textLabel?.text = "1"
             return cell
         } else {
             return tableView.dequeueReusableCell(withIdentifier: PageLoadingCell.reuseID, for: indexPath)
@@ -196,7 +173,7 @@ class RocketLaunchesController: UITableViewController, UISearchBarDelegate {
     
     @objc func internetChanged(note: Notification) {
         print("internet changed at \(Date())")
-
+        
     }
     
 }

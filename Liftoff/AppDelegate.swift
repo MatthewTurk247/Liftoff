@@ -16,40 +16,50 @@ import UserNotifications
 class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterDelegate, MessagingDelegate {
 
     var window: UIWindow?
-
+    let registar = BackgroundNotificationRegistrar()
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
         UIApplication.shared.statusBarStyle = .lightContent
-//        Fact().factbook.shuffle()
-//
-//        if #available(iOS 10.0, *) {
-//            // For iOS 10 display notification (sent via APNS)
-//            UNUserNotificationCenter.current().delegate = self
-//            let authOptions: UNAuthorizationOptions = [.alert, .badge, .sound]
-//            let defaults = UserDefaults.standard
-//            UNUserNotificationCenter.current().requestAuthorization(
-//                options: authOptions,
-//                completionHandler: {didSucceed, error in
-//
-//            })
-//            // For iOS 10 data message (sent via FCM)
-//            Messaging.messaging().delegate = self
-//        } else {
-//            let settings: UIUserNotificationSettings =
-//                UIUserNotificationSettings(types: [.alert, .badge, .sound], categories: nil)
-//            application.registerUserNotificationSettings(settings)
-//        }
-//
-//        application.registerForRemoteNotifications()
-//
-//        FirebaseApp.configure()
-//
-//        if UserDefaults.standard.bool(forKey: "allowNotifications") == false {
-//            application.unregisterForRemoteNotifications()
-//        }
+        Fact().factbook.shuffle()
+
+        if #available(iOS 10.0, *) {
+            // For iOS 10 display notification (sent via APNS)
+            UNUserNotificationCenter.current().delegate = self
+            let authOptions: UNAuthorizationOptions = [.alert, .badge, .sound]
+            UNUserNotificationCenter.current().requestAuthorization(
+                options: authOptions,
+                completionHandler: {didSucceed, error in
+
+            })
+            // For iOS 10 data message (sent via FCM)
+            Messaging.messaging().delegate = self
+        } else {
+            let settings: UIUserNotificationSettings =
+                UIUserNotificationSettings(types: [.alert, .badge, .sound], categories: nil)
+            application.registerUserNotificationSettings(settings)
+        }
+
+        application.registerForRemoteNotifications()
+
+        application.setMinimumBackgroundFetchInterval(.oneHour)
+        
+        FirebaseApp.configure()
+
+        if UserDefaults.standard.bool(forKey: "allowNotifications") == false {
+            application.unregisterForRemoteNotifications()
+        }
         
         return true
+    }
+    
+    func application(_ application: UIApplication, performFetchWithCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
+        registar.register { [weak self] (result) in
+            if result == .newData {
+                self?.updateRegistrationCount()
+            }
+            completionHandler(result)
+        }
     }
 
     func applicationWillResignActive(_ application: UIApplication) {
@@ -78,6 +88,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     func application(received remoteMessage: MessagingRemoteMessage) {
         print(remoteMessage.appData)
         Fact().factbook.shuffle()
+    }
+    
+    private func updateRegistrationCount() {
+        let count = UserDefaults.standard.integer(forKey: UserDefaultsKey.backgroundFetchCount)
+        UserDefaults.standard.set(count + 1, forKey: UserDefaultsKey.backgroundFetchCount)
+        UserDefaults.standard.synchronize()
     }
     
 }
