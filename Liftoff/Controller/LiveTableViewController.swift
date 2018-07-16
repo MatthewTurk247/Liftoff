@@ -14,17 +14,17 @@ import Moya
 import RxCocoa
 import RxSwift
 
-class NewsTableViewController: UITableViewController {
+class LiveTableViewController: UITableViewController {
     
     var reachability = Reachability()
     private let provider = MoyaProvider<API>().rx
     private let notificationManager = NotificationManager<Launch>()
     private let disposeBag = DisposeBag()
+    var initialIncrementor = 0
     
     fileprivate var launchResults = LaunchPageResults()
     private var isFetching = false
     private var loadingView = LoadingView()
-    var liveLaunches = Array<Launch>()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -69,21 +69,14 @@ class NewsTableViewController: UITableViewController {
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
-        return 10
+        return 3
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "newsIdentifier", for: indexPath) as! NewsTableViewCell
 
         // Configure the cell...
-        if !launchResults.launches.isEmpty {
-            if launchResults.launches[indexPath.row].videoURLs.first != nil {
-                cell.configure(with: launchResults.launches[indexPath.row])
-                //print(launchResults.launches[indexPath.row].videoURLs.first!)
-            } else {
-                cell.contentView.frame.size.height = CGFloat(0)
-            }
-        }
+        cell.titleLabel.text = "test"
         
         return cell
     }
@@ -145,6 +138,8 @@ class NewsTableViewController: UITableViewController {
     private func handleFetchComplete(with launches: [Launch], total: Int) {
         launchResults.appendPage(with: launches, total: total)
         authorizeAndRegisterNotifications(with: launchResults.launches)
+        print(launches.count)
+        // remove non-live launches
         tableView.reloadData()
     }
     

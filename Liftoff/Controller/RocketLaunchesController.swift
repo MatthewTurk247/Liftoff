@@ -105,11 +105,6 @@ class RocketLaunchesController: UITableViewController, UISearchBarDelegate {
     
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         // This will override the height selected in the storyboard.
-        if setupIterator == 0 {
-            launchResults.currentLaunches = launchResults.launches
-            tableView.reloadData()
-            setupIterator += 1
-        }
         return 135
     }
     
@@ -138,8 +133,8 @@ class RocketLaunchesController: UITableViewController, UISearchBarDelegate {
     // MARK: - Search Bar
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         
-        guard !searchText.isEmpty else { launchResults.currentLaunches = launchResults.launches; tableView.reloadData(); return }
-        
+        guard !searchText.isEmpty else { launchResults.currentLaunches = launchResults.launches; tableView.reloadData(); return } // also unhide the spinner
+        // hide spinner at the bottom
         launchResults.currentLaunches = launchResults.launches.filter { (launch) -> Bool in
             return launch.name.lowercased().contains(searchText.lowercased())
         }
@@ -169,6 +164,7 @@ class RocketLaunchesController: UITableViewController, UISearchBarDelegate {
     private func handleFetchComplete(with launches: [Launch], total: Int) {
         launchResults.appendPage(with: launches, total: total)
         authorizeAndRegisterNotifications(with: launchResults.launches)
+        launchResults.currentLaunches = launchResults.launches
         tableView.reloadData()
     }
     

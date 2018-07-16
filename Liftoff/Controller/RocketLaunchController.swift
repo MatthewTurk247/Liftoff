@@ -23,6 +23,12 @@ class RocketLaunchController: UITableViewController, MKMapViewDelegate {
     @IBOutlet var countdownLabel: CountdownLabel!
     @IBOutlet var rocketNameLabel: UILabel!
     @IBOutlet var launchMap: MKMapView!
+    @IBAction func openWebsite(_ sender: Any) {
+        UIApplication.shared.openURL((launch?.rocket.agencies.first?.infoURLs.first)!)
+    }
+    @IBAction func openWiki(_ sender: Any) {
+        UIApplication.shared.openURL((launch?.rocket.agencies.first?.wikiURL)!)
+    }
     
     var launch: Launch?
     let textProvider = LaunchTextProvider()
@@ -39,6 +45,19 @@ class RocketLaunchController: UITableViewController, MKMapViewDelegate {
     
     }
     
+    override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        switch section {
+        case 1:
+            return launch?.rocket.name
+        case 2:
+            return launch?.rocket.agencies.first?.name
+        case 3:
+            return launch?.location.pads.first?.name
+        default:
+            return ""
+        }
+    }
+    
     private func configure(withLaunch launch: Launch) {
         title = launch.rocket.name
         descTextView.text = launch.missions.first?.description
@@ -53,7 +72,7 @@ class RocketLaunchController: UITableViewController, MKMapViewDelegate {
             print("error doing image stuff")
         }
         countdownLabel.text = textProvider.countdownString(from: launch.windowOpenDate)
-        rocketNameLabel.text = "Rocket: \(launch.rocket.name)\nAgency: \(launch.rocket.agencies.first!.name)"
+        rocketNameLabel.text = "Rocket: \(launch.rocket.name)\nAgency: \(launch.rocket.agencies.first!.name)\nWikipedia:"
         let spot = launch.location.pads.first!.coordinate
         self.launchMap.setCenter(spot, animated: false)
         let span = MKCoordinateSpanMake(0.8, 0.8)
@@ -64,6 +83,7 @@ class RocketLaunchController: UITableViewController, MKMapViewDelegate {
         annotation.title = launch.location.name
         annotation.subtitle = launch.location.countryCode
         self.launchMap.addAnnotation(annotation)
+        // TODO: - Add icons for the site (globe icon thingy) and Wikipedia (logo)
         self.tableView.reloadData()
         
     }
