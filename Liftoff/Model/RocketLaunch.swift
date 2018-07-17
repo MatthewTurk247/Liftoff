@@ -35,7 +35,7 @@ class RocketLaunch : NSObject, NSCoding {
         self.missionDesc = missionDesc
     }
     
-    // MARK: NSCoding - Used to archive custom class (object) to NSData for storage
+    // MARK: NSCoding - Used to archive custom class (object) to NSData for storage (fancy fancy!)
     required convenience init?(coder aDecoder: NSCoder) {
         let id = aDecoder.decodeInteger(forKey: "id")
         let status = aDecoder.decodeBool(forKey: "status")

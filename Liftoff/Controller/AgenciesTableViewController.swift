@@ -14,17 +14,19 @@ import Foundation
 
 class AgenciesTableViewController: UITableViewController, UISearchBarDelegate {
     
-    private let provider = MoyaProvider<API>().rx
-    private let notificationManager = NotificationManager<Launch>()
-    private let disposeBag = DisposeBag()
-    
-    fileprivate var launchResults = LaunchPageResults()
-    private var isFetching = false
     private var loadingView = LoadingView()
     var setupIterator = 0
     
     //To check Internet connection
     var reachability = Reachability()
+    
+    // MARK: - Data Source
+    
+    lazy var continents: [Continent] = {
+        return Continent.continents()
+    }()
+    
+    var agenciesArray = [Agency]()
     
     // Identifiers
     let reuseIdentifier = "agencyCell"
@@ -37,116 +39,44 @@ class AgenciesTableViewController: UITableViewController, UISearchBarDelegate {
         // Do any additional setup after loading the view, typically from a nib.
         navigationController?.navigationBar.titleTextAttributes = [NSAttributedStringKey.foregroundColor: UIColor.white]
         // Create view model instance with dependancy injection
-        loadingView.showInView(view)
-        //fetchNextPage()
+        self.title = "Agencies"
         
     }
     
     override func numberOfSections(in tableView: UITableView) -> Int {
-        return 2
+        return continents.count
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if section == 0 {
-            return 10
-        } else if launchResults.launches.count < launchResults.launchTotal {
-            // show the page cell
-            return 1
-        } else {
-            // hide the page cell
-            return 0
-        }
+        return continents[section].agencies.count
     }
     
-    override func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        guard launchResults.canFetchMoreLaunches else { return }
-        let bottomOffset = scrollView.contentSize.height - scrollView.bounds.height
-        if scrollView.contentOffset.y > bottomOffset - 60.0 {
-            // 60 points from the bottom of the list
-            //fetchNextPage()
-            launchResults.currentLaunches = launchResults.launches
-        }
+    override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        return continents[section].name
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        if indexPath.section == 0 {
-            //swiftlint:disable force_cast
-            let cell = tableView.dequeueReusableCell(withIdentifier: reuseIdentifier, for: indexPath)
-            //swiftlint:enable force_cast
-            cell.textLabel?.text = "1"
-            return cell
-        } else {
-            return tableView.dequeueReusableCell(withIdentifier: PageLoadingCell.reuseID, for: indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: reuseIdentifier, for: indexPath)
+        //swiftlint:enable force_cast
+        let a = continents[indexPath.section].agencies[indexPath.row]
+        var t = ""
+        switch a.type {
+        case .multinational:
+            t = "Multinational"
+        case .government:
+            t = "Governmental"
+        case .educational:
+            t = "Educational"
+        case .commercial:
+            t = "Commercial"
+        case .`private`:
+            t = "Private"
+        case .unknown:
+            t = ""
         }
-    }
-    
-    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        // This will override the height selected in the storyboard.
-        if setupIterator == 0 {
-            launchResults.currentLaunches = launchResults.launches
-            tableView.reloadData()
-            setupIterator += 1
-        }
-        return 135
-    }
-    
-    fileprivate func fetchNextPage() {
-        guard !isFetching else { return }
-        
-        isFetching = true
-        provider
-            .request(.showLaunches(page: launchResults.pagesFetched))
-            .asObservable()
-            .mapModel(model: LaunchResponse.self)
-            .subscribe { [weak self] (event) in
-                self?.loadingView.hide()
-                switch event {
-                case .next(let response):
-                    self?.handleFetchComplete(with: response.launches, total: response.total)
-                case .error(let error):
-                    self?.handleError(error)
-                case .completed:
-                    self?.isFetching = false
-                }
-            }
-            .disposed(by: disposeBag)
-    }
-    
-    // MARK: - Search Bar
-    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        
-        guard !searchText.isEmpty else { launchResults.currentLaunches = launchResults.launches; tableView.reloadData(); return }
-        
-        launchResults.currentLaunches = launchResults.launches.filter { (launch) -> Bool in
-            return launch.name.lowercased().contains(searchText.lowercased())
-        }
-        tableView.reloadData()
-    }
-    
-    private func registerNotifications(with launches: [Launch]) {
-        notificationManager.removePendingNotifications()
-        notificationManager.registerNotifications(for: launches)
-    }
-    
-    private func authorizeAndRegisterNotifications(with launches: [Launch]) {
-        notificationManager.authorize()
-            .subscribe { [weak self] (event) in
-                switch event {
-                case .next(let status):
-                    if status == .granted {
-                        self?.registerNotifications(with: launches)
-                    }
-                default:
-                    break
-                }
-            }
-            .disposed(by: disposeBag)
-    }
-    
-    private func handleFetchComplete(with launches: [Launch], total: Int) {
-        launchResults.appendPage(with: launches, total: total)
-        authorizeAndRegisterNotifications(with: launchResults.launches)
-        tableView.reloadData()
+        cell.textLabel?.text = a.name
+        cell.detailTextLabel?.text = t  + " " + a.countryCode.flag()
+        return cell
     }
     
     private func handleError(_ error: Swift.Error) {
@@ -156,19 +86,19 @@ class AgenciesTableViewController: UITableViewController, UISearchBarDelegate {
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        performSegue(withIdentifier: SegueID.launchDetail, sender: indexPath)
+        //performSegue(withIdentifier: SegueID.launchDetail, sender: indexPath)
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         // Get current Launch
-        if segue.identifier == SegueID.launchDetail {
-            
-            if let vc = segue.destination as? RocketLaunchController, let i = sender as? IndexPath {
-                vc.launch = launchResults.currentLaunches[i.row]
-            } else {
-                print("uh oh Speghettios")
-            }
-        }
+//        if segue.identifier == SegueID.launchDetail {
+//
+//            if let vc = segue.destination as? RocketLaunchController, let i = sender as? IndexPath {
+//                vc.launch = agencyResults.currentLaunches[i.row]
+//            } else {
+//                print("uh oh Speghettios")
+//            }
+//        }
     }
     
     @objc func internetChanged(note: Notification) {
