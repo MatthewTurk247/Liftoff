@@ -104,7 +104,7 @@ extension Optional {
 
 extension String {
     
-    /**
+    /*
      Returns a country flag from an **uppercased** ISO Alpha-2 country code String
      Example usage: "US".flag()
      @return A flag emoji. Example: 🇺🇸

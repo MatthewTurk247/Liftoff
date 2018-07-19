@@ -14,6 +14,7 @@
 		B22191A920AFD13F000EC730 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = B22191A820AFD13F000EC730 /* GoogleService-Info.plist */; };
 		B23A57B920F838F000CCE838 /* AgenciesTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B23A57B820F838F000CCE838 /* AgenciesTableViewController.swift */; };
 		B24EAE6120EC5B5A00BA3DD4 /* RepeatingTimer.swift in Sources */ = {isa = PBXBuildFile; fileRef = B24EAE6020EC5B5A00BA3DD4 /* RepeatingTimer.swift */; };
+		B263FBB5210010240082A1C5 /* SearchFooter.swift in Sources */ = {isa = PBXBuildFile; fileRef = B263FBB4210010240082A1C5 /* SearchFooter.swift */; };
 		B286A55420832E1F0058DFB3 /* NewsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B286A55320832E1F0058DFB3 /* NewsTableViewCell.swift */; };
 		B28A8AB120D160E8003E7844 /* AlertTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B28A8AB020D160E8003E7844 /* AlertTableViewController.swift */; };
 		B29D95482079922200D3DFF5 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B29D95472079922200D3DFF5 /* AppDelegate.swift */; };
@@ -57,6 +58,7 @@
 		B2D1F85120F58F5700191387 /* LaunchCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2D1F85020F58F5700191387 /* LaunchCell.swift */; };
 		B2E19B6D207C208F00D5028B /* Mission.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2E19B6C207C208F00D5028B /* Mission.swift */; };
 		B2E2BD8420EC017800DE0F16 /* Reachability.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2E2BD8320EC017800DE0F16 /* Reachability.swift */; };
+		B2E5152321003D8E00C88B66 /* AgencyController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2E5152221003D8E00C88B66 /* AgencyController.swift */; };
 		B2E97869209EC53E00D4DE3C /* NewsSafariViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2E97868209EC53E00D4DE3C /* NewsSafariViewController.swift */; };
 		B2F5B33720808BEF007FBED9 /* SearchTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2F5B33620808BEF007FBED9 /* SearchTableViewController.swift */; };
 		D3E1C4EE285449D1DD4C9EAB /* Pods_LiftoffUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 935C36D0F6B42165DE77AE8A /* Pods_LiftoffUITests.framework */; };
@@ -91,6 +93,7 @@
 		B22191AA20AFD202000EC730 /* Liftoff.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Liftoff.entitlements; sourceTree = "<group>"; };
 		B23A57B820F838F000CCE838 /* AgenciesTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AgenciesTableViewController.swift; sourceTree = "<group>"; };
 		B24EAE6020EC5B5A00BA3DD4 /* RepeatingTimer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RepeatingTimer.swift; sourceTree = "<group>"; };
+		B263FBB4210010240082A1C5 /* SearchFooter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchFooter.swift; sourceTree = "<group>"; };
 		B286A55320832E1F0058DFB3 /* NewsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsTableViewCell.swift; sourceTree = "<group>"; };
 		B28A8AB020D160E8003E7844 /* AlertTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertTableViewController.swift; sourceTree = "<group>"; };
 		B29D95442079922200D3DFF5 /* Liftoff.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Liftoff.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -140,6 +143,7 @@
 		B2D1F85020F58F5700191387 /* LaunchCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchCell.swift; sourceTree = "<group>"; };
 		B2E19B6C207C208F00D5028B /* Mission.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Mission.swift; sourceTree = "<group>"; };
 		B2E2BD8320EC017800DE0F16 /* Reachability.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Reachability.swift; sourceTree = "<group>"; };
+		B2E5152221003D8E00C88B66 /* AgencyController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AgencyController.swift; sourceTree = "<group>"; };
 		B2E97868209EC53E00D4DE3C /* NewsSafariViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsSafariViewController.swift; sourceTree = "<group>"; };
 		B2F5B33620808BEF007FBED9 /* SearchTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchTableViewController.swift; sourceTree = "<group>"; };
 		DC5B430322B94C8B8F0AF94F /* Pods_LiftoffTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_LiftoffTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -308,6 +312,7 @@
 				B2F5B33620808BEF007FBED9 /* SearchTableViewController.swift */,
 				B21F3EF62082D6BD00F79F86 /* MoreTableViewController.swift */,
 				B23A57B820F838F000CCE838 /* AgenciesTableViewController.swift */,
+				B2E5152221003D8E00C88B66 /* AgencyController.swift */,
 				B21F3EF82082DAFD00F79F86 /* LiveTableViewController.swift */,
 				B28A8AB020D160E8003E7844 /* AlertTableViewController.swift */,
 				B2E97868209EC53E00D4DE3C /* NewsSafariViewController.swift */,
@@ -322,6 +327,7 @@
 				B2D1F84420F583C400191387 /* LoadingView.swift */,
 				B286A55320832E1F0058DFB3 /* NewsTableViewCell.swift */,
 				B2D1F85020F58F5700191387 /* LaunchCell.swift */,
+				B263FBB4210010240082A1C5 /* SearchFooter.swift */,
 				B2D1F84620F585DE00191387 /* PageLoadingCell.swift */,
 			);
 			path = Custom;
@@ -610,10 +616,12 @@
 				B29D95482079922200D3DFF5 /* AppDelegate.swift in Sources */,
 				B2D1F83120F57B3400191387 /* Launch.swift in Sources */,
 				B24EAE6120EC5B5A00BA3DD4 /* RepeatingTimer.swift in Sources */,
+				B2E5152321003D8E00C88B66 /* AgencyController.swift in Sources */,
 				B2ADE78B207AC2B900C7C97E /* RocketLaunches.swift in Sources */,
 				B2D1F83320F57B7200191387 /* Location.swift in Sources */,
 				B2ADE77E207AC1CC00C7C97E /* Constants.swift in Sources */,
 				B21F3EF92082DAFD00F79F86 /* LiveTableViewController.swift in Sources */,
+				B263FBB5210010240082A1C5 /* SearchFooter.swift in Sources */,
 				B21F3EF72082D6BD00F79F86 /* MoreTableViewController.swift in Sources */,
 				B2E2BD8420EC017800DE0F16 /* Reachability.swift in Sources */,
 				B2E19B6D207C208F00D5028B /* Mission.swift in Sources */,
