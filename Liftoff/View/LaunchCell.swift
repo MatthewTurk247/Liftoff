@@ -61,6 +61,6 @@ class LaunchCell: UITableViewCell {
     
     private func configureTimeLabel(with launch: Launch) {
         timeLabel.text = textProvider.countdownString(from: launch.windowOpenDate)
-        timeLabel.textColor = launch.status.rawValue - 1 == 1 ? UIColor(red: 0, green: 184/255, blue: 148/255, alpha: 1) : UIColor(red: 214/255, green: 48/255, blue: 49/255, alpha: 1)
+        timeLabel.textColor = launch.status == Launch.Status.green || launch.status == Launch.Status.success ? UIColor(red: 0, green: 184/255, blue: 148/255, alpha: 1) : (launch.status == Launch.Status.unknown ? UIColor(red: 92/255, green: 94/255, blue: 102/255, alpha: 1) : UIColor(red: 214/255, green: 48/255, blue: 49/255, alpha: 1))
     }
 }

@@ -37,7 +37,7 @@ class AgenciesTableViewController: UITableViewController, UISearchBarDelegate, U
         searchController.searchBar.placeholder = "Search for Agencies..."
         searchController.searchBar.scopeButtonTitles = ["All", "Governmental", "Commercial"]
         searchController.searchBar.searchBarStyle = .prominent
-        searchController.searchBar.barStyle = .blackTranslucent
+        searchController.searchBar.barStyle = .default
         searchController.obscuresBackgroundDuringPresentation = false
         navigationItem.searchController = searchController
         
@@ -101,12 +101,6 @@ class AgenciesTableViewController: UITableViewController, UISearchBarDelegate, U
 
         cell.imageView?.image = UIImage(named: a.abbreviation)
         return cell
-    }
-    
-    private func handleError(_ error: Swift.Error) {
-        let alert = UIAlertController(title: "Error", message: "Something went wrong. Check your Internet connection and try again.", preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: "OK", style: .cancel, handler: nil))
-        present(alert, animated: true, completion: nil)
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -189,6 +183,7 @@ class AgenciesTableViewController: UITableViewController, UISearchBarDelegate, U
         print("internet changed at \(Date())")
         
     }
+
     
     func updateSearchResults(for searchController: UISearchController) {
         

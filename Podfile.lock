@@ -46,6 +46,7 @@ PODS:
   - RxCocoa (4.2.0):
     - RxSwift (~> 4.0)
   - RxSwift (4.2.0)
+  - SwiftLinkPreview (2.3.0)
 
 DEPENDENCIES:
   - Alamofire (~> 4.7)
@@ -57,6 +58,7 @@ DEPENDENCIES:
   - Moya/RxSwift
   - RxCocoa
   - RxSwift
+  - SwiftLinkPreview (~> 2.3.0)
 
 SPEC REPOS:
   https://github.com/CocoaPods/Specs.git:
@@ -75,6 +77,7 @@ SPEC REPOS:
     - Result
     - RxCocoa
     - RxSwift
+    - SwiftLinkPreview
 
 SPEC CHECKSUMS:
   Alamofire: e4fa87002c137ba2d8d634d2c51fabcda0d5c223
@@ -92,7 +95,8 @@ SPEC CHECKSUMS:
   Result: d2d07204ce72856f1fd9130bbe42c35a7b0fea10
   RxCocoa: 0b54909c902e1e581212a03e690bbd94032d8baa
   RxSwift: 99e10317ddfcc7fbe01356aafd118fde4a0be104
+  SwiftLinkPreview: 6c9c37215a1310f2bb9ad74fdbe310b3e81556ac
 
-PODFILE CHECKSUM: 6f7f39db1beaeceb4cc21eea7756b24017fbc22b
+PODFILE CHECKSUM: bfa0c8e3f1e07c148a4a9a85f9c274a565aa1b96
 
 COCOAPODS: 1.5.0

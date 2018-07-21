@@ -15,6 +15,7 @@ import Foundation
 struct LaunchPageResults {
     var launches = [Launch]()
     var currentLaunches = [Launch]()
+    var agencyLaunches = [Launch]()
     private(set) var launchTotal = 0
     private(set) var pagesFetched = 0
     
@@ -34,17 +35,22 @@ struct LaunchPageResults {
 
 struct LaunchResponseError: Swift.Error {}
 
-class RocketLaunchesController: UITableViewController, UISearchBarDelegate {
+class RocketLaunchesController: UITableViewController, UISearchBarDelegate, UISearchResultsUpdating {
+    func updateSearchResults(for searchController: UISearchController) {
+        
+    }
+    
     
     private let provider = MoyaProvider<API>().rx
     private let notificationManager = NotificationManager<Launch>()
     private let disposeBag = DisposeBag()
-    @IBOutlet var searchBar: UISearchBar!
+    lazy var searchBar = UISearchBar()
     
     fileprivate var launchResults = LaunchPageResults()
     private var isFetching = false
     private var loadingView = LoadingView()
     var setupIterator = 0
+    var searchActivated = false
     
     //To check Internet connection
     var reachability = Reachability()
@@ -60,6 +66,13 @@ class RocketLaunchesController: UITableViewController, UISearchBarDelegate {
         // Do any additional setup after loading the view, typically from a nib.
         //navigationController?.navigationBar.titleTextAttributes = [NSAttributedStringKey.foregroundColor: UIColor.white]
         // Create view model instance with dependancy injection
+        searchBar.searchBarStyle = .minimal
+        searchBar.placeholder = "Search"
+        searchBar.sizeToFit()
+        searchBar.isTranslucent = false
+        searchBar.backgroundImage = UIImage()
+        searchBar.delegate = self
+        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .search, target: self, action: #selector(openSearchBar))
         loadingView.showInView(view)
         fetchNextPage()
         
@@ -172,6 +185,18 @@ class RocketLaunchesController: UITableViewController, UISearchBarDelegate {
         let alert = UIAlertController(title: "Oops", message: "Something went wrong. Try again.", preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "OK", style: .cancel, handler: nil))
         present(alert, animated: true, completion: nil)
+    }
+    
+    @objc private func openSearchBar() {
+        searchActivated = !searchActivated
+        if searchActivated {
+            navigationItem.titleView = searchBar
+            navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Done", style: .done, target: self, action: #selector(openSearchBar))
+        } else {
+            navigationItem.titleView = nil
+            self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .search, target: self, action: #selector(openSearchBar))
+        }
+        // there's a sense of sequence in this code
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {

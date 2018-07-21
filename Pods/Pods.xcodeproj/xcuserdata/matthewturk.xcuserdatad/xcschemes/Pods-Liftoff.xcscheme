@@ -14,7 +14,7 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "909E70B8A2802A90742B132978932F80"
+               BlueprintIdentifier = "87305EDA823D78E43317C5ADFAFBE379"
                BuildableName = "Pods_Liftoff.framework"
                BlueprintName = "Pods-Liftoff"
                ReferencedContainer = "container:Pods.xcodeproj">
@@ -26,6 +26,7 @@
       buildConfiguration = "Debug"
       selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
+      language = ""
       shouldUseLaunchSchemeArgsEnv = "YES">
       <Testables>
       </Testables>
@@ -36,6 +37,7 @@
       buildConfiguration = "Debug"
       selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
+      language = ""
       launchStyle = "0"
       useCustomWorkingDirectory = "NO"
       ignoresPersistentStateOnLaunch = "NO"
@@ -45,7 +47,7 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "909E70B8A2802A90742B132978932F80"
+            BlueprintIdentifier = "87305EDA823D78E43317C5ADFAFBE379"
             BuildableName = "Pods_Liftoff.framework"
             BlueprintName = "Pods-Liftoff"
             ReferencedContainer = "container:Pods.xcodeproj">

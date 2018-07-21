@@ -26,8 +26,6 @@
 		B2ADE77E207AC1CC00C7C97E /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2ADE77D207AC1CC00C7C97E /* Constants.swift */; };
 		B2ADE783207AC20800C7C97E /* LaunchLibraryAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2ADE782207AC20800C7C97E /* LaunchLibraryAPI.swift */; };
 		B2ADE787207AC26200C7C97E /* Rocket.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2ADE786207AC26200C7C97E /* Rocket.swift */; };
-		B2ADE789207AC28B00C7C97E /* RocketLaunch.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2ADE788207AC28B00C7C97E /* RocketLaunch.swift */; };
-		B2ADE78B207AC2B900C7C97E /* RocketLaunches.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2ADE78A207AC2B900C7C97E /* RocketLaunches.swift */; };
 		B2ADE793207AC48000C7C97E /* UIImageExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2ADE792207AC48000C7C97E /* UIImageExtension.swift */; };
 		B2ADE7A1207AC86D00C7C97E /* RocketLaunchesController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2ADE7A0207AC86D00C7C97E /* RocketLaunchesController.swift */; };
 		B2ADE7A3207AC88B00C7C97E /* RocketLaunchController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2ADE7A2207AC88B00C7C97E /* RocketLaunchController.swift */; };
@@ -58,7 +56,6 @@
 		B2E19B6D207C208F00D5028B /* Mission.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2E19B6C207C208F00D5028B /* Mission.swift */; };
 		B2E2BD8420EC017800DE0F16 /* Reachability.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2E2BD8320EC017800DE0F16 /* Reachability.swift */; };
 		B2E5152321003D8E00C88B66 /* AgencyController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2E5152221003D8E00C88B66 /* AgencyController.swift */; };
-		B2E97869209EC53E00D4DE3C /* NewsSafariViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2E97868209EC53E00D4DE3C /* NewsSafariViewController.swift */; };
 		B2F5B33720808BEF007FBED9 /* SearchTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2F5B33620808BEF007FBED9 /* SearchTableViewController.swift */; };
 		D3E1C4EE285449D1DD4C9EAB /* Pods_LiftoffUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 935C36D0F6B42165DE77AE8A /* Pods_LiftoffUITests.framework */; };
 /* End PBXBuildFile section */
@@ -110,8 +107,6 @@
 		B2ADE77D207AC1CC00C7C97E /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		B2ADE782207AC20800C7C97E /* LaunchLibraryAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchLibraryAPI.swift; sourceTree = "<group>"; };
 		B2ADE786207AC26200C7C97E /* Rocket.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Rocket.swift; sourceTree = "<group>"; };
-		B2ADE788207AC28B00C7C97E /* RocketLaunch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RocketLaunch.swift; sourceTree = "<group>"; };
-		B2ADE78A207AC2B900C7C97E /* RocketLaunches.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RocketLaunches.swift; sourceTree = "<group>"; };
 		B2ADE792207AC48000C7C97E /* UIImageExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIImageExtension.swift; sourceTree = "<group>"; };
 		B2ADE7A0207AC86D00C7C97E /* RocketLaunchesController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RocketLaunchesController.swift; sourceTree = "<group>"; };
 		B2ADE7A2207AC88B00C7C97E /* RocketLaunchController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RocketLaunchController.swift; sourceTree = "<group>"; };
@@ -142,7 +137,6 @@
 		B2E19B6C207C208F00D5028B /* Mission.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Mission.swift; sourceTree = "<group>"; };
 		B2E2BD8320EC017800DE0F16 /* Reachability.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Reachability.swift; sourceTree = "<group>"; };
 		B2E5152221003D8E00C88B66 /* AgencyController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AgencyController.swift; sourceTree = "<group>"; };
-		B2E97868209EC53E00D4DE3C /* NewsSafariViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsSafariViewController.swift; sourceTree = "<group>"; };
 		B2F5B33620808BEF007FBED9 /* SearchTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchTableViewController.swift; sourceTree = "<group>"; };
 		DC5B430322B94C8B8F0AF94F /* Pods_LiftoffTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_LiftoffTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		DF94358E03CC6CF8E176BCF8 /* Pods-LiftoffUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LiftoffUITests.release.xcconfig"; path = "Pods/Target Support Files/Pods-LiftoffUITests/Pods-LiftoffUITests.release.xcconfig"; sourceTree = "<group>"; };
@@ -276,8 +270,6 @@
 				B2E19B6C207C208F00D5028B /* Mission.swift */,
 				B2D1F83220F57B7200191387 /* Location.swift */,
 				B2D1F83420F57B8A00191387 /* Pad.swift */,
-				B2ADE788207AC28B00C7C97E /* RocketLaunch.swift */,
-				B2ADE78A207AC2B900C7C97E /* RocketLaunches.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -296,7 +288,12 @@
 			isa = PBXGroup;
 			children = (
 				B29D954D2079922200D3DFF5 /* Main.storyboard */,
-				B2ADE799207AC60700C7C97E /* Custom */,
+				B2ADE7A4207BED7A00C7C97E /* Fonts */,
+				B2D1F84420F583C400191387 /* LoadingView.swift */,
+				B286A55320832E1F0058DFB3 /* NewsTableViewCell.swift */,
+				B2D1F85020F58F5700191387 /* LaunchCell.swift */,
+				B263FBB4210010240082A1C5 /* SearchFooter.swift */,
+				B2D1F84620F585DE00191387 /* PageLoadingCell.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -312,22 +309,8 @@
 				B2E5152221003D8E00C88B66 /* AgencyController.swift */,
 				B21F3EF82082DAFD00F79F86 /* LiveTableViewController.swift */,
 				B28A8AB020D160E8003E7844 /* AlertTableViewController.swift */,
-				B2E97868209EC53E00D4DE3C /* NewsSafariViewController.swift */,
 			);
 			path = Controller;
-			sourceTree = "<group>";
-		};
-		B2ADE799207AC60700C7C97E /* Custom */ = {
-			isa = PBXGroup;
-			children = (
-				B2ADE7A4207BED7A00C7C97E /* Fonts */,
-				B2D1F84420F583C400191387 /* LoadingView.swift */,
-				B286A55320832E1F0058DFB3 /* NewsTableViewCell.swift */,
-				B2D1F85020F58F5700191387 /* LaunchCell.swift */,
-				B263FBB4210010240082A1C5 /* SearchFooter.swift */,
-				B2D1F84620F585DE00191387 /* PageLoadingCell.swift */,
-			);
-			path = Custom;
 			sourceTree = "<group>";
 		};
 		B2ADE7A4207BED7A00C7C97E /* Fonts */ = {
@@ -552,6 +535,7 @@
 				"${BUILT_PRODUCTS_DIR}/Result/Result.framework",
 				"${BUILT_PRODUCTS_DIR}/RxCocoa/RxCocoa.framework",
 				"${BUILT_PRODUCTS_DIR}/RxSwift/RxSwift.framework",
+				"${BUILT_PRODUCTS_DIR}/SwiftLinkPreview/SwiftLinkPreview.framework",
 				"${BUILT_PRODUCTS_DIR}/nanopb/nanopb.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
@@ -565,6 +549,7 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Result.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RxCocoa.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RxSwift.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftLinkPreview.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/nanopb.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -599,7 +584,6 @@
 			files = (
 				B23A57B920F838F000CCE838 /* AgenciesTableViewController.swift in Sources */,
 				B2D1F83720F57C8500191387 /* Agency.swift in Sources */,
-				B2ADE789207AC28B00C7C97E /* RocketLaunch.swift in Sources */,
 				B2D1F84920F5862200191387 /* LauchesViewModel.swift in Sources */,
 				B2D1F84520F583C400191387 /* LoadingView.swift in Sources */,
 				B286A55420832E1F0058DFB3 /* NewsTableViewCell.swift in Sources */,
@@ -613,7 +597,6 @@
 				B2D1F83120F57B3400191387 /* Launch.swift in Sources */,
 				B24EAE6120EC5B5A00BA3DD4 /* RepeatingTimer.swift in Sources */,
 				B2E5152321003D8E00C88B66 /* AgencyController.swift in Sources */,
-				B2ADE78B207AC2B900C7C97E /* RocketLaunches.swift in Sources */,
 				B2D1F83320F57B7200191387 /* Location.swift in Sources */,
 				B2ADE77E207AC1CC00C7C97E /* Constants.swift in Sources */,
 				B21F3EF92082DAFD00F79F86 /* LiveTableViewController.swift in Sources */,
@@ -626,7 +609,6 @@
 				B2D1F85120F58F5700191387 /* LaunchCell.swift in Sources */,
 				B2ADE7A1207AC86D00C7C97E /* RocketLaunchesController.swift in Sources */,
 				B2F5B33720808BEF007FBED9 /* SearchTableViewController.swift in Sources */,
-				B2E97869209EC53E00D4DE3C /* NewsSafariViewController.swift in Sources */,
 				B2D1F83F20F57E0400191387 /* UtilityExtensions.swift in Sources */,
 				B2D1F84B20F5869000191387 /* NotificationManager.swift in Sources */,
 				B2D1F84320F5824800191387 /* LaunchTextProvider.swift in Sources */,

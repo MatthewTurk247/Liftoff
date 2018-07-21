@@ -15,6 +15,7 @@ target 'Liftoff' do
   pod 'RxSwift'
   pod 'RxCocoa'
   pod 'Moya/RxSwift'
+  pod 'SwiftLinkPreview', '~> 2.3.0'
 
   target 'LiftoffTests' do
     inherit! :search_paths

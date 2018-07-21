@@ -11,8 +11,9 @@ import UIKit
 import MapKit
 import CoreLocation
 import CountdownLabel
+import SafariServices
 
-class RocketLaunchController: UITableViewController, MKMapViewDelegate {
+class RocketLaunchController: UITableViewController, MKMapViewDelegate, SFSafariViewControllerDelegate {
     
     @IBOutlet var descTextView: UITextView!
     @IBOutlet var rocketImage: UIImageView!
@@ -20,10 +21,16 @@ class RocketLaunchController: UITableViewController, MKMapViewDelegate {
     @IBOutlet var rocketNameLabel: UILabel!
     @IBOutlet var launchMap: MKMapView!
     @IBAction func openWebsite(_ sender: Any) {
-        UIApplication.shared.openURL((launch?.rocket.agencies.first?.infoURLs.first)!)
+        let vc = SFSafariViewController(url: (launch?.rocket.agencies.first?.infoURLs.first)!, entersReaderIfAvailable: false)
+        vc.preferredControlTintColor = Color.exodusFruit
+        vc.delegate = self
+        present(vc, animated: true)
     }
     @IBAction func openWiki(_ sender: Any) {
-        UIApplication.shared.openURL((launch?.rocket.agencies.first?.wikiURL)!)
+        let vc = SFSafariViewController(url: (launch?.rocket.agencies.first?.wikiURL)!, entersReaderIfAvailable: true)
+        vc.preferredControlTintColor = Color.exodusFruit
+        vc.delegate = self
+        present(vc, animated: true)
     }
     
     var launch: Launch?
@@ -55,7 +62,11 @@ class RocketLaunchController: UITableViewController, MKMapViewDelegate {
     }
     
     private func configure(withLaunch launch: Launch) {
-        title = launch.rocket.name
+        if let n = launch.missions.first {
+            title = n.name
+        } else {
+            title = ""
+        }
         descTextView.text = launch.missions.first?.description
         descTextView.translatesAutoresizingMaskIntoConstraints = true
         descTextView.sizeToFit()
@@ -120,7 +131,7 @@ class RocketLaunchController: UITableViewController, MKMapViewDelegate {
         self.present(activityViewController, animated: true, completion: nil)
     }
     
-    override func viewWillAppear(_ animated: Bool) {
+    /*override func viewWillAppear(_ animated: Bool) {
         self.navigationController?.navigationBar.tintColor = .white
         self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
         self.navigationController?.navigationBar.shadowImage = UIImage()
@@ -132,7 +143,7 @@ class RocketLaunchController: UITableViewController, MKMapViewDelegate {
         self.navigationController?.navigationBar.isTranslucent = false
         self.navigationController?.navigationBar.shadowImage = UINavigationBar.appearance().shadowImage
         self.navigationController?.navigationBar.setBackgroundImage(UINavigationBar.appearance().backgroundImage(for: UIBarMetrics.default), for:UIBarMetrics.default)
-        self.navigationController?.navigationBar.tintColor = .white
+        self.navigationController?.navigationBar.tintColor = Color.exodusFruit
     }
     
     override func scrollViewDidScroll(_ scrollView: UIScrollView) {
@@ -156,6 +167,10 @@ class RocketLaunchController: UITableViewController, MKMapViewDelegate {
         //Update NavigationBar Background Color
         //self.navigationController?.navigationBar.backgroundColor = updateNavColor
         self.navigationController?.navigationBar.setBackgroundImage(UIImage(color: UIColor(red: 255/255, green: 255/255, blue: 255/255, alpha: offset)), for:UIBarMetrics.default)
+    }*/
+    
+    func safariViewControllerDidFinish(_ controller: SFSafariViewController) {
+        dismiss(animated: true)
     }
     
 }
