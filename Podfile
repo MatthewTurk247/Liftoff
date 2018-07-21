@@ -6,8 +6,10 @@ target 'Liftoff' do
   use_frameworks!
 
   # Pods for Liftoff
+  pod 'Alamofire', '~> 4.7'
   pod 'Firebase/Core'
   pod 'Firebase/Messaging'
+  pod 'CountdownLabel'
   pod 'DLLocalNotifications'
   pod 'Moya'
   pod 'RxSwift'

@@ -1,5 +1,6 @@
 PODS:
   - Alamofire (4.7.2)
+  - CountdownLabel (3.0.0)
   - DLLocalNotifications (0.06)
   - Firebase/Core (4.13.0):
     - FirebaseAnalytics (= 4.2.0)
@@ -47,6 +48,8 @@ PODS:
   - RxSwift (4.2.0)
 
 DEPENDENCIES:
+  - Alamofire (~> 4.7)
+  - CountdownLabel
   - DLLocalNotifications
   - Firebase/Core
   - Firebase/Messaging
@@ -58,6 +61,7 @@ DEPENDENCIES:
 SPEC REPOS:
   https://github.com/CocoaPods/Specs.git:
     - Alamofire
+    - CountdownLabel
     - DLLocalNotifications
     - Firebase
     - FirebaseAnalytics
@@ -74,6 +78,7 @@ SPEC REPOS:
 
 SPEC CHECKSUMS:
   Alamofire: e4fa87002c137ba2d8d634d2c51fabcda0d5c223
+  CountdownLabel: 4534a68892b1deb73fda18702dfdc2c8444cec08
   DLLocalNotifications: 751d53da896bc396bb23d4d3570b7fd3c7654e4e
   Firebase: 5ec5e863d269d82d66b4bf56856726f8fb8f0fb3
   FirebaseAnalytics: 7ef69e76a5142f643aeb47c780e1cdce4e23632e
@@ -88,6 +93,6 @@ SPEC CHECKSUMS:
   RxCocoa: 0b54909c902e1e581212a03e690bbd94032d8baa
   RxSwift: 99e10317ddfcc7fbe01356aafd118fde4a0be104
 
-PODFILE CHECKSUM: 896b19d87e631c312ef731ff79ddb39847c98383
+PODFILE CHECKSUM: 6f7f39db1beaeceb4cc21eea7756b24017fbc22b
 
 COCOAPODS: 1.5.0
