@@ -74,6 +74,10 @@ extension NotificationManager {
     }
 }
 
+protocol NotificationType {
+    func makeNotificationRequest() -> UNNotificationRequest
+}
+
 extension NotificationManager: ObserverType {
     //swiftlint:disable type_name
     typealias E = T

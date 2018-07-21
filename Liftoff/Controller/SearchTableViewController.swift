@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import Alamofire
 
 class SearchTableViewController: UITableViewController, UISearchBarDelegate {
 
@@ -15,42 +14,6 @@ class SearchTableViewController: UITableViewController, UISearchBarDelegate {
     var resultDatesText:Array<String> = []
     let searchBar = UISearchBar()
     let reachability = Reachability()
-    
-    func makeGetCallWithAlamofire(term: String) {
-        let todoEndpoint: String = "https://launchlibrary.net/1.2/launch?name=\(term)"
-        Alamofire.request(todoEndpoint)
-            .responseJSON { response in
-                // check for errors
-                guard response.result.error == nil else {
-                    // got an error in getting the data, need to handle it
-                    print("error calling GET on /todos/1")
-                    print(response.result.error!)
-                    return
-                }
-                
-                // make sure we got some JSON since that's what we expect
-                guard let json = response.result.value as? [String: Any] else {
-                    print("didn't get todo object as JSON from API")
-                    if let error = response.result.error {
-                        print("Error: \(error)")
-                    }
-                    return
-                }
-                
-                let launches = json["launches"] as! [NSDictionary]
-                
-                self.resultTitles.removeAll()
-                self.resultDatesText.removeAll()
-                
-                for launch in launches {
-                    print(String(describing: launch["net"]!).dropLast(13))
-                    self.resultDatesText.append(String(describing: String(describing: launch["net"]!).dropLast(13)))
-                    print(launch["name"]!)
-                    self.resultTitles.append(String(describing: launch["name"]!))
-                }
-                self.tableView.reloadData()
-        }
-    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -109,7 +72,7 @@ class SearchTableViewController: UITableViewController, UISearchBarDelegate {
             alert.addAction(UIAlertAction(title: "Close", style: UIAlertActionStyle.default, handler: nil))
             self.present(alert, animated: true, completion: nil)
         } else {
-            makeGetCallWithAlamofire(term: searchBar.text!)
+            print("Let's go")
         }
         UIApplication.shared.sendAction("resignFirstResponder", to: nil, from: nil, for: nil)
         self.tableView.reloadData()

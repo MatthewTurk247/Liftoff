@@ -45,7 +45,6 @@
 		B2D1F83320F57B7200191387 /* Location.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2D1F83220F57B7200191387 /* Location.swift */; };
 		B2D1F83520F57B8A00191387 /* Pad.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2D1F83420F57B8A00191387 /* Pad.swift */; };
 		B2D1F83720F57C8500191387 /* Agency.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2D1F83620F57C8500191387 /* Agency.swift */; };
-		B2D1F83920F57C9E00191387 /* NotificationType.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2D1F83820F57C9D00191387 /* NotificationType.swift */; };
 		B2D1F83B20F57D5200191387 /* JSONModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2D1F83A20F57D5200191387 /* JSONModel.swift */; };
 		B2D1F83D20F57D9A00191387 /* API.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2D1F83C20F57D9A00191387 /* API.swift */; };
 		B2D1F83F20F57E0400191387 /* UtilityExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2D1F83E20F57E0400191387 /* UtilityExtensions.swift */; };
@@ -130,7 +129,6 @@
 		B2D1F83220F57B7200191387 /* Location.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Location.swift; sourceTree = "<group>"; };
 		B2D1F83420F57B8A00191387 /* Pad.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Pad.swift; sourceTree = "<group>"; };
 		B2D1F83620F57C8500191387 /* Agency.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Agency.swift; sourceTree = "<group>"; };
-		B2D1F83820F57C9D00191387 /* NotificationType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationType.swift; sourceTree = "<group>"; };
 		B2D1F83A20F57D5200191387 /* JSONModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JSONModel.swift; sourceTree = "<group>"; };
 		B2D1F83C20F57D9A00191387 /* API.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = API.swift; sourceTree = "<group>"; };
 		B2D1F83E20F57E0400191387 /* UtilityExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UtilityExtensions.swift; sourceTree = "<group>"; };
@@ -270,7 +268,6 @@
 				B2ADE77F207AC1E200C7C97E /* Networking */,
 				B2D1F83A20F57D5200191387 /* JSONModel.swift */,
 				B2D1F83020F57B3400191387 /* Launch.swift */,
-				B2D1F83820F57C9D00191387 /* NotificationType.swift */,
 				B2ADE786207AC26200C7C97E /* Rocket.swift */,
 				B2D1F83620F57C8500191387 /* Agency.swift */,
 				B2D1F84820F5862200191387 /* LauchesViewModel.swift */,
@@ -547,7 +544,6 @@
 			inputPaths = (
 				"${SRCROOT}/Pods/Target Support Files/Pods-Liftoff/Pods-Liftoff-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework",
-				"${BUILT_PRODUCTS_DIR}/CountdownLabel/CountdownLabel.framework",
 				"${BUILT_PRODUCTS_DIR}/DLLocalNotifications/DLLocalNotifications.framework",
 				"${BUILT_PRODUCTS_DIR}/GoogleToolboxForMac/GoogleToolboxForMac.framework",
 				"${BUILT_PRODUCTS_DIR}/Moya/Moya.framework",
@@ -560,7 +556,6 @@
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Alamofire.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/CountdownLabel.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/DLLocalNotifications.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleToolboxForMac.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Moya.framework",
@@ -604,7 +599,6 @@
 				B2D1F83720F57C8500191387 /* Agency.swift in Sources */,
 				B2ADE789207AC28B00C7C97E /* RocketLaunch.swift in Sources */,
 				B2D1F84920F5862200191387 /* LauchesViewModel.swift in Sources */,
-				B2D1F83920F57C9E00191387 /* NotificationType.swift in Sources */,
 				B2D1F84520F583C400191387 /* LoadingView.swift in Sources */,
 				B286A55420832E1F0058DFB3 /* NewsTableViewCell.swift in Sources */,
 				B2D1F83B20F57D5200191387 /* JSONModel.swift in Sources */,

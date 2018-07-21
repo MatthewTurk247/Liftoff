@@ -12,10 +12,6 @@ import MapKit
 import CoreLocation
 import CountdownLabel
 
-protocol RocketLaunchControllerDelegate: class {
-    func savedButtonPressed(launch: RocketLaunch) -> ()
-}
-
 class RocketLaunchController: UITableViewController, MKMapViewDelegate {
     
     @IBOutlet var descTextView: UITextView!
@@ -142,12 +138,12 @@ class RocketLaunchController: UITableViewController, MKMapViewDelegate {
     override func scrollViewDidScroll(_ scrollView: UIScrollView) {
         var offset = scrollView.contentOffset.y / 150 // fixes it from being slightly colored at the beginning
         
-        let updateNavColor = UIColor(red: 108/255, green: 92/255, blue: 231/255, alpha: offset)
+        let updateNavColor = UIColor(red: 255/255, green: 255/255, blue: 255/255, alpha: offset)
         
         if offset > 1 {
             offset = 1
             //Update Navigation Item Color
-            self.navigationController?.navigationBar.tintColor = .white
+            self.navigationController?.navigationBar.tintColor = Color.exodusFruit
             self.navigationController?.navigationBar.isTranslucent = false
             
         } else {
@@ -159,7 +155,7 @@ class RocketLaunchController: UITableViewController, MKMapViewDelegate {
         
         //Update NavigationBar Background Color
         //self.navigationController?.navigationBar.backgroundColor = updateNavColor
-        self.navigationController?.navigationBar.setBackgroundImage(UIImage(color: UIColor(red: 108/255, green: 92/255, blue: 231/255, alpha: offset)), for:UIBarMetrics.default)
+        self.navigationController?.navigationBar.setBackgroundImage(UIImage(color: UIColor(red: 255/255, green: 255/255, blue: 255/255, alpha: offset)), for:UIBarMetrics.default)
     }
     
 }

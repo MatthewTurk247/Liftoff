@@ -28,7 +28,7 @@ class AgenciesTableViewController: UITableViewController, UISearchBarDelegate, U
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
-        navigationController?.navigationBar.titleTextAttributes = [NSAttributedStringKey.foregroundColor: UIColor.white]
+        //navigationController?.navigationBar.titleTextAttributes = [NSAttributedStringKey.foregroundColor: UIColor.white]
         // Create view model instance with dependancy injection
         
         searchController = UISearchController(searchResultsController: nil)
@@ -37,13 +37,14 @@ class AgenciesTableViewController: UITableViewController, UISearchBarDelegate, U
         searchController.searchBar.placeholder = "Search for Agencies..."
         searchController.searchBar.scopeButtonTitles = ["All", "Governmental", "Commercial"]
         searchController.searchBar.searchBarStyle = .prominent
+        searchController.searchBar.barStyle = .blackTranslucent
         searchController.obscuresBackgroundDuringPresentation = false
         navigationItem.searchController = searchController
         
         definesPresentationContext = true
         searchController.searchBar.delegate = self
         self.title = "Agencies"
-        searchController.searchBar.tintColor = UIColor.white
+        searchController.searchBar.tintColor = Color.exodusFruit
         self.hideKeyboardWhenTappedAround()
     }
     
