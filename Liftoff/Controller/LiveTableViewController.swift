@@ -13,7 +13,7 @@ import Moya
 import RxCocoa
 import RxSwift
 
-class LiveTableViewController: UITableViewController {
+class LiveTableViewController: UITableViewController, SFSafariViewControllerDelegate {
     
     var reachability = Reachability()
     private let provider = MoyaProvider<API>().rx
@@ -33,23 +33,8 @@ class LiveTableViewController: UITableViewController {
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         // self.navigationItem.rightBarButtonItem = self.editButtonItem
         //navigationController?.navigationBar.titleTextAttributes = [NSAttributedStringKey.foregroundColor: UIColor.white]
+        loadingView.showInView(view)
         fetchNextPage()
-        
-        // Networking
-        
-        if reachability!.connection == .none {
-            let alert = UIAlertController(title: "Network Error", message: "The data may be unable to load from servers at this time. Please check your Internet connection and try again.", preferredStyle: UIAlertControllerStyle.alert)
-            alert.addAction(UIAlertAction(title: "Close", style: UIAlertActionStyle.default, handler: nil))
-            self.present(alert, animated: true, completion: nil)
-        }
-        
-        NotificationCenter.default.addObserver(self, selector: #selector(internetChanged(note: )), name: Notification.Name.reachabilityChanged, object: reachability)
-        
-        do {
-            try reachability?.startNotifier()
-        } catch {
-            print("could not start reachability notifier")
-        }
         
     }
 
@@ -67,28 +52,17 @@ class LiveTableViewController: UITableViewController {
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
-        return 3
+        return launchResults.launches.count
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "newsIdentifier", for: indexPath) as! NewsTableViewCell
 
         // Configure the cell...
-        cell.titleLabel.text = "test"
+        cell.titleLabel.text = launchResults.launches[indexPath.row].name
+        cell.articleImage.loadUsingCache(launchResults.launches[indexPath.row].rocket.imageURL.absoluteString)
         
         return cell
-    }
-    
-    @objc func internetChanged(note: Notification) {
-        print("internet changed at \(Date())")
-        let reachability = note.object as! Reachability
-        if reachability.connection != .none {
-            print("load the data now")
-            self.tableView.reloadData()
-            self.tableView.scrollToRow(at: IndexPath.init(row: 0, section: 0), at: UITableViewScrollPosition.top, animated: true)
-        } else {
-            // create overlay?
-        }
     }
     
     fileprivate func fetchNextPage() {
@@ -138,6 +112,10 @@ class LiveTableViewController: UITableViewController {
         authorizeAndRegisterNotifications(with: launchResults.launches)
         print(launches.count)
         // remove non-live launches
+        
+        launchResults.launches = launchResults.launches.filter({ (launch) -> Bool in
+            !launch.videoURLs.isEmpty
+        })
         tableView.reloadData()
     }
     
@@ -152,7 +130,7 @@ class LiveTableViewController: UITableViewController {
         let bottomOffset = scrollView.contentSize.height - scrollView.bounds.height
         if scrollView.contentOffset.y > bottomOffset - 60.0 {
             // 60 points from the bottom of the list
-            fetchNextPage()
+//            fetchNextPage()
         }
     }
     
@@ -194,15 +172,15 @@ class LiveTableViewController: UITableViewController {
     // MARK: - Navigation
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        //performSegue(withIdentifier: "newsSegue", sender: indexPath)
-        
-        if reachability!.connection == .none {
-            let alert = UIAlertController(title: "Network Error", message: "Please check your Internet connection and try again.", preferredStyle: UIAlertControllerStyle.alert)
-            alert.addAction(UIAlertAction(title: "Close", style: UIAlertActionStyle.default, handler: nil))
-            self.present(alert, animated: true, completion: nil)
-        } else {
-            // present
-        }
+        let vc = SFSafariViewController(url: launchResults.launches[indexPath.row].videoURLs[0], entersReaderIfAvailable: false)
+        vc.preferredControlTintColor = Color.exodusFruit
+        vc.modalPresentationStyle = .overFullScreen
+        vc.delegate = self
+        present(vc, animated: true)
+    }
+    
+    func safariViewControllerDidFinish(_ controller: SFSafariViewController) {
+        dismiss(animated: true)
     }
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation

@@ -46,6 +46,7 @@ class AgenciesTableViewController: UITableViewController, UISearchBarDelegate, U
         self.title = "Agencies"
         searchController.searchBar.tintColor = Color.exodusFruit
         self.hideKeyboardWhenTappedAround()
+        tableView.keyboardDismissMode = .onDrag
     }
     
     override func viewWillAppear(_ animated: Bool) {

@@ -94,7 +94,11 @@ class AgencyController: UITableViewController, SFSafariViewControllerDelegate {
             }
             cell.detailTextLabel?.text = agency?.infoURLs[indexPath.row].absoluteString
         } else {
-            cell.textLabel?.text = launchResults.agencyLaunches[indexPath.row].missions[0].name
+            if let m = launchResults.agencyLaunches[indexPath.row].missions.first {
+                cell.textLabel?.text = m.name
+            } else {
+                cell.textLabel?.text = "Untitled Launch"
+            }
             cell.detailTextLabel?.text = launchResults.agencyLaunches[indexPath.row].location.name
         }
 

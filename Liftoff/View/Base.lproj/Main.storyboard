@@ -169,7 +169,7 @@
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Countdown" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4uq-Kt-qxj" customClass="CountdownLabel" customModule="CountdownLabel">
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Countdown" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4uq-Kt-qxj">
                                                     <rect key="frame" x="16" y="11" width="343" height="21"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <fontDescription key="fontDescription" name="Lato-Bold" family="Lato" pointSize="17"/>
@@ -261,19 +261,14 @@
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="131.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Kdb-28-d71">
-                                                    <rect key="frame" x="16" y="11" width="343" height="110"/>
+                                                <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" text="Loading..." textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="k4n-5n-SNN">
+                                                    <rect key="frame" x="16" y="1" width="343" height="128"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                    <nil key="textColor"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
+                                                    <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                                                </textView>
                                             </subviews>
-                                            <constraints>
-                                                <constraint firstItem="Kdb-28-d71" firstAttribute="trailing" secondItem="zZs-ha-WQd" secondAttribute="trailingMargin" id="8Fj-NO-2bg"/>
-                                                <constraint firstItem="Kdb-28-d71" firstAttribute="top" secondItem="zZs-ha-WQd" secondAttribute="topMargin" id="Dfq-gx-QoC"/>
-                                                <constraint firstItem="Kdb-28-d71" firstAttribute="bottom" secondItem="zZs-ha-WQd" secondAttribute="bottomMargin" id="GrL-rv-xgs"/>
-                                                <constraint firstItem="Kdb-28-d71" firstAttribute="leading" secondItem="zZs-ha-WQd" secondAttribute="leadingMargin" id="JDl-YR-2dD"/>
-                                            </constraints>
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                 </cells>
@@ -312,12 +307,12 @@
                         <outlet property="descTextView" destination="KYr-IF-tAK" id="M1q-Ac-xJC"/>
                         <outlet property="launchMap" destination="PM1-iL-RCB" id="xt5-vg-W8b"/>
                         <outlet property="rocketImage" destination="p3s-kw-zRH" id="yKc-X8-Xup"/>
-                        <outlet property="rocketNameLabel" destination="Kdb-28-d71" id="Q4i-su-RtS"/>
+                        <outlet property="rocketNameLabel" destination="k4n-5n-SNN" id="AfL-Xs-Wwt"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="b3L-Hv-il7" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="749.60000000000002" y="142.1289355322339"/>
+            <point key="canvasLocation" x="749.60000000000002" y="141.67916041979012"/>
         </scene>
         <!--Launches-->
         <scene sceneID="DzO-He-Rom">
@@ -353,13 +348,13 @@
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="default" translatesAutoresizingMaskIntoConstraints="NO" id="nWy-gq-tvL">
-                                            <rect key="frame" x="0.0" y="0.0" width="711" height="400"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="211"/>
                                             <constraints>
                                                 <constraint firstAttribute="width" secondItem="nWy-gq-tvL" secondAttribute="height" multiplier="375:211" id="lXX-6H-lWZ"/>
                                             </constraints>
                                         </imageView>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="as3-1g-bmY">
-                                            <rect key="frame" x="16" y="408" width="679" height="50"/>
+                                            <rect key="frame" x="16" y="219" width="343" height="50"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="50" id="ZMh-xZ-jtX"/>
                                             </constraints>
@@ -367,11 +362,21 @@
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
+                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="play" translatesAutoresizingMaskIntoConstraints="NO" id="qhn-S2-ie5">
+                                            <rect key="frame" x="139" y="57" width="96" height="96"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="96" id="Sje-aV-Gki"/>
+                                                <constraint firstAttribute="width" constant="96" id="pZm-aR-ZWm"/>
+                                                <constraint firstAttribute="width" secondItem="qhn-S2-ie5" secondAttribute="height" multiplier="1:1" id="wBA-UP-D44"/>
+                                            </constraints>
+                                        </imageView>
                                     </subviews>
                                     <constraints>
                                         <constraint firstItem="nWy-gq-tvL" firstAttribute="top" secondItem="tB2-ti-IH9" secondAttribute="top" id="0Et-Ly-ohp"/>
                                         <constraint firstItem="nWy-gq-tvL" firstAttribute="leading" secondItem="tB2-ti-IH9" secondAttribute="leading" id="9rK-W2-Tyy"/>
                                         <constraint firstItem="as3-1g-bmY" firstAttribute="top" secondItem="nWy-gq-tvL" secondAttribute="bottom" constant="8" symbolic="YES" id="HcX-pt-SvH"/>
+                                        <constraint firstItem="qhn-S2-ie5" firstAttribute="centerY" secondItem="nWy-gq-tvL" secondAttribute="centerY" id="Kmm-UQ-mTc"/>
+                                        <constraint firstItem="qhn-S2-ie5" firstAttribute="centerX" secondItem="nWy-gq-tvL" secondAttribute="centerX" id="krq-gZ-1ZW"/>
                                         <constraint firstItem="as3-1g-bmY" firstAttribute="leading" secondItem="tB2-ti-IH9" secondAttribute="leadingMargin" id="pQt-aj-X8y"/>
                                         <constraint firstItem="nWy-gq-tvL" firstAttribute="centerX" secondItem="as3-1g-bmY" secondAttribute="centerX" id="uiL-2h-LL6"/>
                                         <constraint firstAttribute="trailing" secondItem="nWy-gq-tvL" secondAttribute="trailing" id="v7h-Ie-jsl"/>
@@ -468,7 +473,7 @@
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="aaP-1m-sPr" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="" image="live" selectedImage="live" id="soM-zu-BdJ">
-                        <inset key="imageInsets" minX="0.0" minY="5" maxX="0.0" maxY="0.0"/>
+                        <inset key="imageInsets" minX="0.0" minY="5" maxX="0.0" maxY="-5"/>
                     </tabBarItem>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" translucent="NO" id="3A3-9G-h9Y">
@@ -784,7 +789,7 @@
                             <rect key="frame" x="0.0" y="0.0" width="375" height="148"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <subviews>
-                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Loading..." lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumFontSize="12" adjustsLetterSpacingToFitWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Cpj-vE-nXy">
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Loading..." lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumFontSize="15" adjustsLetterSpacingToFitWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Cpj-vE-nXy">
                                     <rect key="frame" x="144" y="8" width="223" height="132"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>

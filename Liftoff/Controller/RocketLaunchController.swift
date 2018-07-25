@@ -12,13 +12,14 @@ import MapKit
 import CoreLocation
 import CountdownLabel
 import SafariServices
+import SwiftLinkPreview
 
 class RocketLaunchController: UITableViewController, MKMapViewDelegate, SFSafariViewControllerDelegate {
     
     @IBOutlet var descTextView: UITextView!
     @IBOutlet var rocketImage: UIImageView!
-    @IBOutlet var countdownLabel: CountdownLabel!
-    @IBOutlet var rocketNameLabel: UILabel!
+    @IBOutlet var countdownLabel: UILabel!
+    @IBOutlet var rocketNameLabel: UITextView!
     @IBOutlet var launchMap: MKMapView!
     @IBAction func openWebsite(_ sender: Any) {
         let vc = SFSafariViewController(url: (launch?.rocket.agencies.first?.infoURLs.first)!, entersReaderIfAvailable: false)
@@ -44,7 +45,6 @@ class RocketLaunchController: UITableViewController, MKMapViewDelegate, SFSafari
             print("hello")
             print(launch.location.pads[0].coordinate.latitude, launch.location.pads[0].coordinate.longitude)
         }
-
     
     }
     
@@ -79,7 +79,26 @@ class RocketLaunchController: UITableViewController, MKMapViewDelegate, SFSafari
             print("error doing image stuff")
         }
         countdownLabel.text = textProvider.countdownString(from: launch.windowOpenDate)
-        rocketNameLabel.text = "Rocket: \(launch.rocket.name)\nAgency: \(launch.rocket.agencies.first!.name)\nWikipedia:"
+        let slp = SwiftLinkPreview(session: .shared,
+                                   workQueue: SwiftLinkPreview.defaultWorkQueue,
+                                   responseQueue: .main,
+                                   cache: DisabledCache.instance)
+        
+        if let w = URL(string: "https://en.wikipedia.org/w/index.php?search=\(launch.rocket.name.replacingOccurrences(of: " ", with: "+"))") {
+            slp.preview((w.absoluteString),
+                        onSuccess: {
+                            result in print("\(result)")
+                            if !(result[SwiftLinkResponseKey.description] as! String).contains("does not exist.") {
+                                self.rocketNameLabel.text = result[SwiftLinkResponseKey.description] as! String
+                            } else {
+                                self.rocketNameLabel.text = "There is not a description available for this rocket."
+                            }
+            },
+                        onError: { error in print("\(error)")})
+        } else {
+            self.rocketNameLabel.text = "There is not a description available for this rocket."
+        }
+        //rocketNameLabel.text = "Rocket: \(launch.rocket.name)\nAgency: \(launch.rocket.agencies.first!.name)\nWikipedia:"
         let spot = launch.location.pads.first!.coordinate
         self.launchMap.setCenter(spot, animated: false)
         let span = MKCoordinateSpanMake(0.8, 0.8)

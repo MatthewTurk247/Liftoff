@@ -16,7 +16,7 @@ class LaunchCell: UITableViewCell {
     
     @IBOutlet private var rocketLabel: UILabel!
     @IBOutlet private var missionLabel: UILabel!
-    @IBOutlet var rocketNameLabel: UILabel!
+    @IBOutlet var rocketNameLabel: UITextView!
     @IBOutlet private var timeLabel: UILabel!
     @IBOutlet var launchSiteLabel: UILabel!
     @IBOutlet var previewImageView: UIImageView!

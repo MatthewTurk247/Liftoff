@@ -35,7 +35,7 @@ struct LaunchPageResults {
 
 struct LaunchResponseError: Swift.Error {}
 
-class RocketLaunchesController: UITableViewController, UISearchBarDelegate, UISearchResultsUpdating {
+class RocketLaunchesController: UITableViewController, UISearchBarDelegate, UISearchResultsUpdating, UIGestureRecognizerDelegate {
     func updateSearchResults(for searchController: UISearchController) {
         
     }
@@ -66,6 +66,10 @@ class RocketLaunchesController: UITableViewController, UISearchBarDelegate, UISe
         // Do any additional setup after loading the view, typically from a nib.
         //navigationController?.navigationBar.titleTextAttributes = [NSAttributedStringKey.foregroundColor: UIColor.white]
         // Create view model instance with dependancy injection
+        tableView.keyboardDismissMode = .onDrag
+        let tap = UITapGestureRecognizer(target: self, action: #selector(handleTap))
+        tap.delegate = self
+        self.view.addGestureRecognizer(tap)
         searchBar.searchBarStyle = .minimal
         searchBar.placeholder = "Search"
         searchBar.sizeToFit()
@@ -95,6 +99,7 @@ class RocketLaunchesController: UITableViewController, UISearchBarDelegate, UISe
     }
     
     override func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        self.view.endEditing(true)
         guard launchResults.canFetchMoreLaunches else { return }
         let bottomOffset = scrollView.contentSize.height - scrollView.bounds.height
         if scrollView.contentOffset.y > bottomOffset - 60.0 {
@@ -218,6 +223,10 @@ class RocketLaunchesController: UITableViewController, UISearchBarDelegate, UISe
     @objc func internetChanged(note: Notification) {
         print("internet changed at \(Date())")
 
+    }
+    
+    @objc func handleTap() {
+        self.view.endEditing(true)
     }
     
 }
