@@ -243,10 +243,10 @@
                                                 </textView>
                                             </subviews>
                                             <constraints>
-                                                <constraint firstItem="KYr-IF-tAK" firstAttribute="trailing" secondItem="mmf-4M-8Rx" secondAttribute="trailingMargin" id="80t-cg-ux4"/>
-                                                <constraint firstItem="KYr-IF-tAK" firstAttribute="leading" secondItem="mmf-4M-8Rx" secondAttribute="leadingMargin" id="EOK-Vl-weJ"/>
-                                                <constraint firstItem="KYr-IF-tAK" firstAttribute="bottom" secondItem="mmf-4M-8Rx" secondAttribute="bottomMargin" id="YXl-2G-foq"/>
-                                                <constraint firstItem="KYr-IF-tAK" firstAttribute="top" secondItem="mmf-4M-8Rx" secondAttribute="topMargin" id="dxX-jT-hnS"/>
+                                                <constraint firstItem="KYr-IF-tAK" firstAttribute="bottom" secondItem="mmf-4M-8Rx" secondAttribute="bottomMargin" id="tBI-Cp-fJK"/>
+                                                <constraint firstItem="KYr-IF-tAK" firstAttribute="top" secondItem="mmf-4M-8Rx" secondAttribute="topMargin" id="tc8-4W-bYo"/>
+                                                <constraint firstItem="KYr-IF-tAK" firstAttribute="trailing" secondItem="mmf-4M-8Rx" secondAttribute="trailingMargin" id="w16-gl-4yV"/>
+                                                <constraint firstItem="KYr-IF-tAK" firstAttribute="leading" secondItem="mmf-4M-8Rx" secondAttribute="leadingMargin" id="wF4-9g-JZd"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                     </tableViewCell>
@@ -261,14 +261,19 @@
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="131.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" text="Loading..." textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="k4n-5n-SNN">
-                                                    <rect key="frame" x="16" y="1" width="343" height="128"/>
-                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" text="Loading..." textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="k4n-5n-SNN">
+                                                    <rect key="frame" x="16" y="1" width="343" height="129.5"/>
                                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                                                 </textView>
                                             </subviews>
+                                            <constraints>
+                                                <constraint firstItem="k4n-5n-SNN" firstAttribute="leading" secondItem="zZs-ha-WQd" secondAttribute="leading" constant="16" id="ajq-4p-6xU"/>
+                                                <constraint firstAttribute="trailing" secondItem="k4n-5n-SNN" secondAttribute="trailing" constant="16" id="czS-Wb-M74"/>
+                                                <constraint firstAttribute="bottom" secondItem="k4n-5n-SNN" secondAttribute="bottom" constant="1" id="dsR-aG-5Ph"/>
+                                                <constraint firstItem="k4n-5n-SNN" firstAttribute="top" secondItem="zZs-ha-WQd" secondAttribute="top" constant="1" id="tZ8-mH-5tv"/>
+                                            </constraints>
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                 </cells>
@@ -362,7 +367,7 @@
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
-                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="play" translatesAutoresizingMaskIntoConstraints="NO" id="qhn-S2-ie5">
+                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="play-white" translatesAutoresizingMaskIntoConstraints="NO" id="qhn-S2-ie5">
                                             <rect key="frame" x="139" y="57" width="96" height="96"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="96" id="Sje-aV-Gki"/>
@@ -961,6 +966,7 @@ We may update our Privacy Policy from time to time. Thus, you are advised to rev
         <image name="launch" width="25" height="25"/>
         <image name="live" width="46" height="46"/>
         <image name="play" width="40" height="40"/>
+        <image name="play-white" width="40" height="40"/>
         <image name="wikipedia" width="40" height="40"/>
     </resources>
     <color key="tintColor" red="0.42352941176470588" green="0.36078431372549019" blue="0.90588235294117647" alpha="1" colorSpace="calibratedRGB"/>

@@ -35,7 +35,7 @@ struct LaunchPageResults {
 
 struct LaunchResponseError: Swift.Error {}
 
-class RocketLaunchesController: UITableViewController, UISearchBarDelegate, UISearchResultsUpdating, UIGestureRecognizerDelegate {
+class RocketLaunchesController: UITableViewController, UISearchBarDelegate, UISearchResultsUpdating {
     func updateSearchResults(for searchController: UISearchController) {
         
     }
@@ -67,9 +67,6 @@ class RocketLaunchesController: UITableViewController, UISearchBarDelegate, UISe
         //navigationController?.navigationBar.titleTextAttributes = [NSAttributedStringKey.foregroundColor: UIColor.white]
         // Create view model instance with dependancy injection
         tableView.keyboardDismissMode = .onDrag
-        let tap = UITapGestureRecognizer(target: self, action: #selector(handleTap))
-        tap.delegate = self
-        self.view.addGestureRecognizer(tap)
         searchBar.searchBarStyle = .minimal
         searchBar.placeholder = "Search"
         searchBar.sizeToFit()
@@ -183,6 +180,9 @@ class RocketLaunchesController: UITableViewController, UISearchBarDelegate, UISe
         launchResults.appendPage(with: launches, total: total)
         authorizeAndRegisterNotifications(with: launchResults.launches)
         launchResults.currentLaunches = launchResults.launches
+        launchResults.currentLaunches = launchResults.currentLaunches.filter { (launch) -> Bool in
+            return launch.rocket.agencies[0].countryCode != "CHN"
+        }
         tableView.reloadData()
     }
     
@@ -205,6 +205,7 @@ class RocketLaunchesController: UITableViewController, UISearchBarDelegate, UISe
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        print("did select row")
         performSegue(withIdentifier: SegueID.launchDetail, sender: indexPath)
     }
     
@@ -224,9 +225,4 @@ class RocketLaunchesController: UITableViewController, UISearchBarDelegate, UISe
         print("internet changed at \(Date())")
 
     }
-    
-    @objc func handleTap() {
-        self.view.endEditing(true)
-    }
-    
 }
