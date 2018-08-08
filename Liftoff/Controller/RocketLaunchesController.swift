@@ -51,6 +51,7 @@ class RocketLaunchesController: UITableViewController, UISearchBarDelegate, UISe
     private var loadingView = LoadingView()
     var setupIterator = 0
     var searchActivated = false
+    var shouldShowAd = false
     
     //To check Internet connection
     var reachability = Reachability()
@@ -86,7 +87,7 @@ class RocketLaunchesController: UITableViewController, UISearchBarDelegate, UISe
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if section == 0 {
             return launchResults.currentLaunches.count
-        } else if launchResults.launches.count < launchResults.launchTotal {
+        } else if launchResults.launches.count < launchResults.launchTotal || shouldShowAd {
             // show the page cell
             return 1
         } else {
@@ -107,12 +108,23 @@ class RocketLaunchesController: UITableViewController, UISearchBarDelegate, UISe
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        shouldShowAd = indexPath.row % 5 == 0 && indexPath.row != 0 && indexPath.row != 5 || indexPath.row == 3
         if indexPath.section == 0 {
             //swiftlint:disable force_cast
-            let cell = tableView.dequeueReusableCell(withIdentifier: LaunchCell.reuseID, for: indexPath) as! LaunchCell
-            //swiftlint:enable force_cast
-            cell.configure(with: launchResults.currentLaunches[indexPath.row])
-            return cell
+            
+            if shouldShowAd {
+                // bump every element in current array one up or insert a nothingburger
+                //launchResults.currentLaunches.insert(Launch.init , at: indexPath.row)
+                launchResults.currentLaunches.insert(launchResults.currentLaunches[indexPath.row], at: indexPath.row + 1)
+                let cell = tableView.dequeueReusableCell(withIdentifier: "adCell")
+                cell?.textLabel?.text = "Ad here"
+                return cell!
+            } else {
+                let cell = tableView.dequeueReusableCell(withIdentifier: LaunchCell.reuseID, for: indexPath) as! LaunchCell
+                //swiftlint:enable force_cast
+                cell.configure(with: launchResults.currentLaunches[indexPath.row])
+                return cell
+            }
         } else {
             return tableView.dequeueReusableCell(withIdentifier: PageLoadingCell.reuseID, for: indexPath)
         }
@@ -180,9 +192,6 @@ class RocketLaunchesController: UITableViewController, UISearchBarDelegate, UISe
         launchResults.appendPage(with: launches, total: total)
         authorizeAndRegisterNotifications(with: launchResults.launches)
         launchResults.currentLaunches = launchResults.launches
-        launchResults.currentLaunches = launchResults.currentLaunches.filter { (launch) -> Bool in
-            return launch.rocket.agencies[0].countryCode != "CHN"
-        }
         tableView.reloadData()
     }
     

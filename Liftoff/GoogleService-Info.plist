@@ -36,5 +36,7 @@
 	<string>1:602795973635:ios:0b753af33057e418</string>
 	<key>DATABASE_URL</key>
 	<string>https://liftoff-4f525.firebaseio.com</string>
+	<key>ADMOB_APP_ID</key>
+	<string>ca-app-pub-2723394137854237~2059376651</string>
 </dict>
 </plist>

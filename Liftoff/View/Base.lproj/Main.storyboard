@@ -115,20 +115,37 @@
                                     <outlet property="timeLabel" destination="ypu-1m-Ots" id="Gge-Ug-iDO"/>
                                 </connections>
                             </tableViewCell>
-                            <tableViewCell clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="PageLoadingCell" rowHeight="55" id="3u6-a5-twp" customClass="LaunchCell" customModule="Liftoff" customModuleProvider="target">
+                            <tableViewCell clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="adCell" textLabel="jvt-SD-s0g" rowHeight="55" style="IBUITableViewCellStyleDefault" id="3u6-a5-twp" customClass="LaunchCell" customModule="Liftoff" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="158" width="375" height="55"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="3u6-a5-twp" id="GLG-mm-l3S">
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="54.5"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" animating="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="lHE-da-8Yu">
+                                        <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" enabled="NO" adjustsFontSizeToFit="NO" id="jvt-SD-s0g">
+                                            <rect key="frame" x="16" y="0.0" width="343" height="54.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                            <nil key="textColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                    </subviews>
+                                </tableViewCellContentView>
+                            </tableViewCell>
+                            <tableViewCell clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="PageLoadingCell" rowHeight="55" id="D6y-JE-JgD" customClass="LaunchCell" customModule="Liftoff" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="213" width="375" height="55"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="D6y-JE-JgD" id="OLa-N8-c3z">
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="54.5"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" animating="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="weN-SE-HIO">
                                             <rect key="frame" x="177.5" y="17" width="20" height="20"/>
                                         </activityIndicatorView>
                                     </subviews>
                                     <constraints>
-                                        <constraint firstItem="lHE-da-8Yu" firstAttribute="centerY" secondItem="GLG-mm-l3S" secondAttribute="centerY" id="Hcy-Nk-4cN"/>
-                                        <constraint firstItem="lHE-da-8Yu" firstAttribute="centerX" secondItem="GLG-mm-l3S" secondAttribute="centerX" id="zIK-YY-akj"/>
+                                        <constraint firstItem="weN-SE-HIO" firstAttribute="centerY" secondItem="OLa-N8-c3z" secondAttribute="centerY" id="n8j-gv-d5D"/>
+                                        <constraint firstItem="weN-SE-HIO" firstAttribute="centerX" secondItem="OLa-N8-c3z" secondAttribute="centerX" id="q9y-W5-AGc"/>
                                     </constraints>
                                 </tableViewCellContentView>
                             </tableViewCell>

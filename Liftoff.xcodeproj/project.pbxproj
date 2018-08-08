@@ -11,8 +11,8 @@
 		9B4EBFCC62BB715BFE861327 /* Pods_LiftoffTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DC5B430322B94C8B8F0AF94F /* Pods_LiftoffTests.framework */; };
 		B21F3EF72082D6BD00F79F86 /* MoreTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B21F3EF62082D6BD00F79F86 /* MoreTableViewController.swift */; };
 		B21F3EF92082DAFD00F79F86 /* LiveTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B21F3EF82082DAFD00F79F86 /* LiveTableViewController.swift */; };
-		B22191A920AFD13F000EC730 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = B22191A820AFD13F000EC730 /* GoogleService-Info.plist */; };
 		B23A57B920F838F000CCE838 /* AgenciesTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B23A57B820F838F000CCE838 /* AgenciesTableViewController.swift */; };
+		B2403A4C211A8872004E7113 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = B2403A4B211A8872004E7113 /* GoogleService-Info.plist */; };
 		B24EAE6120EC5B5A00BA3DD4 /* RepeatingTimer.swift in Sources */ = {isa = PBXBuildFile; fileRef = B24EAE6020EC5B5A00BA3DD4 /* RepeatingTimer.swift */; };
 		B263FBB5210010240082A1C5 /* SearchFooter.swift in Sources */ = {isa = PBXBuildFile; fileRef = B263FBB4210010240082A1C5 /* SearchFooter.swift */; };
 		B286A55420832E1F0058DFB3 /* NewsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B286A55320832E1F0058DFB3 /* NewsTableViewCell.swift */; };
@@ -85,9 +85,9 @@
 		9434A09030ECCA865B67D44E /* Pods-Liftoff.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Liftoff.release.xcconfig"; path = "Pods/Target Support Files/Pods-Liftoff/Pods-Liftoff.release.xcconfig"; sourceTree = "<group>"; };
 		B21F3EF62082D6BD00F79F86 /* MoreTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoreTableViewController.swift; sourceTree = "<group>"; };
 		B21F3EF82082DAFD00F79F86 /* LiveTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveTableViewController.swift; sourceTree = "<group>"; };
-		B22191A820AFD13F000EC730 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		B22191AA20AFD202000EC730 /* Liftoff.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Liftoff.entitlements; sourceTree = "<group>"; };
 		B23A57B820F838F000CCE838 /* AgenciesTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AgenciesTableViewController.swift; sourceTree = "<group>"; };
+		B2403A4B211A8872004E7113 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		B24EAE6020EC5B5A00BA3DD4 /* RepeatingTimer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RepeatingTimer.swift; sourceTree = "<group>"; };
 		B263FBB4210010240082A1C5 /* SearchFooter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchFooter.swift; sourceTree = "<group>"; };
 		B286A55320832E1F0058DFB3 /* NewsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsTableViewCell.swift; sourceTree = "<group>"; };
@@ -230,7 +230,7 @@
 				B29D95502079922200D3DFF5 /* Assets.xcassets */,
 				B29D95522079922200D3DFF5 /* LaunchScreen.storyboard */,
 				B29D95552079922200D3DFF5 /* Info.plist */,
-				B22191A820AFD13F000EC730 /* GoogleService-Info.plist */,
+				B2403A4B211A8872004E7113 /* GoogleService-Info.plist */,
 			);
 			path = Liftoff;
 			sourceTree = "<group>";
@@ -462,7 +462,7 @@
 				B29D954F2079922200D3DFF5 /* Main.storyboard in Resources */,
 				B2ADE7B2207BEDB700C7C97E /* Lato-Light.ttf in Resources */,
 				B2ADE7B8207BEDB700C7C97E /* Lato-BoldItalic.ttf in Resources */,
-				B22191A920AFD13F000EC730 /* GoogleService-Info.plist in Resources */,
+				B2403A4C211A8872004E7113 /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

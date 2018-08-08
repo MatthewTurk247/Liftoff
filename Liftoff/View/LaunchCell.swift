@@ -25,7 +25,11 @@ class LaunchCell: UITableViewCell {
     private let textProvider = LaunchTextProvider()
     
     func configure(with launch: Launch) {
-        rocketLabel.text = launch.rocket.name
+        if let m = launch.missions.first {
+            rocketLabel.text = m.name
+        } else {
+         rocketLabel.text = launch.rocket.name
+        }
         missionLabel.text = "\(launch.rocket.agencies.first?.name ?? "deafult value") \(launch.rocket.agencies.first?.countryCode.flag() ?? "")"
         // probabilityLabel.text = textProvider.probabilityString(from: launch.probability)
         launchSiteLabel.text = launch.location.name
