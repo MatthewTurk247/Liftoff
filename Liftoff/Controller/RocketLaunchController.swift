@@ -10,7 +10,6 @@ import Foundation
 import UIKit
 import MapKit
 import CoreLocation
-import CountdownLabel
 import SafariServices
 import SwiftLinkPreview
 

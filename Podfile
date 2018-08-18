@@ -9,6 +9,7 @@ target 'Liftoff' do
   pod 'Alamofire', '~> 4.7'
   pod 'Firebase/Core'
   pod 'Firebase/Messaging'
+  pod 'Firebase/AdMob'
   pod 'CountdownLabel'
   pod 'DLLocalNotifications'
   pod 'Moya'

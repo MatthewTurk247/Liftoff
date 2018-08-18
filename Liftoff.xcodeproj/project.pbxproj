@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		52D9695D2126630C00551F9E /* UnifiedNativeAdCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 52D9695B2126630C00551F9E /* UnifiedNativeAdCell.xib */; };
 		626C0AB3FCCB19A411AF719B /* Pods_Liftoff.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 891AB2A1B98643B9EFD471F9 /* Pods_Liftoff.framework */; };
 		9B4EBFCC62BB715BFE861327 /* Pods_LiftoffTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DC5B430322B94C8B8F0AF94F /* Pods_LiftoffTests.framework */; };
 		B21F3EF72082D6BD00F79F86 /* MoreTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B21F3EF62082D6BD00F79F86 /* MoreTableViewController.swift */; };
@@ -79,6 +80,7 @@
 
 /* Begin PBXFileReference section */
 		3A7E0D382D7D018B494CD004 /* Pods-Liftoff.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Liftoff.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Liftoff/Pods-Liftoff.debug.xcconfig"; sourceTree = "<group>"; };
+		52D9695B2126630C00551F9E /* UnifiedNativeAdCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = UnifiedNativeAdCell.xib; sourceTree = "<group>"; };
 		715120D67749FC6D1DCB31AA /* Pods-LiftoffUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LiftoffUITests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-LiftoffUITests/Pods-LiftoffUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		891AB2A1B98643B9EFD471F9 /* Pods_Liftoff.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Liftoff.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		935C36D0F6B42165DE77AE8A /* Pods_LiftoffUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_LiftoffUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -293,6 +295,7 @@
 				B286A55320832E1F0058DFB3 /* NewsTableViewCell.swift */,
 				B2D1F85020F58F5700191387 /* LaunchCell.swift */,
 				B263FBB4210010240082A1C5 /* SearchFooter.swift */,
+				52D9695B2126630C00551F9E /* UnifiedNativeAdCell.xib */,
 				B2D1F84620F585DE00191387 /* PageLoadingCell.swift */,
 			);
 			path = View;
@@ -452,6 +455,7 @@
 				B2ADE7AF207BEDB700C7C97E /* Lato-Black.ttf in Resources */,
 				B2ADE7B0207BEDB700C7C97E /* Lato-Bold.ttf in Resources */,
 				B2ADE7B7207BEDB700C7C97E /* Lato-Hairline.ttf in Resources */,
+				52D9695D2126630C00551F9E /* UnifiedNativeAdCell.xib in Resources */,
 				B2ADE7B5207BEDB700C7C97E /* Lato-BlackItalic.ttf in Resources */,
 				B29D95542079922200D3DFF5 /* LaunchScreen.storyboard in Resources */,
 				B2ADE7B3207BEDB700C7C97E /* Lato-LightItalic.ttf in Resources */,

@@ -2,6 +2,9 @@ PODS:
   - Alamofire (4.7.2)
   - CountdownLabel (3.0.0)
   - DLLocalNotifications (0.06)
+  - Firebase/AdMob (4.13.0):
+    - Firebase/Core
+    - Google-Mobile-Ads-SDK (= 7.30.0)
   - Firebase/Core (4.13.0):
     - FirebaseAnalytics (= 4.2.0)
     - FirebaseCore (= 4.0.20)
@@ -23,6 +26,7 @@ PODS:
     - FirebaseInstanceID (~> 2.0)
     - GoogleToolboxForMac/Logger (~> 2.1)
     - Protobuf (~> 3.5)
+  - Google-Mobile-Ads-SDK (7.30.0)
   - GoogleToolboxForMac/Defines (2.1.3)
   - GoogleToolboxForMac/Logger (2.1.3):
     - GoogleToolboxForMac/Defines (= 2.1.3)
@@ -52,6 +56,7 @@ DEPENDENCIES:
   - Alamofire (~> 4.7)
   - CountdownLabel
   - DLLocalNotifications
+  - Firebase/AdMob
   - Firebase/Core
   - Firebase/Messaging
   - Moya
@@ -70,6 +75,7 @@ SPEC REPOS:
     - FirebaseCore
     - FirebaseInstanceID
     - FirebaseMessaging
+    - Google-Mobile-Ads-SDK
     - GoogleToolboxForMac
     - Moya
     - nanopb
@@ -88,6 +94,7 @@ SPEC CHECKSUMS:
   FirebaseCore: 90cb1c53d69b556f112a1bf72b5fcfaad7650790
   FirebaseInstanceID: 8d20d890d65c917f9f7d9950b6e10a760ad34321
   FirebaseMessaging: 75cdb862e86c30e0913a2ff307e48d49357c5b73
+  Google-Mobile-Ads-SDK: 7404f68120ae8682afeb5af001fbf4aad731c78e
   GoogleToolboxForMac: 2501e2ad72a52eb3dfe7bd9aee7dad11b858bd20
   Moya: a725035953bc1c0eb1be505ab903984501d82440
   nanopb: 5601e6bca2dbf1ed831b519092ec110f66982ca3
@@ -97,6 +104,6 @@ SPEC CHECKSUMS:
   RxSwift: 99e10317ddfcc7fbe01356aafd118fde4a0be104
   SwiftLinkPreview: 6c9c37215a1310f2bb9ad74fdbe310b3e81556ac
 
-PODFILE CHECKSUM: bfa0c8e3f1e07c148a4a9a85f9c274a565aa1b96
+PODFILE CHECKSUM: 67a012136b2f5d993338ae906994a66e295c8200
 
 COCOAPODS: 1.5.0
