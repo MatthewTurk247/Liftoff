@@ -111,7 +111,7 @@ class AgenciesTableViewController: UITableViewController, UISearchBarDelegate, U
     override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         cell.separatorInset = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 0)
     }
-    
+  /*
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         
         guard !searchText.isEmpty else { continents = Continent.continents(); tableView.reloadData(); return }
@@ -164,7 +164,7 @@ class AgenciesTableViewController: UITableViewController, UISearchBarDelegate, U
         searchBar.text = ""
         tableView.reloadData()
     }
-    
+    */
     override func scrollViewDidScroll(_ scrollView: UIScrollView) {
         self.view.endEditing(true)
     }

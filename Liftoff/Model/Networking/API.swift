@@ -24,19 +24,19 @@ extension API: TargetType {
     }
     
     var baseURL: URL {
-        return URL(string: "https://launchlibrary.net/1.2")!
+        return URL(string: "https://launchlibrary.net/1.4")!
     }
     
     var path: String {
         switch self {
         case .showLaunches:
-            return "/launch"
+            return "/launch/next/6"
         case .showRockets:
             return "/rocket"
         }
     }
     
-    var method: Method {
+    var method: Moya.Method {
         return .get
     }
     

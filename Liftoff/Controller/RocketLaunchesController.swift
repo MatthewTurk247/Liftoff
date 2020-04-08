@@ -7,12 +7,15 @@
 //
 
 import Moya
+import RxMoya
 import RxCocoa
 import RxSwift
 import UIKit
 import Foundation
 import GoogleMobileAds
 import SkeletonView
+import Alamofire
+import ReactiveSwift
 
 struct LaunchPageResults {
     var launches = [Launch]()
@@ -27,25 +30,26 @@ struct LaunchPageResults {
     
     mutating func appendPage(with launches: [Launch], total: Int) {
         let now = Date()
-        let toAppend = launches.filter { $0.windowOpenDate > now }
+        let formatter = DateFormatter()
+        let toAppend = launches.filter { formatter.date(from: $0.windowstart) ?? now > now }
         let missing = launches.count - toAppend.count
         launchTotal = total - missing
-        self.launches.append(contentsOf: toAppend)
+        self.launches.append(contentsOf: launches) //toAppend
         pagesFetched += 1
     }
 }
 
 struct LaunchResponseError: Swift.Error {}
 
-class RocketLaunchesController: UITableViewController, UISearchBarDelegate, UISearchResultsUpdating, GADBannerViewDelegate {
+class RocketLaunchesController: UITableViewController, UISearchBarDelegate, UISearchResultsUpdating, GADAdLoaderDelegate {
     func updateSearchResults(for searchController: UISearchController) {
         
     }
     
-    
     private let provider = MoyaProvider<API>().rx
-    private let notificationManager = NotificationManager<Launch>()
+//    private let notificationManager = NotificationManager<Launch>()
     private let disposeBag = DisposeBag()
+    
     lazy var searchBar = UISearchBar()
     
     fileprivate var launchResults = LaunchPageResults()
@@ -94,12 +98,15 @@ class RocketLaunchesController: UITableViewController, UISearchBarDelegate, UISe
         searchBar.delegate = self
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .search, target: self, action: #selector(openSearchBar))
         loadingView.showInView(view)
-        fetchNextPage()
+         fetchNextPage()
+//        AF.request("https://launchlibrary.net/1.4/launch/next/5").responseDecodable(of: LaunchesResponse.self) { response in
+//            print(response)
+//        }
         
         let options = GADMultipleAdsAdLoaderOptions()
         options.numberOfAds = numAdsToLoad
-        
-        //tableView.register(UINib(nibName: "UnifiedNativeAdCell", bundle: nil), forCellReuseIdentifier: "UnifiedNativeAdCell")
+
+        tableView.register(UINib(nibName: "UnifiedNativeAdCell", bundle: nil), forCellReuseIdentifier: "UnifiedNativeAdCell")
 
         
     }
@@ -126,7 +133,7 @@ class RocketLaunchesController: UITableViewController, UISearchBarDelegate, UISe
         let bottomOffset = scrollView.contentSize.height - scrollView.bounds.height
         if scrollView.contentOffset.y > bottomOffset - 60.0 {
             // 60 points from the bottom of the list
-            fetchNextPage()
+            // fetchNextPage()
             launchResults.currentLaunches = launchResults.launches
         }
     }
@@ -144,7 +151,7 @@ class RocketLaunchesController: UITableViewController, UISearchBarDelegate, UISe
                 /*let nativeAd = launchResults.currentLaunches[indexPath.row] as! GADUnifiedNativeAd
                 /// Set the native ad's rootViewController to the current view controller.
                 nativeAd.rootViewController = self*/
-                let cell = tableView.dequeueReusableCell(withIdentifier: "adCell", for: indexPath)
+//                let cell = tableView.dequeueReusableCell(withIdentifier: "adCell", for: indexPath)
                 /*let adView : GADUnifiedNativeAdView = cell.contentView.subviews.first as! GADUnifiedNativeAdView
                 
                 // Associate the ad view with the ad object.
@@ -154,32 +161,34 @@ class RocketLaunchesController: UITableViewController, UISearchBarDelegate, UISe
                 // Populate the ad view with the ad assets.
                 (adView.headlineView as! UILabel).text = nativeAd.headline
                 (adView.priceView as! UILabel).text = nativeAd.price*/
-                let r = GADRequest()
-                r.testDevices = [kGADSimulatorID]
-                bannerView = GADBannerView(adSize: kGADAdSizeBanner)
-                bannerView.adUnitID = adUnitID
-                bannerView.frame = cell.bounds
-                bannerView.rootViewController = self
-                bannerView.delegate = self
-               // cell.banner = bannerView
-                bannerView.translatesAutoresizingMaskIntoConstraints = false
-                
-                for view in cell.contentView.subviews {
-                    if view.isKind(of: GADBannerView.self) {
-                        view.removeFromSuperview() // Make sure that the cell does not have any previously added GADBanner view as it would be reused
-                    }
-                }
+//                let r = GADRequest()
+////                r.testDevices = [kGADSimulatorID]
+//                bannerView = GADBannerView(adSize: kGADAdSizeBanner)
+//                bannerView.adUnitID = adUnitID
+//                bannerView.frame = cell.bounds
+//                bannerView.rootViewController = self
+//                bannerView.delegate = self
+//               // cell.banner = bannerView
+//                bannerView.translatesAutoresizingMaskIntoConstraints = false
+//
+//                for view in cell.contentView.subviews {
+//                    if view.isKind(of: GADBannerView.self) {
+//                        view.removeFromSuperview() // Make sure that the cell does not have any previously added GADBanner view as it would be reused
+//                    }
+//                }
 
-                self.bannerView.load(r)
+//                self.bannerView.load(r)
+//
+//                cell.showAnimatedSkeleton()
+//
+//                cell.addSubview(bannerView)
                 
-                cell.showAnimatedSkeleton()
-                
-                cell.addSubview(bannerView)
-                
+                let cell = tableView.dequeueReusableCell(withIdentifier: LaunchCell.reuseID, for: indexPath) as! LaunchCell
                 return cell
             } else {
                 let cell = tableView.dequeueReusableCell(withIdentifier: LaunchCell.reuseID, for: indexPath) as! LaunchCell
                 //swiftlint:enable force_cast
+                print(launchResults.currentLaunches.count)
                 cell.configure(with: launchResults.currentLaunches[indexPath.row])
                 return cell
             }
@@ -198,22 +207,18 @@ class RocketLaunchesController: UITableViewController, UISearchBarDelegate, UISe
         
         isFetching = true
         print(launchResults.pagesFetched)
-        provider
-            .request(.showLaunches(page: launchResults.pagesFetched))
-            .asObservable()
-            .mapModel(model: LaunchResponse.self)
-            .subscribe { [weak self] (event) in
-                self?.loadingView.hide()
-                switch event {
-                case .next(let response):
-                    self?.handleFetchComplete(with: response.launches, total: response.total)
-                case .error(let error):
-                    self?.handleError(error)
-                case .completed:
-                    self?.isFetching = false
-                }
+        provider.request(.showLaunches(page: launchResults.pagesFetched)).asObservable().map(LaunchesResponse.self).subscribe { [weak self] (event) in
+            self?.loadingView.hide()
+            switch event {
+            case .next(let response):
+                self?.handleFetchComplete(with: response.launches, total: response.total)
+            case .error(let error):
+                self?.handleError(error)
+            case .completed:
+                self?.isFetching = false
             }
-            .disposed(by: disposeBag)
+        }.disposed(by: disposeBag)
+        
     }
     
     // MARK: - Search Bar
@@ -227,7 +232,7 @@ class RocketLaunchesController: UITableViewController, UISearchBarDelegate, UISe
         tableView.reloadData()
     }
     
-    private func registerNotifications(with launches: [Launch]) {
+/*    private func registerNotifications(with launches: [Launch]) {
         notificationManager.removePendingNotifications()
         notificationManager.registerNotifications(for: launches)
     }
@@ -245,12 +250,13 @@ class RocketLaunchesController: UITableViewController, UISearchBarDelegate, UISe
                 }
             }
             .disposed(by: disposeBag)
-    }
+    }*/
     
     private func handleFetchComplete(with launches: [Launch], total: Int) {
         launchResults.appendPage(with: launches, total: total)
-        authorizeAndRegisterNotifications(with: launchResults.launches)
+//        authorizeAndRegisterNotifications(with: launchResults.launches)
         launchResults.currentLaunches = launchResults.launches
+        print(launches)
         tableView.reloadData()
     }
     
@@ -271,27 +277,6 @@ class RocketLaunchesController: UITableViewController, UISearchBarDelegate, UISe
             self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .search, target: self, action: #selector(openSearchBar))
         }
         // there's a sense of sequence in this code
-    }
-    
-    private func fetchAllLaunches() {
-        showLoader()
-        launchesService.fetchLaunches { [weak self] (result) in
-            guard let self = self else { return }
-            
-            self.hideLoader()
-            
-            guard let launchesResponse = try? result.get() else {
-                self.showRetry()
-                return
-                
-            }
-            
-            self.allLaunches = launchesResponse.launches
-            DispatchQueue.main.async { [weak self] in
-                self?.launchesTableView.reloadData()
-            }
-            
-        }
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -321,50 +306,50 @@ class RocketLaunchesController: UITableViewController, UISearchBarDelegate, UISe
     func adLoader(_ adLoader: GADAdLoader,
                   didFailToReceiveAdWithError error: GADRequestError) {
         print("\(adLoader) failed with error: \(error.localizedDescription)")
-        
+
     }
-    
+
     func adLoader(_ adLoader: GADAdLoader, didReceive nativeAd: GADUnifiedNativeAd) {
         print("Received native ad: \(nativeAd)")
-        
+
         // Add the native ad to the list of native ads.
         nativeAds.append(nativeAd)
     }
-    
+
     func adLoaderDidFinishLoading(_ adLoader: GADAdLoader) {
         // addNativeAds()
         // enableMenuButton()
         print("adLoaderDidFinishLoading")
     }
-    
+
     /// Tells the delegate an ad request loaded an ad.
     func adViewDidReceiveAd(_ bannerView: GADBannerView) {
         print("adViewDidReceiveAd")
     }
-    
+
     /// Tells the delegate an ad request failed.
     func adView(_ bannerView: GADBannerView,
                 didFailToReceiveAdWithError error: GADRequestError) {
         print("adView:didFailToReceiveAdWithError: \(error.localizedDescription)")
         badAd = true
     }
-    
+
     /// Tells the delegate that a full-screen view will be presented in response
     /// to the user clicking on an ad.
     func adViewWillPresentScreen(_ bannerView: GADBannerView) {
         print("adViewWillPresentScreen")
     }
-    
+
     /// Tells the delegate that the full-screen view will be dismissed.
     func adViewWillDismissScreen(_ bannerView: GADBannerView) {
         print("adViewWillDismissScreen")
     }
-    
+
     /// Tells the delegate that the full-screen view has been dismissed.
     func adViewDidDismissScreen(_ bannerView: GADBannerView) {
         print("adViewDidDismissScreen")
     }
-    
+
     /// Tells the delegate that a user click will open another app (such as
     /// the App Store), backgrounding the current app.
     func adViewWillLeaveApplication(_ bannerView: GADBannerView) {

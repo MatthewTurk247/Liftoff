@@ -16,8 +16,8 @@ import RxSwift
 class LiveTableViewController: UITableViewController, SFSafariViewControllerDelegate {
     
     var reachability = Reachability()
-    private let provider = MoyaProvider<API>().rx
-    private let notificationManager = NotificationManager<Launch>()
+//    private let provider = MoyaProvider<API>().rx
+//    private let notificationManager = NotificationManager<Launch>()
     private let disposeBag = DisposeBag()
     var initialIncrementor = 0
     
@@ -34,7 +34,7 @@ class LiveTableViewController: UITableViewController, SFSafariViewControllerDele
         // self.navigationItem.rightBarButtonItem = self.editButtonItem
         //navigationController?.navigationBar.titleTextAttributes = [NSAttributedStringKey.foregroundColor: UIColor.white]
         loadingView.showInView(view)
-        fetchNextPage()
+//        fetchNextPage()
         
     }
 
@@ -60,62 +60,62 @@ class LiveTableViewController: UITableViewController, SFSafariViewControllerDele
 
         // Configure the cell...
         cell.titleLabel.text = launchResults.launches[indexPath.row].name
-        cell.articleImage.loadUsingCache(launchResults.launches[indexPath.row].rocket.imageURL.absoluteString)
+        cell.articleImage.loadUsingCache(launchResults.launches[indexPath.row].rocket.imageURL)
         
         return cell
     }
     
-    fileprivate func fetchNextPage() {
-        guard !isFetching else { return }
-        
-        isFetching = true
-        provider
-            .request(.showLaunches(page: launchResults.pagesFetched))
-            .asObservable()
-            .mapModel(model: LaunchResponse.self)
-            .subscribe { [weak self] (event) in
-                self?.loadingView.hide()
-                switch event {
-                case .next(let response):
-                    self?.handleFetchComplete(with: response.launches, total: response.total)
-                case .error(let error):
-                    self?.handleError(error)
-                case .completed:
-                    self?.isFetching = false
-                }
-            }
-            .disposed(by: disposeBag)
-    }
+//    fileprivate func fetchNextPage() {
+//        guard !isFetching else { return }
+//
+//        isFetching = true
+//        provider
+//            .request(.showLaunches(page: launchResults.pagesFetched))
+//            .asObservable()
+//            .mapModel(model: LaunchResponse.self)
+//            .subscribe { [weak self] (event) in
+//                self?.loadingView.hide()
+//                switch event {
+//                case .next(let response):
+//                    self?.handleFetchComplete(with: response.launches, total: response.total)
+//                case .error(let error):
+//                    self?.handleError(error)
+//                case .completed:
+//                    self?.isFetching = false
+//                }
+//            }
+//            .disposed(by: disposeBag)
+//    }
     
-    private func registerNotifications(with launches: [Launch]) {
-        notificationManager.removePendingNotifications()
-        notificationManager.registerNotifications(for: launches)
-    }
-    
-    private func authorizeAndRegisterNotifications(with launches: [Launch]) {
-        notificationManager.authorize()
-            .subscribe { [weak self] (event) in
-                switch event {
-                case .next(let status):
-                    if status == .granted {
-                        self?.registerNotifications(with: launches)
-                    }
-                default:
-                    break
-                }
-            }
-            .disposed(by: disposeBag)
-    }
+//    private func registerNotifications(with launches: [Launch]) {
+//        notificationManager.removePendingNotifications()
+//        notificationManager.registerNotifications(for: launches)
+//    }
+//
+//    private func authorizeAndRegisterNotifications(with launches: [Launch]) {
+//        notificationManager.authorize()
+//            .subscribe { [weak self] (event) in
+//                switch event {
+//                case .next(let status):
+//                    if status == .granted {
+//                        self?.registerNotifications(with: launches)
+//                    }
+//                default:
+//                    break
+//                }
+//            }
+//            .disposed(by: disposeBag)
+//    }
     
     private func handleFetchComplete(with launches: [Launch], total: Int) {
         launchResults.appendPage(with: launches, total: total)
-        authorizeAndRegisterNotifications(with: launchResults.launches)
+//        authorizeAndRegisterNotifications(with: launchResults.launches)
         print(launches.count)
         // remove non-live launches
         
-        launchResults.launches = launchResults.launches.filter({ (launch) -> Bool in
-            !launch.videoURLs.isEmpty
-        })
+//        launchResults.launches = launchResults.launches.filter({ (launch) -> Bool in
+//            !launch.videoURLs.isEmpty
+//        })
         tableView.reloadData()
     }
     
@@ -172,7 +172,7 @@ class LiveTableViewController: UITableViewController, SFSafariViewControllerDele
     // MARK: - Navigation
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let vc = SFSafariViewController(url: launchResults.launches[indexPath.row].videoURLs[0], entersReaderIfAvailable: false)
+        let vc = SFSafariViewController(url: URL(string: "launchResults.launches[indexPath.row].videoURLs[0]")!, entersReaderIfAvailable: false)
         vc.preferredControlTintColor = Color.exodusFruit
         vc.modalPresentationStyle = .overFullScreen
         vc.delegate = self

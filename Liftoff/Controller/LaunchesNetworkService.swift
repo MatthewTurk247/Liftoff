@@ -30,6 +30,22 @@ class LaunchesNetworkService: LaunchesServiceable {
     
 }
 
+class Parser {
+    
+    //should not be initialised
+    private init() { }
+    
+    static func decode<T: Codable>(data: Data) -> T? {
+        
+        let decoder = JSONDecoder()
+        let result = try? decoder.decode(T.self, from: data)
+        return result
+        
+    }
+    
+}
+
+
 protocol LaunchesServiceable {
     
     func fetchLaunches(completion: @escaping (Result<LaunchesResponse, ConnectionError>) -> Void)

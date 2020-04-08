@@ -17,37 +17,36 @@ import GoogleMobileAds
 class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterDelegate, MessagingDelegate {
 
     var window: UIWindow?
-    let registar = BackgroundNotificationRegistrar()
+//    let registar = BackgroundNotificationRegistrar()
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
         UIApplication.shared.statusBarStyle = .default
         Fact().factbook.shuffle()
 
-        if #available(iOS 10.0, *) {
-            // For iOS 10 display notification (sent via APNS)
-            UNUserNotificationCenter.current().delegate = self
-            let authOptions: UNAuthorizationOptions = [.alert, .badge, .sound]
-            UNUserNotificationCenter.current().requestAuthorization(
-                options: authOptions,
-                completionHandler: {didSucceed, error in
-
-            })
-            // For iOS 10 data message (sent via FCM)
-            Messaging.messaging().delegate = self
-        } else {
-            let settings: UIUserNotificationSettings =
-                UIUserNotificationSettings(types: [.alert, .badge, .sound], categories: nil)
-            application.registerUserNotificationSettings(settings)
-        }
+//        if #available(iOS 10.0, *) {
+//            // For iOS 10 display notification (sent via APNS)
+//            UNUserNotificationCenter.current().delegate = self
+//            let authOptions: UNAuthorizationOptions = [.alert, .badge, .sound]
+//            UNUserNotificationCenter.current().requestAuthorization(
+//                options: authOptions,
+//                completionHandler: {didSucceed, error in
+//
+//            })
+//            // For iOS 10 data message (sent via FCM)
+//            Messaging.messaging().delegate = self
+//        } else {
+//            let settings: UIUserNotificationSettings =
+//                UIUserNotificationSettings(types: [.alert, .badge, .sound], categories: nil)
+//            application.registerUserNotificationSettings(settings)
+//        }
 
         application.registerForRemoteNotifications()
 
         application.setMinimumBackgroundFetchInterval(.oneHour)
         
         FirebaseApp.configure()
-        // Initialize the Google Mobile Ads SDK.
-        GADMobileAds.configure(withApplicationID: "ca-app-pub-2723394137854237~2059376651")
+        GADMobileAds.sharedInstance().start(completionHandler: nil)
 
         InstanceID.instanceID().getID { (result, error) in
             if let error = error {
@@ -65,12 +64,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     }
     
     func application(_ application: UIApplication, performFetchWithCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
-        registar.register { [weak self] (result) in
-            if result == .newData {
-                self?.updateRegistrationCount()
-            }
-            completionHandler(result)
-        }
+//        registar.register { [weak self] (result) in
+//            if result == .newData {
+//                self?.updateRegistrationCount()
+//            }
+//            completionHandler(result)
+//        }
     }
 
     func applicationWillResignActive(_ application: UIApplication) {
@@ -95,34 +94,34 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     func applicationWillTerminate(_ application: UIApplication) {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
     }
+//
+//    func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable : Any]) {
+//        if let aps = userInfo["aps"] as? NSDictionary {
+//            if let alert = aps["alert"] as? NSDictionary {
+//                if let message = alert["message"] as? String {
+//                    //Do stuff
+//                    RecentNotificaion().recents.append(message)
+//                }
+//            } else if let alert = aps["alert"] as? String {
+//                //Do stuff
+//                RecentNotificaion().recents.append(alert)
+//            }
+//        }
+//    }
     
-    func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable : Any]) {
-        if let aps = userInfo["aps"] as? NSDictionary {
-            if let alert = aps["alert"] as? NSDictionary {
-                if let message = alert["message"] as? String {
-                    //Do stuff
-                    RecentNotificaion().recents.append(message)
-                }
-            } else if let alert = aps["alert"] as? String {
-                //Do stuff
-                RecentNotificaion().recents.append(alert)
-            }
-        }
-    }
+//    func application(received remoteMessage: MessagingRemoteMessage) {
+//        print(remoteMessage.appData)
+//        Fact().factbook.shuffle()
+//    }
     
-    func application(received remoteMessage: MessagingRemoteMessage) {
-        print(remoteMessage.appData)
-        Fact().factbook.shuffle()
-    }
-    
-    func messaging(_ messaging: Messaging, didReceiveRegistrationToken fcmToken: String) {
-        print("Firebase registration token: \(fcmToken)")
-        
-        let dataDict:[String: String] = ["token": fcmToken]
-        NotificationCenter.default.post(name: Notification.Name("FCMToken"), object: nil, userInfo: dataDict)
-        // TODO: If necessary send token to application server.
-        // Note: This callback is fired at each app startup and whenever a new token is generated.
-    }
+//    func messaging(_ messaging: Messaging, didReceiveRegistrationToken fcmToken: String) {
+//        print("Firebase registration token: \(fcmToken)")
+//
+//        let dataDict:[String: String] = ["token": fcmToken]
+//        NotificationCenter.default.post(name: Notification.Name("FCMToken"), object: nil, userInfo: dataDict)
+//        // TODO: If necessary send token to application server.
+//        // Note: This callback is fired at each app startup and whenever a new token is generated.
+//    }
     
     private func updateRegistrationCount() {
         let count = UserDefaults.standard.integer(forKey: UserDefaultsKey.backgroundFetchCount)

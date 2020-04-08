@@ -28,7 +28,7 @@ class NewsTableViewCell: UITableViewCell {
         titleLabel.text = launch.rocket.name
         //descriptionTitleLabel.text = String(describing: launch.videoURLs)
         // probabilityLabel.text = textProvider.probabilityString(from: launch.probability)
-        articleImage.loadUsingCache(launch.rocket.imageURL.absoluteString)
+        articleImage.loadUsingCache(launch.rocket.imageURL)
     }
     
 }

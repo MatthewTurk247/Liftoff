@@ -19,7 +19,7 @@ class AgencyController: UITableViewController, SFSafariViewControllerDelegate {
     @IBOutlet var agencyLogoView: UIImageView!
     @IBOutlet var agencyDescriptionLabel: UILabel!
     private var isFetching = false
-    private let provider = MoyaProvider<API>().rx
+//    private let provider = MoyaProvider<API>().rx
     private let disposeBag = DisposeBag()
     fileprivate var launchResults = LaunchPageResults()
     private var loadingView = LoadingView()
@@ -39,7 +39,7 @@ class AgencyController: UITableViewController, SFSafariViewControllerDelegate {
                                    workQueue: SwiftLinkPreview.defaultWorkQueue,
                                    responseQueue: .main,
                                    cache: DisabledCache.instance)
-        if let w = agency?.wikiURL {
+       /* if let w = agency?.wikiURL {
             slp.preview((w.absoluteString),
                         onSuccess: { result in print("\(result)"); self.agencyDescriptionLabel.text = result[SwiftLinkResponseKey.description] as! String },
                         onError: { error in print("\(error)")})
@@ -49,8 +49,8 @@ class AgencyController: UITableViewController, SFSafariViewControllerDelegate {
                         onError: { error in print("\(error)")})
         } else {
             self.agencyDescriptionLabel.text = "No description is available."
-        }
-        fetchNextPage()
+        }*/
+//        fetchNextPage()
     }
 
     override func didReceiveMemoryWarning() {
@@ -95,44 +95,44 @@ class AgencyController: UITableViewController, SFSafariViewControllerDelegate {
             }
             cell.detailTextLabel?.text = agency?.infoURLs[indexPath.row].absoluteString
         } else {
-            if let m = launchResults.agencyLaunches[indexPath.row].missions.first {
-                cell.textLabel?.text = m.name
-            } else {
-                cell.textLabel?.text = "Untitled Launch"
-            }
+//            if let m = launchResults.agencyLaunches[indexPath.row].missions.first {
+//                cell.textLabel?.text = m.name
+//            } else {
+//                cell.textLabel?.text = "Untitled Launch"
+//            }
             cell.detailTextLabel?.text = launchResults.agencyLaunches[indexPath.row].location.name
         }
 
         return cell
     }
     
-    fileprivate func fetchNextPage() {
-        guard !isFetching else { return }
-        
-        isFetching = true
-        provider
-            .request(.showLaunches(page: launchResults.pagesFetched))
-            .asObservable()
-            .mapModel(model: LaunchResponse.self)
-            .subscribe { [weak self] (event) in
-                self?.loadingView.hide()
-                switch event {
-                case .next(let response):
-                    self?.handleFetchComplete(with: response.launches, total: response.total)
-                case .error(let error):
-                    self?.handleError(error)
-                case .completed:
-                    self?.isFetching = false
-                }
-            }
-            .disposed(by: disposeBag)
-    }
+//    fileprivate func fetchNextPage() {
+//        guard !isFetching else { return }
+//        
+//        isFetching = true
+//        provider
+//            .request(.showLaunches(page: launchResults.pagesFetched))
+//            .asObservable()
+//            .mapModel(model: LaunchResponse.self)
+//            .subscribe { [weak self] (event) in
+//                self?.loadingView.hide()
+//                switch event {
+//                case .next(let response):
+//                    self?.handleFetchComplete(with: response.launches, total: response.total)
+//                case .error(let error):
+//                    self?.handleError(error)
+//                case .completed:
+//                    self?.isFetching = false
+//                }
+//            }
+//            .disposed(by: disposeBag)
+//    }
     
     private func handleFetchComplete(with launches: [Launch], total: Int) {
         launchResults.appendPage(with: launches, total: total)
         // authorizeAndRegisterNotifications(with: launchResults.launches)
         launchResults.agencyLaunches = launchResults.launches.filter({ (launch) -> Bool in
-            launch.rocket.agencies.first?.name == agency?.name
+            launch.rocket.agencies?.first?.name == agency?.name
         })
         tableView.reloadData()
     }

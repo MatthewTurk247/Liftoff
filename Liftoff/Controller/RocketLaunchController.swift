@@ -19,18 +19,18 @@ class RocketLaunchController: UITableViewController, MKMapViewDelegate, SFSafari
     @IBOutlet var countdownLabel: UILabel!
     @IBOutlet var rocketNameLabel: UITextView!
     @IBOutlet var launchMap: MKMapView!
-    @IBAction func openWebsite(_ sender: Any) {
-        let vc = SFSafariViewController(url: (launch?.rocket.agencies.first?.infoURLs.first)!, entersReaderIfAvailable: false)
-        vc.preferredControlTintColor = Color.exodusFruit
-        vc.delegate = self
-        present(vc, animated: true)
-    }
-    @IBAction func openWiki(_ sender: Any) {
-        let vc = SFSafariViewController(url: (launch?.rocket.agencies.first?.wikiURL)!, entersReaderIfAvailable: true)
-        vc.preferredControlTintColor = Color.exodusFruit
-        vc.delegate = self
-        present(vc, animated: true)
-    }
+//    @IBAction func openWebsite(_ sender: Any) {
+////        let vc = SFSafariViewController(url: launch?.rocket.agencies?.first?.infoURLs.first ?? URL(string: "")!, entersReaderIfAvailable: false)
+//        vc.preferredControlTintColor = Color.exodusFruit
+//        vc.delegate = self
+//        present(vc, animated: true)
+//    }
+//    @IBAction func openWiki(_ sender: Any) {
+////        let vc = SFSafariViewController(url: (launch?.rocket.agencies.first?.wikiURL)!, entersReaderIfAvailable: true)
+//        vc.preferredControlTintColor = Color.exodusFruit
+//        vc.delegate = self
+//        present(vc, animated: true)
+//    }
     
     var launch: Launch?
     let textProvider = LaunchTextProvider()
@@ -39,9 +39,9 @@ class RocketLaunchController: UITableViewController, MKMapViewDelegate, SFSafari
         super.viewDidLoad()
         // Load Rocket data
         if let launch = launch {
-            configure(withLaunch: launch)
+//            configure(withLaunch: launch)
             print("hello")
-            print(launch.location.pads[0].coordinate.latitude, launch.location.pads[0].coordinate.longitude)
+            print(launch.location.pads[0].latitude, launch.location.pads[0].longitude)
         }
     
     }
@@ -51,7 +51,7 @@ class RocketLaunchController: UITableViewController, MKMapViewDelegate, SFSafari
         case 1:
             return launch?.rocket.name
         case 2:
-            return launch?.rocket.agencies.first?.name
+            return launch?.rocket.agencies?.first?.name
         case 3:
             return launch?.location.pads.first?.name
         default:
@@ -59,7 +59,7 @@ class RocketLaunchController: UITableViewController, MKMapViewDelegate, SFSafari
         }
     }
     
-    private func configure(withLaunch launch: Launch) {
+   /* private func configure(withLaunch launch: Launch) {
         if let n = launch.missions.first {
             title = n.name
         } else {
@@ -109,18 +109,18 @@ class RocketLaunchController: UITableViewController, MKMapViewDelegate, SFSafari
         // TODO: - Add icons for the site (globe icon thingy) and Wikipedia (logo)
         self.tableView.reloadData()
         
-    }
+    }*/
     
     @objc func shareApp() {
         print("share")
         
         var firstActivityItem = "Download Liftoff by MonitorMOJO on the App Store today to learn about \(self.title!)!\n"
         
-        if let launch = self.launch {
-            if let vid = launch.videoURLs.first {
-                firstActivityItem.append("Livestream: \(vid)")
-            }
-        }
+//        if let launch = self.launch {
+//            if let vid = launch.videoURLs.first {
+//                firstActivityItem.append("Livestream: \(vid)")
+//            }
+//        }
         
         let secondActivityItem = NSURL(string: "https://itunes.apple.com/us/app/liftoff-track-rocket-launches/id1407517047")! // update this when there's actually a link
         // If you want to put an image
