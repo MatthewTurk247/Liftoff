@@ -10,8 +10,12 @@ import Foundation
 import CoreLocation
 
 struct Location: Codable {
+    private let pads: [Pad]
     let id: Int
     let name: String
     let countryCode: String
-    let pads: [Pad]
+    var coordinate: CLLocationCoordinate2D? {
+        guard let pad = pads.first else { return nil }
+        return CLLocationCoordinate2D(latitude: pad.latitude, longitude: pad.longitude)
+    }
 }

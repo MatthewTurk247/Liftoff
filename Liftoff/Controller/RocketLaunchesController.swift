@@ -12,10 +12,11 @@ import RxSwift
 import UIKit
 import Foundation
 import GoogleMobileAds
+import SkeletonView
 
 struct LaunchPageResults {
     var launches = [Launch]()
-    var currentLaunches = [AnyObject]()
+    var currentLaunches = [Launch]()
     var agencyLaunches = [Launch]()
     private(set) var launchTotal = 0
     private(set) var pagesFetched = 0
@@ -53,6 +54,7 @@ class RocketLaunchesController: UITableViewController, UISearchBarDelegate, UISe
     var setupIterator = 0
     var searchActivated = false
     var badAd = false
+    var shouldShowAd = false
     
     // To check Internet connection
     var reachability = Reachability()
@@ -64,6 +66,7 @@ class RocketLaunchesController: UITableViewController, UISearchBarDelegate, UISe
     var activityIndicator:UIActivityIndicatorView!
     
     // LET'S MAKE THAT CASH MONEY
+    var bannerView: GADBannerView!
     
     /// The ad unit ID from the AdMob UI.
     let adUnitID = "ca-app-pub-2723394137854237/8321532673"
@@ -96,17 +99,8 @@ class RocketLaunchesController: UITableViewController, UISearchBarDelegate, UISe
         let options = GADMultipleAdsAdLoaderOptions()
         options.numberOfAds = numAdsToLoad
         
-        tableView.register(UINib(nibName: "UnifiedNativeAdCell", bundle: nil),
-                           forCellReuseIdentifier: "UnifiedNativeAdCell")
-        
-        // Prepare the ad loader and start loading ads.
-        adLoader = GADAdLoader(adUnitID: adUnitID,
-                               rootViewController: self,
-                               adTypes: [.unifiedNative],
-                               options: [options])
-        let r = GADRequest()
-        r.testDevices = [kGADSimulatorID]
-        adLoader.load(r)
+        //tableView.register(UINib(nibName: "UnifiedNativeAdCell", bundle: nil), forCellReuseIdentifier: "UnifiedNativeAdCell")
+
         
     }
     
@@ -117,7 +111,7 @@ class RocketLaunchesController: UITableViewController, UISearchBarDelegate, UISe
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if section == 0 {
             return launchResults.currentLaunches.count
-        } else if launchResults.launches.count < launchResults.launchTotal {
+        } else if launchResults.launches.count < launchResults.launchTotal || shouldShowAd {
             // show the page cell
             return 1
         } else {
@@ -133,28 +127,25 @@ class RocketLaunchesController: UITableViewController, UISearchBarDelegate, UISe
         if scrollView.contentOffset.y > bottomOffset - 60.0 {
             // 60 points from the bottom of the list
             fetchNextPage()
-            launchResults.currentLaunches = launchResults.launches as [AnyObject]
+            launchResults.currentLaunches = launchResults.launches
         }
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        shouldShowAd = indexPath.row % 5 == 0 && indexPath.row != 0 && indexPath.row != 5 || indexPath.row == 3
         if indexPath.section == 0 {
             //swiftlint:disable force_cast
-            let cell = tableView.dequeueReusableCell(withIdentifier: LaunchCell.reuseID, for: indexPath) as! LaunchCell
-            //swiftlint:enable force_cast
-            if let item = launchResults.currentLaunches[indexPath.row] as? Launch {
-                cell.configure(with: item)
-            } else {
-                let nativeAd = launchResults.currentLaunches[indexPath.row] as! GADUnifiedNativeAd
+            
+            if shouldShowAd {
+                // bump every element in current array one up or insert a nothingburger
+                //launchResults.currentLaunches.insert(Launch.init , at: indexPath.row)
+                launchResults.currentLaunches.insert(launchResults.currentLaunches[indexPath.row], at: indexPath.row + 1)
+                
+                /*let nativeAd = launchResults.currentLaunches[indexPath.row] as! GADUnifiedNativeAd
                 /// Set the native ad's rootViewController to the current view controller.
-                nativeAd.rootViewController = self
-                
-                let nativeAdCell = tableView.dequeueReusableCell(
-                    withIdentifier: "UnifiedNativeAdCell", for: indexPath)
-                
-                // Get the ad view from the Cell. The view hierarchy for this cell is defined in
-                // UnifiedNativeAdCell.xib.
-                let adView : GADUnifiedNativeAdView = nativeAdCell.contentView.subviews.first as! GADUnifiedNativeAdView
+                nativeAd.rootViewController = self*/
+                let cell = tableView.dequeueReusableCell(withIdentifier: "adCell", for: indexPath)
+                /*let adView : GADUnifiedNativeAdView = cell.contentView.subviews.first as! GADUnifiedNativeAdView
                 
                 // Associate the ad view with the ad object.
                 // This is required to make the ad clickable.
@@ -162,24 +153,36 @@ class RocketLaunchesController: UITableViewController, UISearchBarDelegate, UISe
                 
                 // Populate the ad view with the ad assets.
                 (adView.headlineView as! UILabel).text = nativeAd.headline
-                (adView.priceView as! UILabel).text = nativeAd.price
-                if let starRating = nativeAd.starRating {
-                    (adView.starRatingView as! UILabel).text =
-                        starRating.description + "\u{2605}"
-                } else {
-                    (adView.starRatingView as! UILabel).text = nil
-                }
-                (adView.bodyView as! UILabel).text = nativeAd.body
-                (adView.advertiserView as! UILabel).text = nativeAd.advertiser
-                // The SDK automatically turns off user interaction for assets that are part of the ad, but
-                // it is still good to be explicit.
-                (adView.callToActionView as! UIButton).isUserInteractionEnabled = false
-                (adView.callToActionView as! UIButton).setTitle(
-                    nativeAd.callToAction, for: UIControlState.normal)
+                (adView.priceView as! UILabel).text = nativeAd.price*/
+                let r = GADRequest()
+                r.testDevices = [kGADSimulatorID]
+                bannerView = GADBannerView(adSize: kGADAdSizeBanner)
+                bannerView.adUnitID = adUnitID
+                bannerView.frame = cell.bounds
+                bannerView.rootViewController = self
+                bannerView.delegate = self
+               // cell.banner = bannerView
+                bannerView.translatesAutoresizingMaskIntoConstraints = false
                 
-                return nativeAdCell
+                for view in cell.contentView.subviews {
+                    if view.isKind(of: GADBannerView.self) {
+                        view.removeFromSuperview() // Make sure that the cell does not have any previously added GADBanner view as it would be reused
+                    }
+                }
+
+                self.bannerView.load(r)
+                
+                cell.showAnimatedSkeleton()
+                
+                cell.addSubview(bannerView)
+                
+                return cell
+            } else {
+                let cell = tableView.dequeueReusableCell(withIdentifier: LaunchCell.reuseID, for: indexPath) as! LaunchCell
+                //swiftlint:enable force_cast
+                cell.configure(with: launchResults.currentLaunches[indexPath.row])
+                return cell
             }
-            return cell
         } else {
             return tableView.dequeueReusableCell(withIdentifier: PageLoadingCell.reuseID, for: indexPath)
         }
@@ -187,17 +190,14 @@ class RocketLaunchesController: UITableViewController, UISearchBarDelegate, UISe
     
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         // This will override the height selected in the storyboard.
-        if badAd {
-            return 0
-        } else {
-            return 135
-        }
+        return badAd ? 0 : 135
     }
     
     fileprivate func fetchNextPage() {
         guard !isFetching else { return }
         
         isFetching = true
+        print(launchResults.pagesFetched)
         provider
             .request(.showLaunches(page: launchResults.pagesFetched))
             .asObservable()
@@ -219,11 +219,11 @@ class RocketLaunchesController: UITableViewController, UISearchBarDelegate, UISe
     // MARK: - Search Bar
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         
-        guard !searchText.isEmpty else { launchResults.currentLaunches = launchResults.launches as [AnyObject]; tableView.reloadData(); return } // also unhide the spinner
+        guard !searchText.isEmpty else { launchResults.currentLaunches = launchResults.launches; tableView.reloadData(); return } // also unhide the spinner
         // hide spinner at the bottom
         launchResults.currentLaunches = launchResults.launches.filter { (launch) -> Bool in
             return launch.name.lowercased().contains(searchText.lowercased())
-            } as [AnyObject]
+            }
         tableView.reloadData()
     }
     
@@ -250,7 +250,7 @@ class RocketLaunchesController: UITableViewController, UISearchBarDelegate, UISe
     private func handleFetchComplete(with launches: [Launch], total: Int) {
         launchResults.appendPage(with: launches, total: total)
         authorizeAndRegisterNotifications(with: launchResults.launches)
-        launchResults.currentLaunches = launchResults.launches as [AnyObject]
+        launchResults.currentLaunches = launchResults.launches
         tableView.reloadData()
     }
     
@@ -258,23 +258,7 @@ class RocketLaunchesController: UITableViewController, UISearchBarDelegate, UISe
         let alert = UIAlertController(title: "Oops", message: "Something went wrong. Try again.", preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "OK", style: .cancel, handler: nil))
         present(alert, animated: true, completion: nil)
-    }
-    
-    func addNativeAds() {
-        if nativeAds.count <= 0 {
-            return
-        }
-        
-        let adInterval = (launchResults.currentLaunches.count / nativeAds.count) + 1
-        var index = 0
-        for nativeAd in nativeAds {
-            if index < launchResults.currentLaunches.count {
-                launchResults.currentLaunches.insert(nativeAd, at: index)
-                index += adInterval
-            } else {
-                break
-            }
-        }
+        print("ERROR: \(error)")
     }
     
     @objc private func openSearchBar() {
@@ -289,6 +273,27 @@ class RocketLaunchesController: UITableViewController, UISearchBarDelegate, UISe
         // there's a sense of sequence in this code
     }
     
+    private func fetchAllLaunches() {
+        showLoader()
+        launchesService.fetchLaunches { [weak self] (result) in
+            guard let self = self else { return }
+            
+            self.hideLoader()
+            
+            guard let launchesResponse = try? result.get() else {
+                self.showRetry()
+                return
+                
+            }
+            
+            self.allLaunches = launchesResponse.launches
+            DispatchQueue.main.async { [weak self] in
+                self?.launchesTableView.reloadData()
+            }
+            
+        }
+    }
+    
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         print("did select row")
         performSegue(withIdentifier: SegueID.launchDetail, sender: indexPath)
@@ -299,7 +304,7 @@ class RocketLaunchesController: UITableViewController, UISearchBarDelegate, UISe
         if segue.identifier == SegueID.launchDetail {
             
             if let vc = segue.destination as? RocketLaunchController, let i = sender as? IndexPath {
-                vc.launch = launchResults.currentLaunches[i.row] as! Launch
+                vc.launch = launchResults.currentLaunches[i.row] 
             } else {
                 print("uh oh Speghettios")
             }
@@ -327,7 +332,7 @@ class RocketLaunchesController: UITableViewController, UISearchBarDelegate, UISe
     }
     
     func adLoaderDidFinishLoading(_ adLoader: GADAdLoader) {
-        addNativeAds()
+        // addNativeAds()
         // enableMenuButton()
         print("adLoaderDidFinishLoading")
     }

@@ -10,21 +10,20 @@ import Foundation
 import UIKit
 
 struct Rocket: Codable {
-    enum CodingKeys: String, CodingKey {
-        case id
-        case name
-        case configuration
-        case familyName = "familyname"
-        case agencies
-        case wikiURL
-        case imageURL
-    }
-    
     let id: Int
     let name: String
-    let configuration: String
-    let familyName: String
+    let wikiURL: String
+    let infoURLs: [String]
+    let imageSizes: [Int]
+    let imageURL: String
     let agencies: [Agency]
-    let wikiURL: URL?
-    let imageURL: URL
+    
+    var infoURL: URL? {
+        if wikiURL.count > 0 {
+            return URL(string: wikiURL)
+        } else if let firstInfoURL = infoURLs.first, firstInfoURL.count > 0 {
+            return URL(string: firstInfoURL)
+        }
+        return nil
+    }
 }

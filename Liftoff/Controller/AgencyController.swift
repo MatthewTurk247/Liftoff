@@ -6,9 +6,10 @@
 //  Copyright © 2018 MonitorMOJO, Inc. All rights reserved.
 //
 
+import Foundation
 import UIKit
-import SwiftLinkPreview
 import RxSwift
+import RxMoya
 import Moya
 import SafariServices
 

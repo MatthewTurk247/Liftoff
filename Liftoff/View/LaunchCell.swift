@@ -30,7 +30,7 @@ class LaunchCell: UITableViewCell {
         } else {
          rocketLabel.text = launch.rocket.name
         }
-        missionLabel.text = "\(launch.rocket.agencies.first?.name ?? "deafult value") \(launch.rocket.agencies.first?.countryCode.flag() ?? "")"
+        missionLabel.text = "\(launch.rocket.agencies.first?.name ?? "") \(launch.rocket.agencies.first?.countryCode.flag() ?? "")"
         // probabilityLabel.text = textProvider.probabilityString(from: launch.probability)
         launchSiteLabel.text = launch.location.name
         rocketNameLabel.text = launch.rocket.name
@@ -56,7 +56,7 @@ class LaunchCell: UITableViewCell {
             timer = Timer(timeInterval: 0.25, repeats: true) { [weak self] _ in
                 self?.configureTimeLabel(with: launch)
             }
-            RunLoop.current.add(timer!, forMode: .commonModes)
+            RunLoop.current.add(timer!, forMode: RunLoop.Mode.common)
         } else {
             timer?.invalidate()
             timer = nil

@@ -11,7 +11,6 @@ import UIKit
 import MapKit
 import CoreLocation
 import SafariServices
-import SwiftLinkPreview
 
 class RocketLaunchController: UITableViewController, MKMapViewDelegate, SFSafariViewControllerDelegate {
     
@@ -69,9 +68,8 @@ class RocketLaunchController: UITableViewController, MKMapViewDelegate, SFSafari
         descTextView.text = launch.missions.first?.description
         descTextView.translatesAutoresizingMaskIntoConstraints = true
         descTextView.sizeToFit()
-        descTextView.isScrollEnabled = false
         do {
-            if !launch.rocket.imageURL.absoluteString.contains("placeholder") {
+            if launch.rocket.imageURL.absoluteString.contains("placeholder") == false {
                 rocketImage.image = UIImage(data: try Data(contentsOf: launch.rocket.imageURL))
             }
         } catch {
@@ -100,7 +98,7 @@ class RocketLaunchController: UITableViewController, MKMapViewDelegate, SFSafari
         //rocketNameLabel.text = "Rocket: \(launch.rocket.name)\nAgency: \(launch.rocket.agencies.first!.name)\nWikipedia:"
         let spot = launch.location.pads.first!.coordinate
         self.launchMap.setCenter(spot, animated: false)
-        let span = MKCoordinateSpanMake(0.8, 0.8)
+        let span = MKCoordinateSpan.init(latitudeDelta: 0.8, longitudeDelta: 0.8)
         let region = MKCoordinateRegion(center: spot, span: span)
         self.launchMap.setRegion(region, animated: false)
         var annotation = MKPointAnnotation()
@@ -141,7 +139,7 @@ class RocketLaunchController: UITableViewController, MKMapViewDelegate, SFSafari
         // Anything you want to exclude
         activityViewController.excludedActivityTypes = [
             .postToVimeo,
-            UIActivityType.postToWeibo,
+            UIActivity.ActivityType.postToWeibo,
             .print,
             .saveToCameraRoll,
         ]

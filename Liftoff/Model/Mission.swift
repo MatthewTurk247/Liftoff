@@ -9,16 +9,14 @@
 import Foundation
 
 struct Mission: Codable {
-    enum CodingKeys: String, CodingKey {
-        case id
-        case name
-        case description
-        case type = "typeName"
-    }
-    
     let id: Int
-    let name: String
-    let description: String
-    let type: String
+    let name, missionDescription: String
+    let wikiURL: String
+    let typeName: String
+    
+    enum CodingKeys: String, CodingKey {
+        case id, name
+        case missionDescription = "description"
+        case wikiURL, typeName
+    }
 }
-

@@ -7,6 +7,7 @@
 //
 
 import Moya
+import Foundation
 
 enum API {
     case showLaunches(page: Int)

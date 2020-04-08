@@ -14,8 +14,15 @@ class AlertTableViewController: UITableViewController {
 
     @IBAction func clearNotifications(_ sender: Any) {
         RecentNotificaion().recents.removeAll()
+        alertTitles.removeAll()
+        alertBodies.removeAll()
+        alertDates.removeAll()
         self.tableView.reloadData()
     }
+    
+    var alertTitles = [String]()
+    var alertBodies = [String]()
+    var alertDates = [Date]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -24,11 +31,22 @@ class AlertTableViewController: UITableViewController {
         // self.clearsSelectionOnViewWillAppear = false
 
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-        if RecentNotificaion().recents.isEmpty {
-            let alert = UIAlertController(title: "Nothing here", message: "It looks like there are no notifications.", preferredStyle: .alert)
-            alert.addAction(UIAlertAction(title: "OK", style: .cancel, handler: nil))
-            present(alert, animated: true, completion: nil)
-        }
+        
+        // This is money. Below is the code to get the notifications and display them.
+        let center = UNUserNotificationCenter.current()
+        center.getDeliveredNotifications(completionHandler: { requests in
+            if requests.isEmpty {
+                let alert = UIAlertController(title: "Nothing here", message: "It looks like there are no notifications.", preferredStyle: .alert)
+                alert.addAction(UIAlertAction(title: "OK", style: .cancel, handler: nil))
+                self.present(alert, animated: true, completion: nil)
+            } else {
+                for request in requests {
+                    self.alertBodies.append(request.request.content.body)
+                    self.alertTitles.append(request.request.content.title)
+                    self.alertDates.append(request.date)
+                }
+            }
+        })
     }
 
     override func didReceiveMemoryWarning() {
@@ -51,7 +69,8 @@ class AlertTableViewController: UITableViewController {
         let cell = tableView.dequeueReusableCell(withIdentifier: "alertsIdentifier", for: indexPath)
 
         // Configure the cell...
-        cell.textLabel?.text = RecentNotificaion().recents[indexPath.row]
+        cell.textLabel?.text = alertTitles[indexPath.row]
+        cell.detailTextLabel?.text = alertBodies[indexPath.row]
         return cell
     }
  

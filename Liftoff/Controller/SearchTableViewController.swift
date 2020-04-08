@@ -68,13 +68,13 @@ class SearchTableViewController: UITableViewController, UISearchBarDelegate {
     
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         if reachability!.connection == .none {
-            let alert = UIAlertController(title: "Network Error", message: "The data may be unable to load from servers at this time. Please check your Internet connection and try again.", preferredStyle: UIAlertControllerStyle.alert)
-            alert.addAction(UIAlertAction(title: "Close", style: UIAlertActionStyle.default, handler: nil))
+            let alert = UIAlertController(title: "Network Error", message: "The data may be unable to load from servers at this time. Please check your Internet connection and try again.", preferredStyle: UIAlertController.Style.alert)
+            alert.addAction(UIAlertAction(title: "Close", style: UIAlertAction.Style.default, handler: nil))
             self.present(alert, animated: true, completion: nil)
         } else {
             print("Let's go")
         }
-        UIApplication.shared.sendAction("resignFirstResponder", to: nil, from: nil, for: nil)
+        UIApplication.shared.sendAction(#selector(self.resignFirstResponder), to: nil, from: nil, for: nil)
         self.tableView.reloadData()
         // There's still an issue: the arrays need to be cleared before each search, and the first time the user presses the search button, nothing happens...
         // Remember do catch...that's key

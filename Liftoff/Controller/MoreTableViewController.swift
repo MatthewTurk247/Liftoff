@@ -13,11 +13,19 @@ class MoreTableViewController: UITableViewController {
 
     
     @IBAction func openSettings(_ sender: Any) {
-        UIApplication.shared.open(URL(string: UIApplicationOpenSettingsURLString)!)
+                guard let settingsUrl = URL(string: UIApplication.openSettingsURLString) else {
+            return
+        }
+
+        if UIApplication.shared.canOpenURL(settingsUrl) {
+            UIApplication.shared.open(settingsUrl, completionHandler: { (success) in
+                print("Settings opened: \(success)") // Prints true
+            })
+        }
     }
     
     @IBAction func openAppStore(_ sender: Any) {
-        UIApplication.shared.open(URL(string: "https://itunes.apple.com/us/developer/monitormojo-inc/id1370996012")!)
+        UIApplication.shared.open(URL(string: "https://apps.apple.com/developer/matthew-turk/id1480143611")!)
     }
     
     @IBOutlet var enableNotificationsButton: UIButton!
@@ -144,4 +152,9 @@ class MoreTableViewController: UITableViewController {
     }
     */
 
+}
+
+// Helper function inserted by Swift 4.2 migrator.
+fileprivate func convertToUIApplicationOpenExternalURLOptionsKeyDictionary(_ input: [String: Any]) -> [UIApplication.OpenExternalURLOptionsKey: Any] {
+	return Dictionary(uniqueKeysWithValues: input.map { key, value in (UIApplication.OpenExternalURLOptionsKey(rawValue: key), value)})
 }

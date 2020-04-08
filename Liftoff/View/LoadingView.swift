@@ -65,7 +65,7 @@ class LoadingView: UIView {
         spinnerContainer.centerXAnchor.constraint(equalTo: centerXAnchor, constant: 0.0).isActive = true
         spinnerContainer.centerYAnchor.constraint(equalTo: centerYAnchor, constant: 0.0).isActive = true
         
-        spinner = UIActivityIndicatorView(activityIndicatorStyle: .whiteLarge)
+        spinner = UIActivityIndicatorView(style: .whiteLarge)
         spinner.startAnimating()
         spinnerContainer.addSubview(spinner)
         

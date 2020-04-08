@@ -45,6 +45,8 @@ extension NotificationManager {
                     observer.onNext(.denied)
                 case .authorized:
                     observer.onNext(.granted)
+                default:
+                    print("observer broken")
                 }
                 observer.onCompleted()
             }

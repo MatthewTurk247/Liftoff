@@ -8,6 +8,7 @@
 
 import Moya
 import RxSwift
+import Foundation
 
 extension ObservableType where E == Response {
     

@@ -124,7 +124,7 @@ extension String {
     
     func emojiFlag() -> String! {
         let lowercasedCode = self.lowercased()
-        guard lowercasedCode.characters.count == 2 else { return nil }
+        guard lowercasedCode.count == 2 else { return nil }
         guard lowercasedCode.unicodeScalars.reduce(true, { accum, scalar in accum && isLowercaseASCIIScalar(scalar) }) else { return nil }
         
         let indicatorSymbols = lowercasedCode.unicodeScalars.map({ regionalIndicatorSymbol(for: $0) })

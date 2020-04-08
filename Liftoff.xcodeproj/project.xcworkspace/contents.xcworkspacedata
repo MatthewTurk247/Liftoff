@@ -2,6 +2,6 @@
 <Workspace
    version = "1.0">
    <FileRef
-      location = "self:Liftoff.xcodeproj">
+      location = "self:">
    </FileRef>
 </Workspace>
