@@ -13,7 +13,6 @@ Add additional notes about how to deploy this on a live system
 ## Built With
 
 * [Xcode](https://developer.apple.com/xcode/downloads/) - IDE used for development and deployment
-* [CocoaPods](https://cocoapods.org/) - Dependency Management
 * [LaunchLibrary](https://launchlibrary.net/) - Used to generate RSS Feeds
 
 ## Authors
