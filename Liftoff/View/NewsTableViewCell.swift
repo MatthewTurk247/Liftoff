@@ -24,11 +24,11 @@ class NewsTableViewCell: UITableViewCell {
         // Configure the view for the selected state
     }
 
-    func configure(with launch: Launch) {
-        titleLabel.text = launch.rocket.name
-        //descriptionTitleLabel.text = String(describing: launch.videoURLs)
-        // probabilityLabel.text = textProvider.probabilityString(from: launch.probability)
-        articleImage.loadUsingCache(launch.rocket.imageURL)
-    }
+//    func configure(with launch: Launch) {
+//        titleLabel.text = launch.rocket.name
+//        //descriptionTitleLabel.text = String(describing: launch.videoURLs)
+//        // probabilityLabel.text = textProvider.probabilityString(from: launch.probability)
+//        articleImage.loadUsingCache(launch.rocket.imageURL)
+//    }
     
 }

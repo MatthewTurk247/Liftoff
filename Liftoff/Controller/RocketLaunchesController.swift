@@ -6,354 +6,364 @@
 //  Copyright © 2018 MonitorMOJO, Inc. All rights reserved.
 //
 
-import Moya
-import RxMoya
-import RxCocoa
-import RxSwift
-import UIKit
 import Foundation
-import GoogleMobileAds
-import SkeletonView
+import UIKit
 import Alamofire
-import ReactiveSwift
+import GoogleMobileAds
 
-struct LaunchPageResults {
-    var launches = [Launch]()
-    var currentLaunches = [Launch]()
-    var agencyLaunches = [Launch]()
-    private(set) var launchTotal = 0
-    private(set) var pagesFetched = 0
-    
-    var canFetchMoreLaunches: Bool {
-        return launchTotal > launches.count
-    }
-    
-    mutating func appendPage(with launches: [Launch], total: Int) {
-        let now = Date()
-        let formatter = DateFormatter()
-        let toAppend = launches.filter { formatter.date(from: $0.windowstart) ?? now > now }
-        let missing = launches.count - toAppend.count
-        launchTotal = total - missing
-        self.launches.append(contentsOf: launches) //toAppend
-        pagesFetched += 1
-    }
-}
+class RocketLaunchesController: UIViewController, UITableViewDataSource, UITableViewDelegate, UISearchResultsUpdating, UISearchBarDelegate, RocketSearchControllerDelegate, UIViewControllerPreviewingDelegate, GADUnifiedNativeAdLoaderDelegate {
 
-struct LaunchResponseError: Swift.Error {}
-
-class RocketLaunchesController: UITableViewController, UISearchBarDelegate, UISearchResultsUpdating, GADAdLoaderDelegate {
-    func updateSearchResults(for searchController: UISearchController) {
-        
-    }
+    @IBOutlet weak var tableView: UITableView!
+    var spaceXMissions = [Mission]()
+    var filteredSpaceXMissions = [Mission]()
     
-    private let provider = MoyaProvider<API>().rx
-//    private let notificationManager = NotificationManager<Launch>()
-    private let disposeBag = DisposeBag()
+    var elseLaunches: ElseMission!
+    var filteredElseLaunches = [ElseMission.Launch]()
     
-    lazy var searchBar = UISearchBar()
+    var downloaded = false
     
-    fileprivate var launchResults = LaunchPageResults()
-    private var isFetching = false
-    private var loadingView = LoadingView()
-    var setupIterator = 0
-    var searchActivated = false
-    var badAd = false
-    var shouldShowAd = false
+    var missionId: String?
     
-    // To check Internet connection
-    var reachability = Reachability()
+    let refreshControl = UIRefreshControl()
     
-    // Identifiers
-    let reuseIdentifier = "rocketLaunchCell"
+    var currentIndex = 0
     
-    // Create Activity Indicator
-    var activityIndicator:UIActivityIndicatorView!
+    var shouldShowSearchResults = false
+    var rocketSearchController: RocketSearchController!
     
-    // LET'S MAKE THAT CASH MONEY
-    var bannerView: GADBannerView!
+    var selectedLaunchIndex: Int!
     
-    /// The ad unit ID from the AdMob UI.
     let adUnitID = "ca-app-pub-2723394137854237/8321532673"
-    
-    /// The number of native ads to load (between 1 and 5 for this example).
     let numAdsToLoad = 5
-    
     /// The native ads.
     var nativeAds = [GADUnifiedNativeAd]()
-    
     /// The ad loader that loads the native ads.
     var adLoader: GADAdLoader!
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
-        //navigationController?.navigationBar.titleTextAttributes = [NSAttributedStringKey.foregroundColor: UIColor.white]
-        // Create view model instance with dependancy injection
-        tableView.keyboardDismissMode = .onDrag
-        searchBar.searchBarStyle = .minimal
-        searchBar.placeholder = "Search"
-        searchBar.sizeToFit()
-        searchBar.isTranslucent = false
-        searchBar.backgroundImage = UIImage()
-        searchBar.delegate = self
-        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .search, target: self, action: #selector(openSearchBar))
-        loadingView.showInView(view)
-         fetchNextPage()
-//        AF.request("https://launchlibrary.net/1.4/launch/next/5").responseDecodable(of: LaunchesResponse.self) { response in
-//            print(response)
-//        }
+        // Do any additional setup after loading the view.
+        
+        tableView.dataSource = self
+        tableView.delegate = self
+//        tableView.emptyDataSetDataSource = self
+//        tableView.emptyDataSetDelegate = self
+        tableView.tableFooterView = UIView()
+//        tableView.addSubview(refreshControl)
+        tableView.estimatedRowHeight = 145
+        tableView.rowHeight = UITableView.automaticDimension
+//        tableView.backgroundColor = UIColor(red: 17 / 255, green: 30 / 255, blue: 60 / 255, alpha: 1)
+//
+//        view.backgroundColor = UIColor(red: 17 / 255, green: 30 / 255, blue: 60 / 255, alpha: 1)
+        
+        if traitCollection.forceTouchCapability == .available {
+            registerForPreviewing(with: self, sourceView: view)
+        }
+        
+        configureRocketSearchController()
+        
+        downloadSpaceX()
+        downloadAll()
         
         let options = GADMultipleAdsAdLoaderOptions()
         options.numberOfAds = numAdsToLoad
 
-        tableView.register(UINib(nibName: "UnifiedNativeAdCell", bundle: nil), forCellReuseIdentifier: "UnifiedNativeAdCell")
-
+        // Prepare the ad loader and start loading ads.
+        adLoader = GADAdLoader(adUnitID: adUnitID,
+                               rootViewController: self,
+                               adTypes: [.unifiedNative],
+                               options: [options])
+        adLoader.delegate = self
+        adLoader.load(GADRequest())
         
     }
+
+    // MARK: Data - SpaceX
     
-    override func numberOfSections(in tableView: UITableView) -> Int {
-        return 2
+    @objc func downloadSpaceX() {
+        AF.request(API.SpaceX.allLaunches.url()).responseJSON { response in
+            if let data = response.data {
+                let decoder = JSONDecoder()
+                let decodedMissions = try! decoder.decode([Mission].self, from: data)
+                self.spaceXMissions = decodedMissions
+            }
+        }
     }
     
-    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if section == 0 {
-            return launchResults.currentLaunches.count
-        } else if launchResults.launches.count < launchResults.launchTotal || shouldShowAd {
-            // show the page cell
+    // MARK: Data - Else
+    
+    @objc func downloadAll() {
+        AF.request(API.All.nextLaunches.url()).responseJSON { response in
+            if let data = response.data {
+                let decoder = JSONDecoder()
+                let decodedLaunches = try! decoder.decode(ElseMission.self, from: data)
+                self.elseLaunches = decodedLaunches
+                
+                DispatchQueue.main.async {
+                    print("Downloaded Everything")
+//                    self.setupElseSearchableContent()
+                    self.refreshControl.endRefreshing()
+                    self.downloaded = true
+                    self.tableView.reloadData()
+                    
+                    // Deeplink handling
+                    if self.missionId != nil {
+                        self.performSegue(withIdentifier: "performDeeplink", sender: self)
+                    }
+                }
+            }
+        }
+    }
+    
+    // MARK: UITableViewDataSource and UITableViewDelegate
+    
+    func numberOfSections(in tableView: UITableView) -> Int {
+        if downloaded {
             return 1
         } else {
-            // hide the page cell
             return 0
         }
     }
     
-    override func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        self.view.endEditing(true)
-        guard launchResults.canFetchMoreLaunches else { return }
-        let bottomOffset = scrollView.contentSize.height - scrollView.bounds.height
-        if scrollView.contentOffset.y > bottomOffset - 60.0 {
-            // 60 points from the bottom of the list
-            // fetchNextPage()
-            launchResults.currentLaunches = launchResults.launches
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        if shouldShowSearchResults {
+            return filteredElseLaunches.count
+        } else {
+            return elseLaunches.count
         }
     }
     
-    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        shouldShowAd = indexPath.row % 5 == 0 && indexPath.row != 0 && indexPath.row != 5 || indexPath.row == 3
-        if indexPath.section == 0 {
-            //swiftlint:disable force_cast
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "MissionCell", for: indexPath) as! MissionTableViewCell
+        
+        var mission: ElseMission.Launch!
+        
+        if shouldShowSearchResults {
+            mission = filteredElseLaunches[indexPath.row]
+        } else {
+            mission = elseLaunches.launches[indexPath.row]
+        }
+        
+        var delimiter = "|"
+        var missionName = mission.name.components(separatedBy: delimiter)
+        missionName[1].remove(at: missionName[1].startIndex)
+        
+        cell.missionNameLabel.text = missionName[1]
+        cell.missionOperatorLabel.text = mission.lsp.name
+        cell.missionRocketLabel.text = missionName[0]
+        
+        delimiter = ","
+        var padName = mission.location.pads[0].name.components(separatedBy: delimiter)
+        
+        cell.missionLaunchSiteLabel.text = padName[0]
+        
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "MMM d, yyyy HH:mm:ss 'UTC'"
+        dateFormatter.timeZone = TimeZone(abbreviation: "UTC")
+        if let date = dateFormatter.date(from: mission.net) {
+            let localizedDateTime: String = DateFormatter.localizedString(from: date, dateStyle: .short, timeStyle: .medium)
+            cell.missionDateLabel.text = localizedDateTime
+        } else {
+            cell.missionDateLabel.text = mission.net
+        }
+        
+        return cell
+    }
+    
+    // MARK: UISearchController
+    
+    func configureRocketSearchController() {
+        rocketSearchController = RocketSearchController(searchResultsController: self, searchBarFrame: CGRect(x: 0, y: 0, width: tableView.frame.size.width, height: 50), searchBarFont: UIFont.systemFont(ofSize: 16), searchBarTextColor: UIColor.label, searchBarTintColor: UIColor.systemBackground)
+        rocketSearchController.rocketSearchBar.placeholder = "Search"
+        rocketSearchController.customDelegate = self
+        
+        tableView.tableHeaderView = rocketSearchController.rocketSearchBar
+    }
+    
+    func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
+        shouldShowSearchResults = true
+        tableView.reloadData()
+    }
+    
+    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+        shouldShowSearchResults = false
+        tableView.reloadData()
+    }
+    
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        if !shouldShowSearchResults {
+            shouldShowSearchResults = true
+            tableView.reloadData()
+        }
+        
+        searchBar.resignFirstResponder()
+    }
+    
+    func updateSearchResults(for searchController: UISearchController) {
+        let searchString = searchController.searchBar.text
+        
+        if currentIndex == 0 {
+            filteredSpaceXMissions = spaceXMissions.filter { (mission) -> Bool in
+                let missionText: NSString = mission.mission_name as NSString
+                
+                return (missionText.range(of: searchString!, options: NSString.CompareOptions.caseInsensitive).location) != NSNotFound
+            }
+        } else {
+            filteredElseLaunches = elseLaunches.launches.filter { (launch) -> Bool in
+                let launchText: NSString = launch.name as NSString
+                
+                return (launchText.range(of: searchString!, options: .caseInsensitive).location) != NSNotFound
+            }
+        }
+        
+        tableView.reloadData()
+    }
+    
+    // MARK: RocketSearchControllerDelegate
+    
+    func didStartSearching() {
+        shouldShowSearchResults = true
+        tableView.reloadData()
+    }
+    
+    func didTapOnSearchButton() {
+        if !shouldShowSearchResults {
+            shouldShowSearchResults = true
+            tableView.reloadData()
+        }
+    }
+    
+    func didTapOnCancelButton() {
+        shouldShowSearchResults = false
+        tableView.reloadData()
+    }
+    
+    func didChangeSearchText(searchText: String) {
+        filteredElseLaunches = elseLaunches.launches.filter { (launch) -> Bool in
+            let launchText: NSString = launch.name as NSString
             
-            if shouldShowAd {
-                // bump every element in current array one up or insert a nothingburger
-                //launchResults.currentLaunches.insert(Launch.init , at: indexPath.row)
-                launchResults.currentLaunches.insert(launchResults.currentLaunches[indexPath.row], at: indexPath.row + 1)
-                
-                /*let nativeAd = launchResults.currentLaunches[indexPath.row] as! GADUnifiedNativeAd
-                /// Set the native ad's rootViewController to the current view controller.
-                nativeAd.rootViewController = self*/
-//                let cell = tableView.dequeueReusableCell(withIdentifier: "adCell", for: indexPath)
-                /*let adView : GADUnifiedNativeAdView = cell.contentView.subviews.first as! GADUnifiedNativeAdView
-                
-                // Associate the ad view with the ad object.
-                // This is required to make the ad clickable.
-                adView.nativeAd = nativeAd
-                
-                // Populate the ad view with the ad assets.
-                (adView.headlineView as! UILabel).text = nativeAd.headline
-                (adView.priceView as! UILabel).text = nativeAd.price*/
-//                let r = GADRequest()
-////                r.testDevices = [kGADSimulatorID]
-//                bannerView = GADBannerView(adSize: kGADAdSizeBanner)
-//                bannerView.adUnitID = adUnitID
-//                bannerView.frame = cell.bounds
-//                bannerView.rootViewController = self
-//                bannerView.delegate = self
-//               // cell.banner = bannerView
-//                bannerView.translatesAutoresizingMaskIntoConstraints = false
-//
-//                for view in cell.contentView.subviews {
-//                    if view.isKind(of: GADBannerView.self) {
-//                        view.removeFromSuperview() // Make sure that the cell does not have any previously added GADBanner view as it would be reused
-//                    }
-//                }
-
-//                self.bannerView.load(r)
-//
-//                cell.showAnimatedSkeleton()
-//
-//                cell.addSubview(bannerView)
-                
-                let cell = tableView.dequeueReusableCell(withIdentifier: LaunchCell.reuseID, for: indexPath) as! LaunchCell
-                return cell
-            } else {
-                let cell = tableView.dequeueReusableCell(withIdentifier: LaunchCell.reuseID, for: indexPath) as! LaunchCell
-                //swiftlint:enable force_cast
-                print(launchResults.currentLaunches.count)
-                cell.configure(with: launchResults.currentLaunches[indexPath.row])
-                return cell
-            }
-        } else {
-            return tableView.dequeueReusableCell(withIdentifier: PageLoadingCell.reuseID, for: indexPath)
+            return (launchText.range(of: searchText, options: .caseInsensitive).location) != NSNotFound
         }
-    }
-    
-    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        // This will override the height selected in the storyboard.
-        return badAd ? 0 : 135
-    }
-    
-    fileprivate func fetchNextPage() {
-        guard !isFetching else { return }
         
-        isFetching = true
-        print(launchResults.pagesFetched)
-        provider.request(.showLaunches(page: launchResults.pagesFetched)).asObservable().map(LaunchesResponse.self).subscribe { [weak self] (event) in
-            self?.loadingView.hide()
-            switch event {
-            case .next(let response):
-                self?.handleFetchComplete(with: response.launches, total: response.total)
-            case .error(let error):
-                self?.handleError(error)
-            case .completed:
-                self?.isFetching = false
-            }
-        }.disposed(by: disposeBag)
-        
-    }
-    
-    // MARK: - Search Bar
-    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        
-        guard !searchText.isEmpty else { launchResults.currentLaunches = launchResults.launches; tableView.reloadData(); return } // also unhide the spinner
-        // hide spinner at the bottom
-        launchResults.currentLaunches = launchResults.launches.filter { (launch) -> Bool in
-            return launch.name.lowercased().contains(searchText.lowercased())
-            }
         tableView.reloadData()
     }
     
-/*    private func registerNotifications(with launches: [Launch]) {
-        notificationManager.removePendingNotifications()
-        notificationManager.registerNotifications(for: launches)
-    }
-    
-    private func authorizeAndRegisterNotifications(with launches: [Launch]) {
-        notificationManager.authorize()
-            .subscribe { [weak self] (event) in
-                switch event {
-                case .next(let status):
-                    if status == .granted {
-                        self?.registerNotifications(with: launches)
-                    }
-                default:
-                    break
-                }
-            }
-            .disposed(by: disposeBag)
-    }*/
-    
-    private func handleFetchComplete(with launches: [Launch], total: Int) {
-        launchResults.appendPage(with: launches, total: total)
-//        authorizeAndRegisterNotifications(with: launchResults.launches)
-        launchResults.currentLaunches = launchResults.launches
-        print(launches)
-        tableView.reloadData()
-    }
-    
-    private func handleError(_ error: Swift.Error) {
-        let alert = UIAlertController(title: "Oops", message: "Something went wrong. Try again.", preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: "OK", style: .cancel, handler: nil))
-        present(alert, animated: true, completion: nil)
-        print("ERROR: \(error)")
-    }
-    
-    @objc private func openSearchBar() {
-        searchActivated = !searchActivated
-        if searchActivated {
-            navigationItem.titleView = searchBar
-            navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Done", style: .done, target: self, action: #selector(openSearchBar))
-        } else {
-            navigationItem.titleView = nil
-            self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .search, target: self, action: #selector(openSearchBar))
+    func previewingContext(_ previewingContext: UIViewControllerPreviewing, viewControllerForLocation location: CGPoint) -> UIViewController? {
+        guard let indexPath = tableView.indexPathForRow(at: self.view.convert(location, to: tableView)) else {
+            print("IndexPath problem")
+            return nil
         }
-        // there's a sense of sequence in this code
+        
+        print(indexPath)
+        
+        guard let cell = tableView.cellForRow(at: indexPath) else {
+            print("Cell problem")
+            return nil
+        }
+        
+        guard let destVC = storyboard?.instantiateViewController(withIdentifier: "MissionsDetailViewController") as? MissionsDetailViewController else {
+            return nil
+        }
+        
+//        if shouldShowSearchResults {
+//            destVC.isSpaceX = false
+//            destVC.launch = filteredElseLaunches[indexPath.row]
+//        } else {
+//            destVC.isSpaceX = false
+//            destVC.launch = elseLaunches.launches[indexPath.row]
+//        }
+        
+        destVC.preferredContentSize = CGSize(width: 0.0, height: 450)
+        previewingContext.sourceRect = cell.frame
+        
+        return destVC
     }
     
-    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        print("did select row")
-        performSegue(withIdentifier: SegueID.launchDetail, sender: indexPath)
+    func previewingContext(_ previewingContext: UIViewControllerPreviewing, commit viewControllerToCommit: UIViewController) {
+        show(viewControllerToCommit, sender: self)
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get current Launch
-        if segue.identifier == SegueID.launchDetail {
-            
-            if let vc = segue.destination as? RocketLaunchController, let i = sender as? IndexPath {
-                vc.launch = launchResults.currentLaunches[i.row] 
-            } else {
-                print("uh oh Speghettios")
+        if segue.identifier == "showMission" {
+            if let indexPath = self.tableView.indexPathForSelectedRow {
+                let found = spaceXMissions.firstIndex { (mission) -> Bool in
+                    let dateFormatter = DateFormatter()
+                    dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZ"
+                    let spaceXDate = DateFormatter.localizedString(from: dateFormatter.date(from: mission.launch_date_local)!, dateStyle: .short, timeStyle: .medium)
+                    
+                    // Else
+                    var elseDate = ""
+                    
+                    dateFormatter.dateFormat = "MMM d, yyyy HH:mm:ss 'UTC'"
+                    dateFormatter.timeZone = TimeZone(abbreviation: "UTC")
+                    
+                    if shouldShowSearchResults {
+                        elseDate = DateFormatter.localizedString(from: dateFormatter.date(from: filteredElseLaunches[indexPath.row].net)!, dateStyle: .short, timeStyle: .medium)
+                    } else {
+                        elseDate = DateFormatter.localizedString(from: dateFormatter.date(from: elseLaunches.launches[indexPath.row].net)!, dateStyle: .short, timeStyle: .medium)
+                    }
+                    
+                    return spaceXDate == elseDate
+                }
+                
+                var isSpaceX = false
+                
+                if found != nil {
+                    isSpaceX = true
+                }
+                
+                if shouldShowSearchResults {
+                    let destVC = segue.destination as! MissionsDetailViewController
+                    destVC.isSpaceX = isSpaceX
+                    if isSpaceX {
+                        destVC.mission = spaceXMissions[found!]
+                    }
+                    destVC.launch = filteredElseLaunches[indexPath.row]
+                    destVC.hidesBottomBarWhenPushed = true
+                } else {
+                    let destVC = segue.destination as! MissionsDetailViewController
+                    destVC.isSpaceX = isSpaceX
+                    if isSpaceX {
+                        destVC.mission = spaceXMissions[found!]
+                    }
+                    destVC.launch = elseLaunches.launches[indexPath.row]
+                    destVC.hidesBottomBarWhenPushed = true
+                }
             }
+        } else if segue.identifier == "showMissionElseCS" {
+            let destVC = segue.destination as! MissionsDetailViewController
+            destVC.isSpaceX = false
+            destVC.launch = elseLaunches.launches[selectedLaunchIndex]
+            destVC.hidesBottomBarWhenPushed = true
+        } else if segue.identifier == "performDeeplink" {
+            guard let identifier = Int(missionId ?? "") else { return }
+            let mission = elseLaunches.launches.filter { $0.id == identifier }
+            guard mission.count > 0 else { return }
+            let destVC = segue.destination as! MissionsDetailViewController
+            destVC.isSpaceX = false
+            destVC.launch = mission[0]
+            destVC.hidesBottomBarWhenPushed = true
         }
     }
     
-    @objc func internetChanged(note: Notification) {
-        print("internet changed at \(Date())")
-
-    }
-    
     // MARK: - GADAdLoaderDelegate
-    
+
     func adLoader(_ adLoader: GADAdLoader,
                   didFailToReceiveAdWithError error: GADRequestError) {
-        print("\(adLoader) failed with error: \(error.localizedDescription)")
+      print("\(adLoader) failed with error: \(error.localizedDescription)")
 
     }
 
     func adLoader(_ adLoader: GADAdLoader, didReceive nativeAd: GADUnifiedNativeAd) {
-        print("Received native ad: \(nativeAd)")
+      print("Received native ad: \(nativeAd)")
 
-        // Add the native ad to the list of native ads.
-        nativeAds.append(nativeAd)
+      // Add the native ad to the list of native ads.
+      nativeAds.append(nativeAd)
     }
-
+    
     func adLoaderDidFinishLoading(_ adLoader: GADAdLoader) {
-        // addNativeAds()
-        // enableMenuButton()
-        print("adLoaderDidFinishLoading")
-    }
-
-    /// Tells the delegate an ad request loaded an ad.
-    func adViewDidReceiveAd(_ bannerView: GADBannerView) {
-        print("adViewDidReceiveAd")
-    }
-
-    /// Tells the delegate an ad request failed.
-    func adView(_ bannerView: GADBannerView,
-                didFailToReceiveAdWithError error: GADRequestError) {
-        print("adView:didFailToReceiveAdWithError: \(error.localizedDescription)")
-        badAd = true
-    }
-
-    /// Tells the delegate that a full-screen view will be presented in response
-    /// to the user clicking on an ad.
-    func adViewWillPresentScreen(_ bannerView: GADBannerView) {
-        print("adViewWillPresentScreen")
-    }
-
-    /// Tells the delegate that the full-screen view will be dismissed.
-    func adViewWillDismissScreen(_ bannerView: GADBannerView) {
-        print("adViewWillDismissScreen")
-    }
-
-    /// Tells the delegate that the full-screen view has been dismissed.
-    func adViewDidDismissScreen(_ bannerView: GADBannerView) {
-        print("adViewDidDismissScreen")
-    }
-
-    /// Tells the delegate that a user click will open another app (such as
-    /// the App Store), backgrounding the current app.
-    func adViewWillLeaveApplication(_ bannerView: GADBannerView) {
-        print("adViewWillLeaveApplication")
+//      enableMenuButton()
     }
     
 }
+

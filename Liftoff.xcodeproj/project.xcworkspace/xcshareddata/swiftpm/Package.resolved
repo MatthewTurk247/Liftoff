@@ -11,6 +11,15 @@
         }
       },
       {
+        "package": "LaunchLibraryAPI",
+        "repositoryURL": "https://github.com/dustinlange/LaunchLibraryAPI.git",
+        "state": {
+          "branch": "develop",
+          "revision": "19dd17c0c1a4981ea0057c35f30d860d8762fe85",
+          "version": null
+        }
+      },
+      {
         "package": "Moya",
         "repositoryURL": "https://github.com/Moya/Moya.git",
         "state": {

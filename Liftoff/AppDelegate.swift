@@ -22,7 +22,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
         UIApplication.shared.statusBarStyle = .default
-        Fact().factbook.shuffle()
+//        Fact().factbook.shuffle()
 
 //        if #available(iOS 10.0, *) {
 //            // For iOS 10 display notification (sent via APNS)
@@ -80,7 +80,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     func applicationDidEnterBackground(_ application: UIApplication) {
         // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
         // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
-        Fact().factbook.shuffle()
+//        Fact().factbook.shuffle()
     }
 
     func applicationWillEnterForeground(_ application: UIApplication) {
@@ -123,11 +123,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
 //        // Note: This callback is fired at each app startup and whenever a new token is generated.
 //    }
     
-    private func updateRegistrationCount() {
-        let count = UserDefaults.standard.integer(forKey: UserDefaultsKey.backgroundFetchCount)
-        UserDefaults.standard.set(count + 1, forKey: UserDefaultsKey.backgroundFetchCount)
-        UserDefaults.standard.synchronize()
-    }
+//    private func updateRegistrationCount() {
+//        let count = UserDefaults.standard.integer(forKey: UserDefaultsKey.backgroundFetchCount)
+//        UserDefaults.standard.set(count + 1, forKey: UserDefaultsKey.backgroundFetchCount)
+//        UserDefaults.standard.synchronize()
+//    }
     
 }
 
