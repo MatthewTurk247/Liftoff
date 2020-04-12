@@ -34,6 +34,7 @@
 		B286A55420832E1F0058DFB3 /* NewsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B286A55320832E1F0058DFB3 /* NewsTableViewCell.swift */; };
 		B28EFD6224412CB30025BB96 /* RocketLaunchesController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2ADE7A0207AC86D00C7C97E /* RocketLaunchesController.swift */; };
 		B2923595213887DA0029D9A0 /* AdCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2923594213887DA0029D9A0 /* AdCell.swift */; };
+		B292CF5A2443D58A00F9F004 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B292CF592443D58A00F9F004 /* SceneDelegate.swift */; };
 		B29D95482079922200D3DFF5 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B29D95472079922200D3DFF5 /* AppDelegate.swift */; };
 		B29D954F2079922200D3DFF5 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B29D954D2079922200D3DFF5 /* Main.storyboard */; };
 		B29D95512079922200D3DFF5 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B29D95502079922200D3DFF5 /* Assets.xcassets */; };
@@ -117,6 +118,7 @@
 		B263FBB4210010240082A1C5 /* SearchFooter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchFooter.swift; sourceTree = "<group>"; };
 		B286A55320832E1F0058DFB3 /* NewsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsTableViewCell.swift; sourceTree = "<group>"; };
 		B2923594213887DA0029D9A0 /* AdCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdCell.swift; sourceTree = "<group>"; };
+		B292CF592443D58A00F9F004 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		B29D95442079922200D3DFF5 /* Liftoff.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Liftoff.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B29D95472079922200D3DFF5 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		B29D954E2079922200D3DFF5 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -276,10 +278,10 @@
 				B2062F60244128DE007F9A41 /* IsoCountries.swift */,
 				B2062F68244128DE007F9A41 /* IsoCountryCodes.swift */,
 				B2062F57244128DD007F9A41 /* LLAPI */,
-				B2062F5E244128DD007F9A41 /* MissionsDetailViewController.swift */,
 				B2062F66244128DE007F9A41 /* MissionTableViewCell.swift */,
 				B2062F61244128DE007F9A41 /* RocketSearchBar.swift */,
 				B2062F5F244128DD007F9A41 /* RocketSearchController.swift */,
+				B2062F5E244128DD007F9A41 /* MissionsDetailViewController.swift */,
 				B2062F79244129E2007F9A41 /* Constants.swift */,
 				B2062F62244128DE007F9A41 /* SpaceX */,
 				B2EF5F6A243BCFFE003E8A8F /* SwiftLinkPreview */,
@@ -315,6 +317,7 @@
 			isa = PBXGroup;
 			children = (
 				B29D954D2079922200D3DFF5 /* Main.storyboard */,
+				B292CF592443D58A00F9F004 /* SceneDelegate.swift */,
 				B25D59D524422FA400A7B385 /* UnifiedNativeAdCell.xib */,
 				B2ADE7A4207BED7A00C7C97E /* Fonts */,
 				B2D1F84420F583C400191387 /* LoadingView.swift */,
@@ -671,6 +674,7 @@
 				B2062F70244128E9007F9A41 /* Pad.swift in Sources */,
 				B2062F71244128EB007F9A41 /* AgencyLaunch.swift in Sources */,
 				B2062F74244128F2007F9A41 /* Payload.swift in Sources */,
+				B292CF5A2443D58A00F9F004 /* SceneDelegate.swift in Sources */,
 				B28EFD6224412CB30025BB96 /* RocketLaunchesController.swift in Sources */,
 				B2D1F84520F583C400191387 /* LoadingView.swift in Sources */,
 				B2062F76244128FB007F9A41 /* Mission.swift in Sources */,

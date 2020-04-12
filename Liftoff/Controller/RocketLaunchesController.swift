@@ -161,6 +161,7 @@ class RocketLaunchesController: UIViewController, UITableViewDataSource, UITable
             } else {
                 cell.missionDateLabel.text = missionItem.net
             }
+            // later on let's switch the missionDaetLabel text color base on the status of the whether or not the launch will happen
             return cell
         } else {
             let nativeAd = tableViewItems[indexPath.row] as! GADUnifiedNativeAd
@@ -410,6 +411,7 @@ class RocketLaunchesController: UIViewController, UITableViewDataSource, UITable
     
     func adLoaderDidFinishLoading(_ adLoader: GADAdLoader) {
         addNativeAds()
+        tableView.reloadData()
     }
     
 }
