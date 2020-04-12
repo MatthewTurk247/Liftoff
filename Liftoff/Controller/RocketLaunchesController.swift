@@ -12,13 +12,14 @@ import Alamofire
 import GoogleMobileAds
 
 class RocketLaunchesController: UIViewController, UITableViewDataSource, UITableViewDelegate, UISearchResultsUpdating, UISearchBarDelegate, RocketSearchControllerDelegate, UIViewControllerPreviewingDelegate, GADUnifiedNativeAdLoaderDelegate {
-
+    
     @IBOutlet weak var tableView: UITableView!
     var spaceXMissions = [Mission]()
     var filteredSpaceXMissions = [Mission]()
     
     var elseLaunches: ElseMission!
     var filteredElseLaunches = [ElseMission.Launch]()
+    var tableViewItems = [Any]()
     
     var downloaded = false
     
@@ -33,8 +34,8 @@ class RocketLaunchesController: UIViewController, UITableViewDataSource, UITable
     
     var selectedLaunchIndex: Int!
     
-    let adUnitID = "ca-app-pub-2723394137854237/8321532673"
-    let numAdsToLoad = 5
+    let adUnitID = "ca-app-pub-2723394137854237/3550355591"
+    let numAdsToLoad = 8
     /// The native ads.
     var nativeAds = [GADUnifiedNativeAd]()
     /// The ad loader that loads the native ads.
@@ -46,19 +47,21 @@ class RocketLaunchesController: UIViewController, UITableViewDataSource, UITable
         
         tableView.dataSource = self
         tableView.delegate = self
-//        tableView.emptyDataSetDataSource = self
-//        tableView.emptyDataSetDelegate = self
+        //        tableView.emptyDataSetDataSource = self
+        //        tableView.emptyDataSetDelegate = self
         tableView.tableFooterView = UIView()
-//        tableView.addSubview(refreshControl)
+        //        tableView.addSubview(refreshControl)
         tableView.estimatedRowHeight = 145
         tableView.rowHeight = UITableView.automaticDimension
-//        tableView.backgroundColor = UIColor(red: 17 / 255, green: 30 / 255, blue: 60 / 255, alpha: 1)
-//
-//        view.backgroundColor = UIColor(red: 17 / 255, green: 30 / 255, blue: 60 / 255, alpha: 1)
+        //        tableView.backgroundColor = UIColor(red: 17 / 255, green: 30 / 255, blue: 60 / 255, alpha: 1)
+        //
+        //        view.backgroundColor = UIColor(red: 17 / 255, green: 30 / 255, blue: 60 / 255, alpha: 1)
         
         if traitCollection.forceTouchCapability == .available {
             registerForPreviewing(with: self, sourceView: view)
         }
+        
+        tableView.register(UINib(nibName: "UnifiedNativeAdCell", bundle: nil), forCellReuseIdentifier: "UnifiedNativeAdCell")
         
         configureRocketSearchController()
         
@@ -67,7 +70,7 @@ class RocketLaunchesController: UIViewController, UITableViewDataSource, UITable
         
         let options = GADMultipleAdsAdLoaderOptions()
         options.numberOfAds = numAdsToLoad
-
+        
         // Prepare the ad loader and start loading ads.
         adLoader = GADAdLoader(adUnitID: adUnitID,
                                rootViewController: self,
@@ -75,9 +78,11 @@ class RocketLaunchesController: UIViewController, UITableViewDataSource, UITable
                                options: [options])
         adLoader.delegate = self
         adLoader.load(GADRequest())
+        tableView.register(UINib(nibName: "UnifiedNativeAdCell", bundle: nil),
+                           forCellReuseIdentifier: "UnifiedNativeAdCell")
         
     }
-
+    
     // MARK: Data - SpaceX
     
     @objc func downloadSpaceX() {
@@ -98,10 +103,11 @@ class RocketLaunchesController: UIViewController, UITableViewDataSource, UITable
                 let decoder = JSONDecoder()
                 let decodedLaunches = try! decoder.decode(ElseMission.self, from: data)
                 self.elseLaunches = decodedLaunches
+                self.tableViewItems.append(contentsOf: decodedLaunches.launches)
                 
                 DispatchQueue.main.async {
                     print("Downloaded Everything")
-//                    self.setupElseSearchableContent()
+                    //                    self.setupElseSearchableContent()
                     self.refreshControl.endRefreshing()
                     self.downloaded = true
                     self.tableView.reloadData()
@@ -118,11 +124,7 @@ class RocketLaunchesController: UIViewController, UITableViewDataSource, UITable
     // MARK: UITableViewDataSource and UITableViewDelegate
     
     func numberOfSections(in tableView: UITableView) -> Int {
-        if downloaded {
-            return 1
-        } else {
-            return 0
-        }
+        return downloaded ? 1 : 0
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -132,42 +134,70 @@ class RocketLaunchesController: UIViewController, UITableViewDataSource, UITable
             return elseLaunches.count
         }
     }
-    
+
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "MissionCell", for: indexPath) as! MissionTableViewCell
         
-        var mission: ElseMission.Launch!
-        
-        if shouldShowSearchResults {
-            mission = filteredElseLaunches[indexPath.row]
+        if let missionItem = shouldShowSearchResults ? filteredElseLaunches[indexPath.row] : tableViewItems[indexPath.row] as? ElseMission.Launch {
+            let cell = tableView.dequeueReusableCell(withIdentifier: "MissionCell", for: indexPath) as! MissionTableViewCell
+            var delimiter = "|"
+            var missionName = missionItem.name.components(separatedBy: delimiter)
+            missionName[1].remove(at: missionName[1].startIndex)
+            
+            cell.missionNameLabel.text = missionName[1]
+            cell.missionOperatorLabel.text = missionItem.lsp.name
+            cell.missionRocketLabel.text = missionName[0]
+            
+            delimiter = ","
+            var padName = missionItem.location.pads[0].name.components(separatedBy: delimiter)
+            
+            cell.missionLaunchSiteLabel.text = padName[0]
+            
+            let dateFormatter = DateFormatter()
+            dateFormatter.dateFormat = "MMM d, yyyy HH:mm:ss 'UTC'"
+            dateFormatter.timeZone = TimeZone(abbreviation: "UTC")
+            if let date = dateFormatter.date(from: missionItem.net) {
+                let localizedDateTime: String = DateFormatter.localizedString(from: date, dateStyle: .short, timeStyle: .medium)
+                cell.missionDateLabel.text = localizedDateTime
+            } else {
+                cell.missionDateLabel.text = missionItem.net
+            }
+            return cell
         } else {
-            mission = elseLaunches.launches[indexPath.row]
+            let nativeAd = tableViewItems[indexPath.row] as! GADUnifiedNativeAd
+            /// Set the native ad's rootViewController to the current view controller.
+            nativeAd.rootViewController = self
+
+            let nativeAdCell = tableView.dequeueReusableCell(
+                withIdentifier: "UnifiedNativeAdCell", for: indexPath)
+
+            // Get the ad view from the Cell. The view hierarchy for this cell is defined in
+            // UnifiedNativeAdCell.xib.
+            let adView : GADUnifiedNativeAdView = nativeAdCell.contentView.subviews.first as! GADUnifiedNativeAdView
+
+            // Associate the ad view with the ad object.
+            // This is required to make the ad clickable.
+            adView.nativeAd = nativeAd
+
+            // Populate the ad view with the ad assets.
+            (adView.headlineView as! UILabel).text = nativeAd.headline
+            (adView.priceView as! UILabel).text = nativeAd.price
+            if let starRating = nativeAd.starRating {
+              (adView.starRatingView as! UILabel).text =
+                  starRating.description + "\u{2605}"
+            } else {
+              (adView.starRatingView as! UILabel).text = nil
+            }
+            (adView.bodyView as! UILabel).text = nativeAd.body
+            (adView.advertiserView as! UILabel).text = nativeAd.advertiser
+            // The SDK automatically turns off user interaction for assets that are part of the ad, but
+            // it is still good to be explicit.
+            (adView.callToActionView as! UIButton).isUserInteractionEnabled = false
+            (adView.callToActionView as! UIButton).setTitle(
+                nativeAd.callToAction, for: UIControl.State.normal)
+
+            return nativeAdCell
         }
         
-        var delimiter = "|"
-        var missionName = mission.name.components(separatedBy: delimiter)
-        missionName[1].remove(at: missionName[1].startIndex)
-        
-        cell.missionNameLabel.text = missionName[1]
-        cell.missionOperatorLabel.text = mission.lsp.name
-        cell.missionRocketLabel.text = missionName[0]
-        
-        delimiter = ","
-        var padName = mission.location.pads[0].name.components(separatedBy: delimiter)
-        
-        cell.missionLaunchSiteLabel.text = padName[0]
-        
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "MMM d, yyyy HH:mm:ss 'UTC'"
-        dateFormatter.timeZone = TimeZone(abbreviation: "UTC")
-        if let date = dateFormatter.date(from: mission.net) {
-            let localizedDateTime: String = DateFormatter.localizedString(from: date, dateStyle: .short, timeStyle: .medium)
-            cell.missionDateLabel.text = localizedDateTime
-        } else {
-            cell.missionDateLabel.text = mission.net
-        }
-        
-        return cell
     }
     
     // MARK: UISearchController
@@ -265,13 +295,13 @@ class RocketLaunchesController: UIViewController, UITableViewDataSource, UITable
             return nil
         }
         
-//        if shouldShowSearchResults {
-//            destVC.isSpaceX = false
-//            destVC.launch = filteredElseLaunches[indexPath.row]
-//        } else {
-//            destVC.isSpaceX = false
-//            destVC.launch = elseLaunches.launches[indexPath.row]
-//        }
+        //        if shouldShowSearchResults {
+        //            destVC.isSpaceX = false
+        //            destVC.launch = filteredElseLaunches[indexPath.row]
+        //        } else {
+        //            destVC.isSpaceX = false
+        //            destVC.launch = elseLaunches.launches[indexPath.row]
+        //        }
         
         destVC.preferredContentSize = CGSize(width: 0.0, height: 450)
         previewingContext.sourceRect = cell.frame
@@ -346,23 +376,40 @@ class RocketLaunchesController: UIViewController, UITableViewDataSource, UITable
         }
     }
     
-    // MARK: - GADAdLoaderDelegate
+    func addNativeAds() {
+      if nativeAds.count <= 0 {
+        return
+      }
 
+      let adInterval = (tableViewItems.count / nativeAds.count) + 1
+      var index = 2
+      for nativeAd in nativeAds {
+        if index < tableViewItems.count {
+          tableViewItems.insert(nativeAd, at: index)
+          index += adInterval
+        } else {
+          break
+        }
+      }
+    }
+    
+    // MARK: - GADAdLoaderDelegate
+    
     func adLoader(_ adLoader: GADAdLoader,
                   didFailToReceiveAdWithError error: GADRequestError) {
-      print("\(adLoader) failed with error: \(error.localizedDescription)")
-
+        print("\(adLoader) failed with error: \(error.localizedDescription)")
+        
     }
-
+    
     func adLoader(_ adLoader: GADAdLoader, didReceive nativeAd: GADUnifiedNativeAd) {
-      print("Received native ad: \(nativeAd)")
-
-      // Add the native ad to the list of native ads.
-      nativeAds.append(nativeAd)
+        print("Received native ad: \(nativeAd)")
+        
+        // Add the native ad to the list of native ads.
+        nativeAds.append(nativeAd)
     }
     
     func adLoaderDidFinishLoading(_ adLoader: GADAdLoader) {
-//      enableMenuButton()
+        addNativeAds()
     }
     
 }
