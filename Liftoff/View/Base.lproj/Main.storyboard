@@ -49,19 +49,19 @@
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Falcon 9 FT" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="h80-zQ-ozd">
-                                                    <rect key="frame" x="20" y="65.5" width="355" height="20.5"/>
+                                                    <rect key="frame" x="20" y="65.5" width="355" height="20"/>
                                                     <fontDescription key="fontDescription" name="Lato-Regular" family="Lato" pointSize="17"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="KSC LC 39A" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="d3A-6W-3q5">
-                                                    <rect key="frame" x="20" y="91" width="355" height="18"/>
+                                                    <rect key="frame" x="20" y="90.5" width="355" height="17.5"/>
                                                     <fontDescription key="fontDescription" name="Lato-Regular" family="Lato" pointSize="15"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" text="2018-05-11 20:14:00Z" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jXZ-Za-gB9">
-                                                    <rect key="frame" x="20" y="114" width="355" height="20"/>
+                                                    <rect key="frame" x="20" y="113" width="355" height="21"/>
                                                     <fontDescription key="fontDescription" type="italicSystem" pointSize="15"/>
                                                     <color key="textColor" name="Mint Leaf"/>
                                                     <nil key="highlightedColor"/>
@@ -93,7 +93,7 @@
                                             <outlet property="missionNameLabel" destination="hjg-fc-eYD" id="o3S-hT-v3z"/>
                                             <outlet property="missionOperatorLabel" destination="ex7-f3-AiX" id="qrw-Sr-UfM"/>
                                             <outlet property="missionRocketLabel" destination="h80-zQ-ozd" id="bD0-3L-A4a"/>
-                                            <segue destination="sPa-2T-paX" kind="show" identifier="showMission" id="7aR-qX-Qop"/>
+                                            <segue destination="l4L-4H-rUh" kind="showDetail" identifier="showMission" id="7aR-qX-Qop"/>
                                         </connections>
                                     </tableViewCell>
                                 </prototypes>
@@ -137,7 +137,7 @@
                 <splitViewController id="ysI-QQ-feh" sceneMemberID="viewController">
                     <connections>
                         <segue destination="wsC-3U-Yhd" kind="relationship" relationship="masterViewController" id="dV4-hZ-BYO"/>
-                        <segue destination="sPa-2T-paX" kind="relationship" relationship="detailViewController" id="NSV-lR-ka7"/>
+                        <segue destination="l4L-4H-rUh" kind="relationship" relationship="detailViewController" id="NSV-lR-ka7"/>
                     </connections>
                 </splitViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Mmz-6H-08K" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -305,9 +305,14 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" id="s5Q-hd-glC"/>
+                    <connections>
+                        <outlet property="launchMapView" destination="PM1-iL-RCB" id="tby-4D-spR"/>
+                        <outlet property="launchTextView" destination="KYr-IF-tAK" id="eJw-vM-mJR"/>
+                        <outlet property="rocketTextView" destination="k4n-5n-SNN" id="OTz-BR-eXh"/>
+                    </connections>
                 </tableViewController>
             </objects>
-            <point key="canvasLocation" x="777" y="-431"/>
+            <point key="canvasLocation" x="1686.9565217391305" y="-431.25"/>
         </scene>
         <!--Live Table View Controller-->
         <scene sceneID="LXW-c5-oSV">
@@ -937,9 +942,28 @@ We may update our Privacy Policy from time to time. Thus, you are advised to rev
             </objects>
             <point key="canvasLocation" x="-1164" y="2894"/>
         </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="JpC-pg-rjU">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="l4L-4H-rUh" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationItem key="navigationItem" id="Omt-QR-atU"/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="PI3-Ty-udG">
+                        <rect key="frame" x="0.0" y="44" width="414" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="sPa-2T-paX" kind="relationship" relationship="rootViewController" id="6j5-AI-z2J"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="4BA-PR-7bW" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="776.81159420289862" y="-431.25"/>
+        </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="7aR-qX-Qop"/>
+        <segue reference="NSV-lR-ka7"/>
     </inferredMetricsTieBreakers>
     <color key="tintColor" red="0.42352941176470588" green="0.36078431372549019" blue="0.90588235294117647" alpha="1" colorSpace="calibratedRGB"/>
     <resources>

@@ -20,6 +20,7 @@ class RocketLaunchesController: UIViewController, UITableViewDataSource, UITable
     var elseLaunches: ElseMission!
     var filteredElseLaunches = [ElseMission.Launch]()
     var tableViewItems = [Any]()
+    var detailViewController: MissionsDetailViewController? = nil
     
     var downloaded = false
     
@@ -62,6 +63,11 @@ class RocketLaunchesController: UIViewController, UITableViewDataSource, UITable
         }
         
         tableView.register(UINib(nibName: "UnifiedNativeAdCell", bundle: nil), forCellReuseIdentifier: "UnifiedNativeAdCell")
+        
+        if let split = splitViewController {
+            let controllers = split.viewControllers
+            detailViewController = (controllers[controllers.count - 1] as! UINavigationController).topViewController as? MissionsDetailViewController
+        }
         
         configureRocketSearchController()
         
@@ -195,7 +201,7 @@ class RocketLaunchesController: UIViewController, UITableViewDataSource, UITable
             (adView.callToActionView as! UIButton).isUserInteractionEnabled = false
             (adView.callToActionView as! UIButton).setTitle(
                 nativeAd.callToAction, for: UIControl.State.normal)
-
+            
             return nativeAdCell
         }
         
@@ -344,21 +350,23 @@ class RocketLaunchesController: UIViewController, UITableViewDataSource, UITable
                 }
                 
                 if shouldShowSearchResults {
-                    let destVC = segue.destination as! MissionsDetailViewController
+                    let destVC = (segue.destination as! UINavigationController).topViewController as! MissionsDetailViewController
                     destVC.isSpaceX = isSpaceX
                     if isSpaceX {
                         destVC.mission = spaceXMissions[found!]
                     }
                     destVC.launch = filteredElseLaunches[indexPath.row]
                     destVC.hidesBottomBarWhenPushed = true
+                    detailViewController = destVC
                 } else {
-                    let destVC = segue.destination as! MissionsDetailViewController
+                    let destVC = (segue.destination as! UINavigationController).topViewController as! MissionsDetailViewController
                     destVC.isSpaceX = isSpaceX
                     if isSpaceX {
                         destVC.mission = spaceXMissions[found!]
                     }
-                    destVC.launch = elseLaunches.launches[indexPath.row]
+                    destVC.launch = tableViewItems[indexPath.row] as! ElseMission.Launch
                     destVC.hidesBottomBarWhenPushed = true
+                    detailViewController = destVC
                 }
             }
         } else if segue.identifier == "showMissionElseCS" {
