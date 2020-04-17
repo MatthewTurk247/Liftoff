@@ -15,8 +15,6 @@
 		B2062F6B244128DF007F9A41 /* MissionsDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2062F5E244128DD007F9A41 /* MissionsDetailViewController.swift */; };
 		B2062F6C244128DF007F9A41 /* IsoCountries.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2062F60244128DE007F9A41 /* IsoCountries.swift */; };
 		B2062F6D244128DF007F9A41 /* API.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2062F67244128DE007F9A41 /* API.swift */; };
-		B2062F6E244128DF007F9A41 /* RocketSearchBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2062F61244128DE007F9A41 /* RocketSearchBar.swift */; };
-		B2062F6F244128DF007F9A41 /* RocketSearchController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2062F5F244128DD007F9A41 /* RocketSearchController.swift */; };
 		B2062F70244128E9007F9A41 /* Pad.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2062F58244128DD007F9A41 /* Pad.swift */; };
 		B2062F71244128EB007F9A41 /* AgencyLaunch.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2062F59244128DD007F9A41 /* AgencyLaunch.swift */; };
 		B2062F72244128EE007F9A41 /* LSP.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2062F5A244128DD007F9A41 /* LSP.swift */; };
@@ -94,9 +92,7 @@
 		B2062F5C244128DD007F9A41 /* Payload.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Payload.swift; sourceTree = "<group>"; };
 		B2062F5D244128DD007F9A41 /* Agency.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Agency.swift; sourceTree = "<group>"; };
 		B2062F5E244128DD007F9A41 /* MissionsDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MissionsDetailViewController.swift; sourceTree = "<group>"; };
-		B2062F5F244128DD007F9A41 /* RocketSearchController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RocketSearchController.swift; sourceTree = "<group>"; };
 		B2062F60244128DE007F9A41 /* IsoCountries.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IsoCountries.swift; sourceTree = "<group>"; };
-		B2062F61244128DE007F9A41 /* RocketSearchBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RocketSearchBar.swift; sourceTree = "<group>"; };
 		B2062F63244128DE007F9A41 /* Mission.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Mission.swift; sourceTree = "<group>"; };
 		B2062F64244128DE007F9A41 /* Rocket.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Rocket.swift; sourceTree = "<group>"; };
 		B2062F65244128DE007F9A41 /* Launchpad.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Launchpad.swift; sourceTree = "<group>"; };
@@ -254,6 +250,7 @@
 				B2ADE792207AC48000C7C97E /* UIImageExtension.swift */,
 				B2D1F83E20F57E0400191387 /* UtilityExtensions.swift */,
 				B29D95472079922200D3DFF5 /* AppDelegate.swift */,
+				B292CF592443D58A00F9F004 /* SceneDelegate.swift */,
 				B2EB3E3F243BC6E0002C8076 /* DLCategory.swift */,
 				B2EB3E40243BC6E0002C8076 /* DLLocalNotifications.swift */,
 				B2EB3E3D243BC6DF002C8076 /* DLNotification.swift */,
@@ -263,8 +260,6 @@
 				B2062F68244128DE007F9A41 /* IsoCountryCodes.swift */,
 				B2062F57244128DD007F9A41 /* LLAPI */,
 				B2062F66244128DE007F9A41 /* MissionTableViewCell.swift */,
-				B2062F61244128DE007F9A41 /* RocketSearchBar.swift */,
-				B2062F5F244128DD007F9A41 /* RocketSearchController.swift */,
 				B2062F5E244128DD007F9A41 /* MissionsDetailViewController.swift */,
 				B2062F79244129E2007F9A41 /* Constants.swift */,
 				B2062F62244128DE007F9A41 /* SpaceX */,
@@ -300,7 +295,6 @@
 			isa = PBXGroup;
 			children = (
 				B29D954D2079922200D3DFF5 /* Main.storyboard */,
-				B292CF592443D58A00F9F004 /* SceneDelegate.swift */,
 				B25D59D524422FA400A7B385 /* UnifiedNativeAdCell.xib */,
 				B2ADE7A4207BED7A00C7C97E /* Fonts */,
 				B2D1F84420F583C400191387 /* LoadingView.swift */,
@@ -642,7 +636,6 @@
 				B28EFD6224412CB30025BB96 /* RocketLaunchesController.swift in Sources */,
 				B2D1F84520F583C400191387 /* LoadingView.swift in Sources */,
 				B2062F76244128FB007F9A41 /* Mission.swift in Sources */,
-				B2062F6E244128DF007F9A41 /* RocketSearchBar.swift in Sources */,
 				B2062F6A244128DF007F9A41 /* MissionTableViewCell.swift in Sources */,
 				B286A55420832E1F0058DFB3 /* NewsTableViewCell.swift in Sources */,
 				B2062F75244128F4007F9A41 /* Agency.swift in Sources */,
@@ -652,7 +645,6 @@
 				B29D95482079922200D3DFF5 /* AppDelegate.swift in Sources */,
 				B2923595213887DA0029D9A0 /* AdCell.swift in Sources */,
 				B2EB3E43243BC6E0002C8076 /* DLCategory.swift in Sources */,
-				B2062F6F244128DF007F9A41 /* RocketSearchController.swift in Sources */,
 				B2EB3E41243BC6E0002C8076 /* DLLocalNotifications.swift in Sources */,
 				B2062F6B244128DF007F9A41 /* MissionsDetailViewController.swift in Sources */,
 				B2062F72244128EE007F9A41 /* LSP.swift in Sources */,
@@ -839,7 +831,7 @@
 				CODE_SIGN_ENTITLEMENTS = Liftoff/Liftoff.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 8;
+				CURRENT_PROJECT_VERSION = 10;
 				DEVELOPMENT_TEAM = 74XMZHHU2L;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -851,7 +843,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.3.2;
+				MARKETING_VERSION = 1.4.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.photosurplus.Liftoff;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = LiftoffApp;
@@ -870,7 +862,7 @@
 				CODE_SIGN_ENTITLEMENTS = Liftoff/Liftoff.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 8;
+				CURRENT_PROJECT_VERSION = 10;
 				DEVELOPMENT_TEAM = 74XMZHHU2L;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -882,7 +874,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.3.2;
+				MARKETING_VERSION = 1.4.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.photosurplus.Liftoff;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = LiftoffApp;

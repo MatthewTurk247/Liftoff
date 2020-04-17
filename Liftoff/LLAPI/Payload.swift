@@ -1,9 +1,9 @@
 //
 //  Payload.swift
-//  Rockety
+//  Liftoff
 //
-//  Created by Antoine Bellanger on 12.06.18.
-//  Copyright © 2018 Antoine Bellanger. All rights reserved.
+//  Created by Matthew Turk on 4/8/18.
+//  Copyright © 2018 MonitorMOJO, Inc. All rights reserved.
 //
 
 import Foundation

@@ -1,9 +1,9 @@
 //
 //  Launch.swift
-//  Rockety
+//  Liftoff
 //
-//  Created by Antoine Bellanger on 26.05.18.
-//  Copyright © 2018 Antoine Bellanger. All rights reserved.
+//  Created by Matthew Turk on 4/8/18.
+//  Copyright © 2018 MonitorMOJO, Inc. All rights reserved.
 //
 
 import Foundation
@@ -21,9 +21,10 @@ struct ElseMission: Codable {
         let windowstart: String!
         let windowend: String!
         let net: String!
+        let status: Int!
         
-        let vidURLs: [String]
-        let infoURLs: [String]
+        let vidURLs: [String]?
+        let infoURLs: [String]?
         let location: Location!
         let rocket: Rocket!
         let missions: [Mission]!

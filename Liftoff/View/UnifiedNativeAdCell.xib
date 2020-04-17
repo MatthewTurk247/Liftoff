@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="16096" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
-    <device id="retina4_7" orientation="portrait" appearance="light"/>
+    <device id="retina5_9" orientation="portrait" appearance="light"/>
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16086"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -27,41 +28,42 @@
                                 </constraints>
                             </view>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Headline" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dvX-sI-Z3K" userLabel="Headline View">
-                                <rect key="frame" x="128" y="8" width="361" height="20.5"/>
+                                <rect key="frame" x="128" y="8.0000000000000018" width="361" height="20.666666666666671"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Body" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uDB-Ma-ilr">
-                                <rect key="frame" x="128" y="83.5" width="361" height="14.5"/>
+                                <rect key="frame" x="128" y="83.666666666666671" width="361" height="14.333333333333329"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="12"/>
-                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Star Rating" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bVe-8S-jq4">
-                                <rect key="frame" x="223.5" y="48.5" width="63" height="15"/>
+                                <rect key="frame" x="223.66666666666666" y="48.666666666666664" width="62.999999999999972" height="15"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="mP7-13-Ooi">
-                                <rect key="frame" x="294.5" y="41" width="91" height="30"/>
-                                <state key="normal" title="Call to Action"/>
+                                <rect key="frame" x="294.66666666666669" y="41.333333333333336" width="91" height="30.000000000000007"/>
+                                <state key="normal" title="Call to Action">
+                                    <color key="titleColor" name="Exodus Fruit"/>
+                                </state>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Price" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fJv-IS-7f8">
-                                <rect key="frame" x="186.5" y="48.5" width="29" height="15"/>
+                                <rect key="frame" x="186.66666666666666" y="48.666666666666664" width="29" height="15"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Advertiser" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qYY-uu-451">
-                                <rect key="frame" x="128" y="48.5" width="58.5" height="15"/>
+                                <rect key="frame" x="128" y="48.666666666666664" width="58.666666666666657" height="15"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                         </subviews>
-                        <color key="backgroundColor" red="1" green="1" blue="0.86666666670000003" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
                             <constraint firstItem="dvX-sI-Z3K" firstAttribute="leading" secondItem="r1I-Nh-7ZM" secondAttribute="trailing" constant="8" id="E1e-DM-AXB"/>
                             <constraint firstItem="r1I-Nh-7ZM" firstAttribute="top" secondItem="Ytj-1J-SUi" secondAttribute="top" id="E9Y-66-Q24"/>
@@ -107,7 +109,6 @@
                         <nil key="highlightedColor"/>
                     </label>
                 </subviews>
-                <color key="backgroundColor" red="1" green="1" blue="0.86666666670000003" alpha="1" colorSpace="calibratedRGB"/>
                 <constraints>
                     <constraint firstItem="Ytj-1J-SUi" firstAttribute="top" secondItem="IQ5-rK-4Rx" secondAttribute="topMargin" constant="-8" id="5Ry-tt-Oy9"/>
                     <constraint firstAttribute="rightMargin" secondItem="Ytj-1J-SUi" secondAttribute="right" constant="-8" id="SKt-iR-UK9"/>
@@ -120,4 +121,9 @@
             <point key="canvasLocation" x="258" y="-527"/>
         </tableViewCell>
     </objects>
+    <resources>
+        <namedColor name="Exodus Fruit">
+            <color red="0.42352941176470588" green="0.35686274509803922" blue="0.90196078431372551" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+    </resources>
 </document>

@@ -11,7 +11,7 @@ import UIKit
 import Alamofire
 import GoogleMobileAds
 
-class RocketLaunchesController: UIViewController, UITableViewDataSource, UITableViewDelegate, UISearchResultsUpdating, UISearchBarDelegate, RocketSearchControllerDelegate, UIViewControllerPreviewingDelegate, GADUnifiedNativeAdLoaderDelegate {
+class RocketLaunchesController: UIViewController, UITableViewDataSource, UITableViewDelegate, UISearchResultsUpdating, UISearchBarDelegate, UIViewControllerPreviewingDelegate, GADUnifiedNativeAdLoaderDelegate, UISearchControllerDelegate {
     
     @IBOutlet weak var tableView: UITableView!
     var spaceXMissions = [Mission]()
@@ -31,7 +31,6 @@ class RocketLaunchesController: UIViewController, UITableViewDataSource, UITable
     var currentIndex = 0
     
     var shouldShowSearchResults = false
-    var rocketSearchController: RocketSearchController!
     
     var selectedLaunchIndex: Int!
     
@@ -45,6 +44,14 @@ class RocketLaunchesController: UIViewController, UITableViewDataSource, UITable
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
+        
+        let notificationCenter = NotificationCenter.default
+        notificationCenter.addObserver(forName: UIResponder.keyboardWillChangeFrameNotification,
+                                       object: nil, queue: .main) { (notification) in
+                                        self.handleKeyboard(notification: notification) }
+        notificationCenter.addObserver(forName: UIResponder.keyboardWillHideNotification,
+                                       object: nil, queue: .main) { (notification) in
+                                        self.handleKeyboard(notification: notification) }
         
         tableView.dataSource = self
         tableView.delegate = self
@@ -65,11 +72,22 @@ class RocketLaunchesController: UIViewController, UITableViewDataSource, UITable
         tableView.register(UINib(nibName: "UnifiedNativeAdCell", bundle: nil), forCellReuseIdentifier: "UnifiedNativeAdCell")
         
         if let split = splitViewController {
+            split.preferredDisplayMode = .allVisible // what is this
             let controllers = split.viewControllers
             detailViewController = (controllers[controllers.count - 1] as! UINavigationController).topViewController as? MissionsDetailViewController
         }
         
-        configureRocketSearchController()
+//        configureRocketSearchController()
+        let search = UISearchController(searchResultsController: nil)
+        search.obscuresBackgroundDuringPresentation = false
+        search.searchBar.placeholder = "Search"
+        navigationItem.searchController = search
+        search.searchBar.searchTextField.allowsCopyingTokens = false
+        search.searchBar.searchTextField.allowsDeletingTokens = false
+        search.searchBar.searchTextField.clearButtonMode = .never
+        search.searchResultsUpdater = self
+        search.delegate = self
+        search.searchBar.delegate = self
         
         downloadSpaceX()
         downloadAll()
@@ -162,11 +180,21 @@ class RocketLaunchesController: UIViewController, UITableViewDataSource, UITable
             dateFormatter.dateFormat = "MMM d, yyyy HH:mm:ss 'UTC'"
             dateFormatter.timeZone = TimeZone(abbreviation: "UTC")
             if let date = dateFormatter.date(from: missionItem.net) {
-                let localizedDateTime: String = DateFormatter.localizedString(from: date, dateStyle: .short, timeStyle: .medium)
+                let localizedDateTime: String = DateFormatter.localizedString(from: date, dateStyle: .long, timeStyle: .short)
                 cell.missionDateLabel.text = localizedDateTime
             } else {
                 cell.missionDateLabel.text = missionItem.net
             }
+            
+            switch missionItem.status {
+            case 1:
+                cell.missionDateLabel.textColor = UIColor(named: "Mint Leaf")
+            case 2:
+                cell.missionDateLabel.textColor = UIColor(named: "Chi-Gong")
+            default:
+                cell.missionDateLabel.textColor = UIColor(named: "Exodus Fruit")
+            }
+            
             // later on let's switch the missionDaetLabel text color base on the status of the whether or not the launch will happen
             return cell
         } else {
@@ -209,14 +237,6 @@ class RocketLaunchesController: UIViewController, UITableViewDataSource, UITable
     
     // MARK: UISearchController
     
-    func configureRocketSearchController() {
-        rocketSearchController = RocketSearchController(searchResultsController: self, searchBarFrame: CGRect(x: 0, y: 0, width: tableView.frame.size.width, height: 50), searchBarFont: UIFont.systemFont(ofSize: 16), searchBarTextColor: UIColor.label, searchBarTintColor: UIColor.systemBackground)
-        rocketSearchController.rocketSearchBar.placeholder = "Search"
-        rocketSearchController.customDelegate = self
-        
-        tableView.tableHeaderView = rocketSearchController.rocketSearchBar
-    }
-    
     func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
         shouldShowSearchResults = true
         tableView.reloadData()
@@ -238,19 +258,16 @@ class RocketLaunchesController: UIViewController, UITableViewDataSource, UITable
     
     func updateSearchResults(for searchController: UISearchController) {
         let searchString = searchController.searchBar.text
+        shouldShowSearchResults = true
+        filteredElseLaunches = elseLaunches.launches.filter { (launch) -> Bool in
+            let launchText: NSString = launch.name as NSString
+            
+            return (launchText.range(of: searchString!, options: .caseInsensitive).location) != NSNotFound
+        }
         
-        if currentIndex == 0 {
-            filteredSpaceXMissions = spaceXMissions.filter { (mission) -> Bool in
-                let missionText: NSString = mission.mission_name as NSString
-                
-                return (missionText.range(of: searchString!, options: NSString.CompareOptions.caseInsensitive).location) != NSNotFound
-            }
-        } else {
-            filteredElseLaunches = elseLaunches.launches.filter { (launch) -> Bool in
-                let launchText: NSString = launch.name as NSString
-                
-                return (launchText.range(of: searchString!, options: .caseInsensitive).location) != NSNotFound
-            }
+        if !searchController.isActive {
+            shouldShowSearchResults = false
+            tableView.reloadData()
         }
         
         tableView.reloadData()
@@ -326,7 +343,7 @@ class RocketLaunchesController: UIViewController, UITableViewDataSource, UITable
                 let found = spaceXMissions.firstIndex { (mission) -> Bool in
                     let dateFormatter = DateFormatter()
                     dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZ"
-                    let spaceXDate = DateFormatter.localizedString(from: dateFormatter.date(from: mission.launch_date_local)!, dateStyle: .short, timeStyle: .medium)
+                    let spaceXDate = DateFormatter.localizedString(from: dateFormatter.date(from: mission.launch_date_local)!, dateStyle: .long, timeStyle: .short)
                     
                     // Else
                     var elseDate = ""
@@ -335,9 +352,9 @@ class RocketLaunchesController: UIViewController, UITableViewDataSource, UITable
                     dateFormatter.timeZone = TimeZone(abbreviation: "UTC")
                     
                     if shouldShowSearchResults {
-                        elseDate = DateFormatter.localizedString(from: dateFormatter.date(from: filteredElseLaunches[indexPath.row].net)!, dateStyle: .short, timeStyle: .medium)
+                        elseDate = DateFormatter.localizedString(from: dateFormatter.date(from: filteredElseLaunches[indexPath.row].net)!, dateStyle: .long, timeStyle: .short)
                     } else {
-                        elseDate = DateFormatter.localizedString(from: dateFormatter.date(from: elseLaunches.launches[indexPath.row].net)!, dateStyle: .short, timeStyle: .medium)
+                        elseDate = DateFormatter.localizedString(from: dateFormatter.date(from: elseLaunches.launches[indexPath.row].net)!, dateStyle: .long, timeStyle: .short)
                     }
                     
                     return spaceXDate == elseDate
@@ -357,6 +374,8 @@ class RocketLaunchesController: UIViewController, UITableViewDataSource, UITable
                     }
                     destVC.launch = filteredElseLaunches[indexPath.row]
                     destVC.hidesBottomBarWhenPushed = true
+                    destVC.navigationItem.leftBarButtonItem = splitViewController?.displayModeButtonItem
+                    destVC.navigationItem.leftItemsSupplementBackButton = true
                     detailViewController = destVC
                 } else {
                     let destVC = (segue.destination as! UINavigationController).topViewController as! MissionsDetailViewController
@@ -366,6 +385,8 @@ class RocketLaunchesController: UIViewController, UITableViewDataSource, UITable
                     }
                     destVC.launch = tableViewItems[indexPath.row] as! ElseMission.Launch
                     destVC.hidesBottomBarWhenPushed = true
+                    destVC.navigationItem.leftBarButtonItem = splitViewController?.displayModeButtonItem
+                    destVC.navigationItem.leftItemsSupplementBackButton = true
                     detailViewController = destVC
                 }
             }
@@ -422,5 +443,27 @@ class RocketLaunchesController: UIViewController, UITableViewDataSource, UITable
         tableView.reloadData()
     }
     
-}
+    func handleKeyboard(notification: Notification) {
+      // 1
+      guard notification.name == UIResponder.keyboardWillChangeFrameNotification else {
+//        searchFooterBottomConstraint.constant = 0
+        view.layoutIfNeeded()
+        return
+      }
+      
+      guard
+        let info = notification.userInfo,
+        let keyboardFrame = info[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue
+        else {
+          return
+      }
+      
+      // 2
+      let keyboardHeight = keyboardFrame.cgRectValue.size.height
+      UIView.animate(withDuration: 0.1, animations: { () -> Void in
+//        self.searchFooterBottomConstraint.constant = keyboardHeight
+        self.view.layoutIfNeeded()
+      })
+    }
 
+}
