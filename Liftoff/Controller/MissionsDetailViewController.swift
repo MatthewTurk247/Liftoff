@@ -22,7 +22,6 @@ class MissionsDetailViewController: UITableViewController, MKMapViewDelegate {
     @IBOutlet weak var countdownLabel: UILabel!
     @IBOutlet weak var rocketImageView: UIImageView!
     
-    var isSpaceX: Bool!
     var downloaded = false
     var isComingFromAgency = false
     var hasinfoURL = false
@@ -38,9 +37,8 @@ class MissionsDetailViewController: UITableViewController, MKMapViewDelegate {
             configureView()
         }
     }
-    var launchpad: Launchpad?
     
-    var launch: ElseMission.Launch? {
+    var launch: Launch? {
         didSet {
             configureView()
         }
@@ -63,7 +61,7 @@ class MissionsDetailViewController: UITableViewController, MKMapViewDelegate {
                     }
                 }
                 if let textView = launchTextView {
-                    textView.text = launch.missions[0].description
+                    textView.text = launch.missions[0].missionDescription
                 }
             } else {
                 if let textView = rocketTextView {
@@ -98,8 +96,6 @@ class MissionsDetailViewController: UITableViewController, MKMapViewDelegate {
                 countdown.text = launch.net
             }
             
-        } else if let mission = mission {
-            title = mission.mission_name
         } else {
             self.tableView.isHidden = true
         }
@@ -108,15 +104,8 @@ class MissionsDetailViewController: UITableViewController, MKMapViewDelegate {
             title = launch.name
         }
         
-        if let rocket = rocket {
-            print(rocket.description)
-        }
-        
         if let imageView = rocketImageView {
             downloadImage(url: URL(string: rocketAPI.imageURL())!, imageView: imageView)
-            if let patch = mission?.links.mission_patch {
-                downloadImage(url: URL(string: patch)!, imageView: imageView)
-            }
         }
     }
     

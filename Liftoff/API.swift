@@ -10,44 +10,6 @@ import Foundation
 
 struct API {
     
-    enum SpaceX {
-        case allRockets
-        case rocket(rocketId: String)
-        
-        case allLaunchpads
-        case launchpad(launchpadId: String)
-        
-        case pastLaunch
-        case nextLaunch
-        case pastLaunches
-        case nextLaunches
-        case allLaunches
-        
-        func url() -> String {
-            switch self {
-            case .allRockets:
-                return "https://api.spacexdata.com/v3/rockets"
-            case .rocket(let rocketId):
-                return "https://api.spacexdata.com/v3/rockets/\(rocketId)"
-            case .allLaunchpads:
-                return "https://api.spacexdata.com/v3/launchpads"
-            case .launchpad(let launchpadId):
-                return "https://api.spacexdata.com/v3/launchpads/\(launchpadId)"
-            case .pastLaunch:
-                return "https://api.spacexdata.com/v3/launches/latest"
-            case .nextLaunch:
-                return "https://api.spacexdata.com/v3/launches/next"
-            case .pastLaunches:
-                return "https://api.spacexdata.com/v3/launches/past"
-            case .nextLaunches:
-                return "https://api.spacexdata.com/v3/launches/upcoming"
-            case .allLaunches:
-                return "https://api.spacexdata.com/v3/launches"
-            }
-        }
-        
-    }
-    
     enum All {
         case nextLaunches
         case agency(agencyId: String)

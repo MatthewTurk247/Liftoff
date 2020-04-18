@@ -15,20 +15,13 @@
 		B2062F6B244128DF007F9A41 /* MissionsDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2062F5E244128DD007F9A41 /* MissionsDetailViewController.swift */; };
 		B2062F6C244128DF007F9A41 /* IsoCountries.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2062F60244128DE007F9A41 /* IsoCountries.swift */; };
 		B2062F6D244128DF007F9A41 /* API.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2062F67244128DE007F9A41 /* API.swift */; };
-		B2062F70244128E9007F9A41 /* Pad.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2062F58244128DD007F9A41 /* Pad.swift */; };
-		B2062F71244128EB007F9A41 /* AgencyLaunch.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2062F59244128DD007F9A41 /* AgencyLaunch.swift */; };
-		B2062F72244128EE007F9A41 /* LSP.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2062F5A244128DD007F9A41 /* LSP.swift */; };
 		B2062F73244128F0007F9A41 /* Launch.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2062F5B244128DD007F9A41 /* Launch.swift */; };
 		B2062F74244128F2007F9A41 /* Payload.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2062F5C244128DD007F9A41 /* Payload.swift */; };
 		B2062F75244128F4007F9A41 /* Agency.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2062F5D244128DD007F9A41 /* Agency.swift */; };
-		B2062F76244128FB007F9A41 /* Mission.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2062F63244128DE007F9A41 /* Mission.swift */; };
-		B2062F77244128FD007F9A41 /* Rocket.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2062F64244128DE007F9A41 /* Rocket.swift */; };
-		B2062F78244128FF007F9A41 /* Launchpad.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2062F65244128DE007F9A41 /* Launchpad.swift */; };
 		B2062F7A244129E2007F9A41 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2062F79244129E2007F9A41 /* Constants.swift */; };
 		B2403A4C211A8872004E7113 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = B2403A4B211A8872004E7113 /* GoogleService-Info.plist */; };
 		B25D59D224422E4000A7B385 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = B25D59D124422E4000A7B385 /* Alamofire */; };
 		B25D59D624422FA400A7B385 /* UnifiedNativeAdCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = B25D59D524422FA400A7B385 /* UnifiedNativeAdCell.xib */; };
-		B263FBB5210010240082A1C5 /* SearchFooter.swift in Sources */ = {isa = PBXBuildFile; fileRef = B263FBB4210010240082A1C5 /* SearchFooter.swift */; };
 		B286A55420832E1F0058DFB3 /* NewsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B286A55320832E1F0058DFB3 /* NewsTableViewCell.swift */; };
 		B28EFD6224412CB30025BB96 /* RocketLaunchesController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2ADE7A0207AC86D00C7C97E /* RocketLaunchesController.swift */; };
 		B2923595213887DA0029D9A0 /* AdCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2923594213887DA0029D9A0 /* AdCell.swift */; };
@@ -53,10 +46,6 @@
 		B2D1F83F20F57E0400191387 /* UtilityExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2D1F83E20F57E0400191387 /* UtilityExtensions.swift */; };
 		B2D1F84520F583C400191387 /* LoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2D1F84420F583C400191387 /* LoadingView.swift */; };
 		B2D1F84720F585DE00191387 /* PageLoadingCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2D1F84620F585DE00191387 /* PageLoadingCell.swift */; };
-		B2EB3E41243BC6E0002C8076 /* DLLocalNotifications.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2EB3E40243BC6E0002C8076 /* DLLocalNotifications.swift */; };
-		B2EB3E42243BC6E0002C8076 /* DLQueue.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2EB3E3E243BC6DF002C8076 /* DLQueue.swift */; };
-		B2EB3E43243BC6E0002C8076 /* DLCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2EB3E3F243BC6E0002C8076 /* DLCategory.swift */; };
-		B2EB3E44243BC6E0002C8076 /* DLNotification.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2EB3E3D243BC6DF002C8076 /* DLNotification.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -85,17 +74,11 @@
 		7C89ED932238CB566267DCEE /* Pods-Liftoff-LiftoffUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Liftoff-LiftoffUITests.debug.xcconfig"; path = "Target Support Files/Pods-Liftoff-LiftoffUITests/Pods-Liftoff-LiftoffUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		7CCF644945EB60663A0CB153 /* Pods-LiftoffTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LiftoffTests.release.xcconfig"; path = "Target Support Files/Pods-LiftoffTests/Pods-LiftoffTests.release.xcconfig"; sourceTree = "<group>"; };
 		A974C29C02454A911A8BABCF /* Pods_Liftoff_LiftoffUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Liftoff_LiftoffUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		B2062F58244128DD007F9A41 /* Pad.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Pad.swift; sourceTree = "<group>"; };
-		B2062F59244128DD007F9A41 /* AgencyLaunch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AgencyLaunch.swift; sourceTree = "<group>"; };
-		B2062F5A244128DD007F9A41 /* LSP.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LSP.swift; sourceTree = "<group>"; };
 		B2062F5B244128DD007F9A41 /* Launch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Launch.swift; sourceTree = "<group>"; };
 		B2062F5C244128DD007F9A41 /* Payload.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Payload.swift; sourceTree = "<group>"; };
 		B2062F5D244128DD007F9A41 /* Agency.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Agency.swift; sourceTree = "<group>"; };
 		B2062F5E244128DD007F9A41 /* MissionsDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MissionsDetailViewController.swift; sourceTree = "<group>"; };
 		B2062F60244128DE007F9A41 /* IsoCountries.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IsoCountries.swift; sourceTree = "<group>"; };
-		B2062F63244128DE007F9A41 /* Mission.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Mission.swift; sourceTree = "<group>"; };
-		B2062F64244128DE007F9A41 /* Rocket.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Rocket.swift; sourceTree = "<group>"; };
-		B2062F65244128DE007F9A41 /* Launchpad.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Launchpad.swift; sourceTree = "<group>"; };
 		B2062F66244128DE007F9A41 /* MissionTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MissionTableViewCell.swift; sourceTree = "<group>"; };
 		B2062F67244128DE007F9A41 /* API.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = API.swift; sourceTree = "<group>"; };
 		B2062F68244128DE007F9A41 /* IsoCountryCodes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IsoCountryCodes.swift; sourceTree = "<group>"; };
@@ -103,7 +86,6 @@
 		B22191AA20AFD202000EC730 /* Liftoff.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Liftoff.entitlements; sourceTree = "<group>"; };
 		B2403A4B211A8872004E7113 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		B25D59D524422FA400A7B385 /* UnifiedNativeAdCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = UnifiedNativeAdCell.xib; sourceTree = "<group>"; };
-		B263FBB4210010240082A1C5 /* SearchFooter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchFooter.swift; sourceTree = "<group>"; };
 		B286A55320832E1F0058DFB3 /* NewsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsTableViewCell.swift; sourceTree = "<group>"; };
 		B2923594213887DA0029D9A0 /* AdCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdCell.swift; sourceTree = "<group>"; };
 		B292CF592443D58A00F9F004 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -134,10 +116,6 @@
 		B2D1F83E20F57E0400191387 /* UtilityExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UtilityExtensions.swift; sourceTree = "<group>"; };
 		B2D1F84420F583C400191387 /* LoadingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingView.swift; sourceTree = "<group>"; };
 		B2D1F84620F585DE00191387 /* PageLoadingCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PageLoadingCell.swift; sourceTree = "<group>"; };
-		B2EB3E3D243BC6DF002C8076 /* DLNotification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DLNotification.swift; sourceTree = "<group>"; };
-		B2EB3E3E243BC6DF002C8076 /* DLQueue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DLQueue.swift; sourceTree = "<group>"; };
-		B2EB3E3F243BC6E0002C8076 /* DLCategory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DLCategory.swift; sourceTree = "<group>"; };
-		B2EB3E40243BC6E0002C8076 /* DLLocalNotifications.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DLLocalNotifications.swift; sourceTree = "<group>"; };
 		B2EF5FB3243BD41B003E8A8F /* GoogleDataTransport.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = GoogleDataTransport.xcframework; path = ../../../../Downloads/Firebase/FirebaseAnalytics/GoogleDataTransport.xcframework; sourceTree = "<group>"; };
 		B2EF5FB4243BD41B003E8A8F /* GoogleDataTransportCCTSupport.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = GoogleDataTransportCCTSupport.xcframework; path = ../../../../Downloads/Firebase/FirebaseAnalytics/GoogleDataTransportCCTSupport.xcframework; sourceTree = "<group>"; };
 		B2EF5FB5243BD41B003E8A8F /* FirebaseCoreDiagnostics.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = FirebaseCoreDiagnostics.xcframework; path = ../../../../Downloads/Firebase/FirebaseAnalytics/FirebaseCoreDiagnostics.xcframework; sourceTree = "<group>"; };
@@ -198,27 +176,14 @@
 			path = Pods;
 			sourceTree = "<group>";
 		};
-		B2062F57244128DD007F9A41 /* LLAPI */ = {
+		B2062F57244128DD007F9A41 /* LaunchLibrary */ = {
 			isa = PBXGroup;
 			children = (
-				B2062F58244128DD007F9A41 /* Pad.swift */,
-				B2062F59244128DD007F9A41 /* AgencyLaunch.swift */,
-				B2062F5A244128DD007F9A41 /* LSP.swift */,
 				B2062F5B244128DD007F9A41 /* Launch.swift */,
 				B2062F5C244128DD007F9A41 /* Payload.swift */,
 				B2062F5D244128DD007F9A41 /* Agency.swift */,
 			);
-			path = LLAPI;
-			sourceTree = "<group>";
-		};
-		B2062F62244128DE007F9A41 /* SpaceX */ = {
-			isa = PBXGroup;
-			children = (
-				B2062F63244128DE007F9A41 /* Mission.swift */,
-				B2062F64244128DE007F9A41 /* Rocket.swift */,
-				B2062F65244128DE007F9A41 /* Launchpad.swift */,
-			);
-			path = SpaceX;
+			path = LaunchLibrary;
 			sourceTree = "<group>";
 		};
 		B29D953B2079922200D3DFF5 = {
@@ -251,18 +216,11 @@
 				B2D1F83E20F57E0400191387 /* UtilityExtensions.swift */,
 				B29D95472079922200D3DFF5 /* AppDelegate.swift */,
 				B292CF592443D58A00F9F004 /* SceneDelegate.swift */,
-				B2EB3E3F243BC6E0002C8076 /* DLCategory.swift */,
-				B2EB3E40243BC6E0002C8076 /* DLLocalNotifications.swift */,
-				B2EB3E3D243BC6DF002C8076 /* DLNotification.swift */,
-				B2EB3E3E243BC6DF002C8076 /* DLQueue.swift */,
 				B2062F67244128DE007F9A41 /* API.swift */,
+				B2062F79244129E2007F9A41 /* Constants.swift */,
 				B2062F60244128DE007F9A41 /* IsoCountries.swift */,
 				B2062F68244128DE007F9A41 /* IsoCountryCodes.swift */,
-				B2062F57244128DD007F9A41 /* LLAPI */,
-				B2062F66244128DE007F9A41 /* MissionTableViewCell.swift */,
-				B2062F5E244128DD007F9A41 /* MissionsDetailViewController.swift */,
-				B2062F79244129E2007F9A41 /* Constants.swift */,
-				B2062F62244128DE007F9A41 /* SpaceX */,
+				B2062F57244128DD007F9A41 /* LaunchLibrary */,
 				B2ADE794207AC4D600C7C97E /* View */,
 				B2ADE796207AC51400C7C97E /* Controller */,
 				B29D95502079922200D3DFF5 /* Assets.xcassets */,
@@ -299,8 +257,8 @@
 				B2ADE7A4207BED7A00C7C97E /* Fonts */,
 				B2D1F84420F583C400191387 /* LoadingView.swift */,
 				B286A55320832E1F0058DFB3 /* NewsTableViewCell.swift */,
-				B263FBB4210010240082A1C5 /* SearchFooter.swift */,
 				B2D1F84620F585DE00191387 /* PageLoadingCell.swift */,
+				B2062F66244128DE007F9A41 /* MissionTableViewCell.swift */,
 				B2923594213887DA0029D9A0 /* AdCell.swift */,
 			);
 			path = View;
@@ -309,6 +267,7 @@
 		B2ADE796207AC51400C7C97E /* Controller */ = {
 			isa = PBXGroup;
 			children = (
+				B2062F5E244128DD007F9A41 /* MissionsDetailViewController.swift */,
 				B2ADE7A0207AC86D00C7C97E /* RocketLaunchesController.swift */,
 			);
 			path = Controller;
@@ -627,15 +586,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B2EB3E44243BC6E0002C8076 /* DLNotification.swift in Sources */,
 				B2062F69244128DF007F9A41 /* IsoCountryCodes.swift in Sources */,
-				B2062F70244128E9007F9A41 /* Pad.swift in Sources */,
-				B2062F71244128EB007F9A41 /* AgencyLaunch.swift in Sources */,
 				B2062F74244128F2007F9A41 /* Payload.swift in Sources */,
 				B292CF5A2443D58A00F9F004 /* SceneDelegate.swift in Sources */,
 				B28EFD6224412CB30025BB96 /* RocketLaunchesController.swift in Sources */,
 				B2D1F84520F583C400191387 /* LoadingView.swift in Sources */,
-				B2062F76244128FB007F9A41 /* Mission.swift in Sources */,
 				B2062F6A244128DF007F9A41 /* MissionTableViewCell.swift in Sources */,
 				B286A55420832E1F0058DFB3 /* NewsTableViewCell.swift in Sources */,
 				B2062F75244128F4007F9A41 /* Agency.swift in Sources */,
@@ -644,18 +599,11 @@
 				B2062F73244128F0007F9A41 /* Launch.swift in Sources */,
 				B29D95482079922200D3DFF5 /* AppDelegate.swift in Sources */,
 				B2923595213887DA0029D9A0 /* AdCell.swift in Sources */,
-				B2EB3E43243BC6E0002C8076 /* DLCategory.swift in Sources */,
-				B2EB3E41243BC6E0002C8076 /* DLLocalNotifications.swift in Sources */,
 				B2062F6B244128DF007F9A41 /* MissionsDetailViewController.swift in Sources */,
-				B2062F72244128EE007F9A41 /* LSP.swift in Sources */,
-				B263FBB5210010240082A1C5 /* SearchFooter.swift in Sources */,
-				B2062F78244128FF007F9A41 /* Launchpad.swift in Sources */,
 				B2062F7A244129E2007F9A41 /* Constants.swift in Sources */,
 				B2ADE793207AC48000C7C97E /* UIImageExtension.swift in Sources */,
-				B2EB3E42243BC6E0002C8076 /* DLQueue.swift in Sources */,
 				B2062F6D244128DF007F9A41 /* API.swift in Sources */,
 				B2D1F83F20F57E0400191387 /* UtilityExtensions.swift in Sources */,
-				B2062F77244128FD007F9A41 /* Rocket.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -831,7 +779,7 @@
 				CODE_SIGN_ENTITLEMENTS = Liftoff/Liftoff.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 10;
+				CURRENT_PROJECT_VERSION = 11;
 				DEVELOPMENT_TEAM = 74XMZHHU2L;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -843,7 +791,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.4.1;
+				MARKETING_VERSION = 1.4.2;
 				PRODUCT_BUNDLE_IDENTIFIER = com.photosurplus.Liftoff;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = LiftoffApp;
@@ -862,7 +810,7 @@
 				CODE_SIGN_ENTITLEMENTS = Liftoff/Liftoff.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 10;
+				CURRENT_PROJECT_VERSION = 11;
 				DEVELOPMENT_TEAM = 74XMZHHU2L;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -874,7 +822,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.4.1;
+				MARKETING_VERSION = 1.4.2;
 				PRODUCT_BUNDLE_IDENTIFIER = com.photosurplus.Liftoff;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = LiftoffApp;

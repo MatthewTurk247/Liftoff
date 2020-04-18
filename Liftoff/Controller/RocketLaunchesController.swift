@@ -10,21 +10,21 @@ import Foundation
 import UIKit
 import Alamofire
 import GoogleMobileAds
+import Reachability
 
 class RocketLaunchesController: UIViewController, UITableViewDataSource, UITableViewDelegate, UISearchResultsUpdating, UISearchBarDelegate, UIViewControllerPreviewingDelegate, GADUnifiedNativeAdLoaderDelegate, UISearchControllerDelegate {
     
     @IBOutlet weak var tableView: UITableView!
-    var spaceXMissions = [Mission]()
-    var filteredSpaceXMissions = [Mission]()
     
-    var elseLaunches: ElseMission!
-    var filteredElseLaunches = [ElseMission.Launch]()
+    var elseLaunches: LaunchResponse!
+    var filteredElseLaunches = [Launch]()
     var tableViewItems = [Any]()
     var detailViewController: MissionsDetailViewController? = nil
     
     var downloaded = false
     
     var missionId: String?
+    let reachability = try! Reachability()
     
     let refreshControl = UIRefreshControl()
     
@@ -58,17 +58,12 @@ class RocketLaunchesController: UIViewController, UITableViewDataSource, UITable
         //        tableView.emptyDataSetDataSource = self
         //        tableView.emptyDataSetDelegate = self
         tableView.tableFooterView = UIView()
-        //        tableView.addSubview(refreshControl)
+//                tableView.addSubview(refreshControl)
         tableView.estimatedRowHeight = 145
         tableView.rowHeight = UITableView.automaticDimension
         //        tableView.backgroundColor = UIColor(red: 17 / 255, green: 30 / 255, blue: 60 / 255, alpha: 1)
         //
         //        view.backgroundColor = UIColor(red: 17 / 255, green: 30 / 255, blue: 60 / 255, alpha: 1)
-        
-        if traitCollection.forceTouchCapability == .available {
-            registerForPreviewing(with: self, sourceView: view)
-        }
-        
         tableView.register(UINib(nibName: "UnifiedNativeAdCell", bundle: nil), forCellReuseIdentifier: "UnifiedNativeAdCell")
         
         if let split = splitViewController {
@@ -77,7 +72,7 @@ class RocketLaunchesController: UIViewController, UITableViewDataSource, UITable
             detailViewController = (controllers[controllers.count - 1] as! UINavigationController).topViewController as? MissionsDetailViewController
         }
         
-//        configureRocketSearchController()
+        //        configureRocketSearchController()
         let search = UISearchController(searchResultsController: nil)
         search.obscuresBackgroundDuringPresentation = false
         search.searchBar.placeholder = "Search"
@@ -89,8 +84,20 @@ class RocketLaunchesController: UIViewController, UITableViewDataSource, UITable
         search.delegate = self
         search.searchBar.delegate = self
         
-        downloadSpaceX()
-        downloadAll()
+        reachability.whenReachable = { reachability in
+            if reachability.connection == .wifi || reachability.connection == .cellular {
+                self.downloadAll()
+            }
+        }
+        reachability.whenUnreachable = { _ in
+            print("Not reachable")
+        }
+
+        do {
+            try reachability.startNotifier()
+        } catch {
+            print("Unable to start notifier")
+        }
         
         let options = GADMultipleAdsAdLoaderOptions()
         options.numberOfAds = numAdsToLoad
@@ -107,15 +114,28 @@ class RocketLaunchesController: UIViewController, UITableViewDataSource, UITable
         
     }
     
-    // MARK: Data - SpaceX
+    override func viewWillAppear(_ animated: Bool) {
+        NotificationCenter.default.addObserver(self, selector: #selector(reachabilityChanged(note:)), name: .reachabilityChanged, object: reachability)
+        do {
+          try reachability.startNotifier()
+        } catch {
+          print("could not start reachability notifier")
+        }
+    }
     
-    @objc func downloadSpaceX() {
-        AF.request(API.SpaceX.allLaunches.url()).responseJSON { response in
-            if let data = response.data {
-                let decoder = JSONDecoder()
-                let decodedMissions = try! decoder.decode([Mission].self, from: data)
-                self.spaceXMissions = decodedMissions
-            }
+    @objc func reachabilityChanged(note: Notification) {
+
+      let reachability = note.object as! Reachability
+
+      switch reachability.connection {
+      case .wifi:
+          downloadAll()
+      case .cellular:
+          downloadAll()
+      case .unavailable:
+        print("Network not reachable")
+      case .none:
+        print("?")
         }
     }
     
@@ -124,23 +144,30 @@ class RocketLaunchesController: UIViewController, UITableViewDataSource, UITable
     @objc func downloadAll() {
         AF.request(API.All.nextLaunches.url()).responseJSON { response in
             if let data = response.data {
-                let decoder = JSONDecoder()
-                let decodedLaunches = try! decoder.decode(ElseMission.self, from: data)
-                self.elseLaunches = decodedLaunches
-                self.tableViewItems.append(contentsOf: decodedLaunches.launches)
-                
-                DispatchQueue.main.async {
-                    print("Downloaded Everything")
-                    //                    self.setupElseSearchableContent()
-                    self.refreshControl.endRefreshing()
-                    self.downloaded = true
-                    self.tableView.reloadData()
+                do {
+                    let decoder = JSONDecoder()
+                    let decodedLaunches = try decoder.decode(LaunchResponse.self, from: data)
+                    self.elseLaunches = decodedLaunches
+                    self.tableViewItems.append(contentsOf: decodedLaunches.launches)
                     
-                    // Deeplink handling
-                    if self.missionId != nil {
-                        self.performSegue(withIdentifier: "performDeeplink", sender: self)
+                    DispatchQueue.main.async {
+                        print("Downloaded Everything")
+                        //                    self.setupElseSearchableContent()
+                        self.refreshControl.endRefreshing()
+                        self.downloaded = true
+                        self.tableView.reloadData()
+                        
+                        // Deeplink handling
+                        if self.missionId != nil {
+                            self.performSegue(withIdentifier: "performDeeplink", sender: self)
+                        }
                     }
+                } catch {
+                    print(error)
                 }
+                
+            } else {
+                print(response.error)
             }
         }
     }
@@ -152,16 +179,12 @@ class RocketLaunchesController: UIViewController, UITableViewDataSource, UITable
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if shouldShowSearchResults {
-            return filteredElseLaunches.count
-        } else {
-            return elseLaunches.count
-        }
+        return shouldShowSearchResults ? filteredElseLaunches.count : elseLaunches.count
     }
-
+    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        if let missionItem = shouldShowSearchResults ? filteredElseLaunches[indexPath.row] : tableViewItems[indexPath.row] as? ElseMission.Launch {
+        if let missionItem = shouldShowSearchResults ? filteredElseLaunches[indexPath.row] : tableViewItems[indexPath.row] as? Launch {
             let cell = tableView.dequeueReusableCell(withIdentifier: "MissionCell", for: indexPath) as! MissionTableViewCell
             var delimiter = "|"
             var missionName = missionItem.name.components(separatedBy: delimiter)
@@ -179,6 +202,7 @@ class RocketLaunchesController: UIViewController, UITableViewDataSource, UITable
             let dateFormatter = DateFormatter()
             dateFormatter.dateFormat = "MMM d, yyyy HH:mm:ss 'UTC'"
             dateFormatter.timeZone = TimeZone(abbreviation: "UTC")
+            
             if let date = dateFormatter.date(from: missionItem.net) {
                 let localizedDateTime: String = DateFormatter.localizedString(from: date, dateStyle: .long, timeStyle: .short)
                 cell.missionDateLabel.text = localizedDateTime
@@ -195,32 +219,33 @@ class RocketLaunchesController: UIViewController, UITableViewDataSource, UITable
                 cell.missionDateLabel.textColor = UIColor(named: "Exodus Fruit")
             }
             
-            // later on let's switch the missionDaetLabel text color base on the status of the whether or not the launch will happen
+            // later on let's switch the missionDateLabel text color base on the status of the whether or not the launch will happen
+            
             return cell
         } else {
             let nativeAd = tableViewItems[indexPath.row] as! GADUnifiedNativeAd
             /// Set the native ad's rootViewController to the current view controller.
             nativeAd.rootViewController = self
-
+            
             let nativeAdCell = tableView.dequeueReusableCell(
                 withIdentifier: "UnifiedNativeAdCell", for: indexPath)
-
+            
             // Get the ad view from the Cell. The view hierarchy for this cell is defined in
             // UnifiedNativeAdCell.xib.
             let adView : GADUnifiedNativeAdView = nativeAdCell.contentView.subviews.first as! GADUnifiedNativeAdView
-
+            
             // Associate the ad view with the ad object.
             // This is required to make the ad clickable.
             adView.nativeAd = nativeAd
-
+            
             // Populate the ad view with the ad assets.
             (adView.headlineView as! UILabel).text = nativeAd.headline
             (adView.priceView as! UILabel).text = nativeAd.price
             if let starRating = nativeAd.starRating {
-              (adView.starRatingView as! UILabel).text =
-                  starRating.description + "\u{2605}"
+                (adView.starRatingView as! UILabel).text =
+                    starRating.description + "\u{2605}"
             } else {
-              (adView.starRatingView as! UILabel).text = nil
+                (adView.starRatingView as! UILabel).text = nil
             }
             (adView.bodyView as! UILabel).text = nativeAd.body
             (adView.advertiserView as! UILabel).text = nativeAd.advertiser
@@ -319,14 +344,6 @@ class RocketLaunchesController: UIViewController, UITableViewDataSource, UITable
             return nil
         }
         
-        //        if shouldShowSearchResults {
-        //            destVC.isSpaceX = false
-        //            destVC.launch = filteredElseLaunches[indexPath.row]
-        //        } else {
-        //            destVC.isSpaceX = false
-        //            destVC.launch = elseLaunches.launches[indexPath.row]
-        //        }
-        
         destVC.preferredContentSize = CGSize(width: 0.0, height: 450)
         previewingContext.sourceRect = cell.frame
         
@@ -340,38 +357,9 @@ class RocketLaunchesController: UIViewController, UITableViewDataSource, UITable
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "showMission" {
             if let indexPath = self.tableView.indexPathForSelectedRow {
-                let found = spaceXMissions.firstIndex { (mission) -> Bool in
-                    let dateFormatter = DateFormatter()
-                    dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZ"
-                    let spaceXDate = DateFormatter.localizedString(from: dateFormatter.date(from: mission.launch_date_local)!, dateStyle: .long, timeStyle: .short)
-                    
-                    // Else
-                    var elseDate = ""
-                    
-                    dateFormatter.dateFormat = "MMM d, yyyy HH:mm:ss 'UTC'"
-                    dateFormatter.timeZone = TimeZone(abbreviation: "UTC")
-                    
-                    if shouldShowSearchResults {
-                        elseDate = DateFormatter.localizedString(from: dateFormatter.date(from: filteredElseLaunches[indexPath.row].net)!, dateStyle: .long, timeStyle: .short)
-                    } else {
-                        elseDate = DateFormatter.localizedString(from: dateFormatter.date(from: elseLaunches.launches[indexPath.row].net)!, dateStyle: .long, timeStyle: .short)
-                    }
-                    
-                    return spaceXDate == elseDate
-                }
-                
-                var isSpaceX = false
-                
-                if found != nil {
-                    isSpaceX = true
-                }
                 
                 if shouldShowSearchResults {
                     let destVC = (segue.destination as! UINavigationController).topViewController as! MissionsDetailViewController
-                    destVC.isSpaceX = isSpaceX
-                    if isSpaceX {
-                        destVC.mission = spaceXMissions[found!]
-                    }
                     destVC.launch = filteredElseLaunches[indexPath.row]
                     destVC.hidesBottomBarWhenPushed = true
                     destVC.navigationItem.leftBarButtonItem = splitViewController?.displayModeButtonItem
@@ -379,11 +367,7 @@ class RocketLaunchesController: UIViewController, UITableViewDataSource, UITable
                     detailViewController = destVC
                 } else {
                     let destVC = (segue.destination as! UINavigationController).topViewController as! MissionsDetailViewController
-                    destVC.isSpaceX = isSpaceX
-                    if isSpaceX {
-                        destVC.mission = spaceXMissions[found!]
-                    }
-                    destVC.launch = tableViewItems[indexPath.row] as! ElseMission.Launch
+                    destVC.launch = tableViewItems[indexPath.row] as! Launch
                     destVC.hidesBottomBarWhenPushed = true
                     destVC.navigationItem.leftBarButtonItem = splitViewController?.displayModeButtonItem
                     destVC.navigationItem.leftItemsSupplementBackButton = true
@@ -392,7 +376,6 @@ class RocketLaunchesController: UIViewController, UITableViewDataSource, UITable
             }
         } else if segue.identifier == "showMissionElseCS" {
             let destVC = segue.destination as! MissionsDetailViewController
-            destVC.isSpaceX = false
             destVC.launch = elseLaunches.launches[selectedLaunchIndex]
             destVC.hidesBottomBarWhenPushed = true
         } else if segue.identifier == "performDeeplink" {
@@ -400,27 +383,26 @@ class RocketLaunchesController: UIViewController, UITableViewDataSource, UITable
             let mission = elseLaunches.launches.filter { $0.id == identifier }
             guard mission.count > 0 else { return }
             let destVC = segue.destination as! MissionsDetailViewController
-            destVC.isSpaceX = false
             destVC.launch = mission[0]
             destVC.hidesBottomBarWhenPushed = true
         }
     }
     
     func addNativeAds() {
-      if nativeAds.count <= 0 {
-        return
-      }
-
-      let adInterval = (tableViewItems.count / nativeAds.count) + 1
-      var index = 2
-      for nativeAd in nativeAds {
-        if index < tableViewItems.count {
-          tableViewItems.insert(nativeAd, at: index)
-          index += adInterval
-        } else {
-          break
+        if nativeAds.count <= 0 {
+            return
         }
-      }
+        
+        let adInterval = (tableViewItems.count / nativeAds.count) + 1
+        var index = 2
+        for nativeAd in nativeAds {
+            if index < tableViewItems.count {
+                tableViewItems.insert(nativeAd, at: index)
+                index += adInterval
+            } else {
+                break
+            }
+        }
     }
     
     // MARK: - GADAdLoaderDelegate
@@ -444,26 +426,26 @@ class RocketLaunchesController: UIViewController, UITableViewDataSource, UITable
     }
     
     func handleKeyboard(notification: Notification) {
-      // 1
-      guard notification.name == UIResponder.keyboardWillChangeFrameNotification else {
-//        searchFooterBottomConstraint.constant = 0
-        view.layoutIfNeeded()
-        return
-      }
-      
-      guard
-        let info = notification.userInfo,
-        let keyboardFrame = info[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue
-        else {
-          return
-      }
-      
-      // 2
-      let keyboardHeight = keyboardFrame.cgRectValue.size.height
-      UIView.animate(withDuration: 0.1, animations: { () -> Void in
-//        self.searchFooterBottomConstraint.constant = keyboardHeight
-        self.view.layoutIfNeeded()
-      })
+        // 1
+        guard notification.name == UIResponder.keyboardWillChangeFrameNotification else {
+            //        searchFooterBottomConstraint.constant = 0
+            view.layoutIfNeeded()
+            return
+        }
+        
+        guard
+            let info = notification.userInfo,
+            let keyboardFrame = info[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue
+            else {
+                return
+        }
+        
+        // 2
+        let keyboardHeight = keyboardFrame.cgRectValue.size.height
+        UIView.animate(withDuration: 0.1, animations: { () -> Void in
+            //        self.searchFooterBottomConstraint.constant = keyboardHeight
+            self.view.layoutIfNeeded()
+        })
     }
-
+    
 }

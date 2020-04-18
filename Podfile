@@ -18,6 +18,7 @@ target 'Liftoff' do
   pod 'Firebase/Messaging'
   pod 'Firebase/AdMob'
   pod 'SwiftLinkPreview', '~> 2.3.0'
+  pod 'ReachabilitySwift'
 
   target 'LiftoffTests' do
     inherit! :search_paths

@@ -292,6 +292,7 @@ PODS:
   - nanopb/decode (0.3.9011)
   - nanopb/encode (0.3.9011)
   - Protobuf (3.11.2)
+  - ReachabilitySwift (5.0.0)
   - SwiftLinkPreview (2.3.1)
 
 DEPENDENCIES:
@@ -301,6 +302,7 @@ DEPENDENCIES:
   - Firebase/Core
   - Firebase/Firestore
   - Firebase/Messaging
+  - ReachabilitySwift
   - SwiftLinkPreview (~> 2.3.0)
 
 SPEC REPOS:
@@ -329,6 +331,7 @@ SPEC REPOS:
     - leveldb-library
     - nanopb
     - Protobuf
+    - ReachabilitySwift
     - SwiftLinkPreview
 
 SPEC CHECKSUMS:
@@ -356,8 +359,9 @@ SPEC CHECKSUMS:
   leveldb-library: 55d93ee664b4007aac644a782d11da33fba316f7
   nanopb: 18003b5e52dab79db540fe93fe9579f399bd1ccd
   Protobuf: dd1aaea7140debfe4dd0683fb8ef208e527ae153
+  ReachabilitySwift: 985039c6f7b23a1da463388634119492ff86c825
   SwiftLinkPreview: 7fa103fdbf20f1644c23289dc5ebc01425d997ab
 
-PODFILE CHECKSUM: 03b2034b09c3a75ae6beb9e80818471fe092e389
+PODFILE CHECKSUM: 34972baad7652a5f76abc580194ca8256cd4dd69
 
 COCOAPODS: 1.8.4
